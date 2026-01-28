@@ -22,7 +22,7 @@ export const CARDS = [
     title: "E-commerce Platforms",
     description:
       "Stores and marketplaces that handle growth, inventory, and checkout without friction.",
-    href: "/solutions",
+    href: "/services/websites-web-apps",
     image: "/ecommerce.png",
     accent: "accent",
   },
