@@ -14,7 +14,7 @@ export const CARDS = [
     title: "Mobile Apps",
     description:
       "Native and cross-platform apps that users rely on daily, from discovery to launch.",
-    href: "/solutions#mobile",
+    href: "/services/mobile-apps",
     image: "/mobile%20app.png",
     accent: "secondary",
   },
@@ -22,7 +22,7 @@ export const CARDS = [
     title: "E-commerce Platforms",
     description:
       "Stores and marketplaces that handle growth, inventory, and checkout without friction.",
-    href: "/solutions#ecommerce",
+    href: "/solutions",
     image: "/ecommerce.png",
     accent: "accent",
   },
@@ -30,7 +30,7 @@ export const CARDS = [
     title: "Custom Software",
     description:
       "Tailored tools and systems that streamline workflows and replace off-the-shelf gaps.",
-    href: "/solutions#custom",
+    href: "/services/custom-software",
     image: "/software.png",
     accent: "secondary",
   },
@@ -38,7 +38,7 @@ export const CARDS = [
     title: "Startup MVPs",
     description:
       "Lean, launch-ready products that validate ideas and iterate based on real feedback.",
-    href: "/solutions#mvp",
+    href: "/services/startup-mvps",
     image: "/mvp.png",
     accent: "accent",
   },
