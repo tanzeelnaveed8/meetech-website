@@ -1,0 +1,133 @@
+// This is your Prisma schema file for MongoDB
+// Learn more: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+// Models
+model Lead {
+  id            String      @id @default(auto()) @map("_id") @db.ObjectId
+
+  // Contact Information
+  name          String
+  email         String
+  phone         String?
+  company       String?
+  projectType   String
+  message       String
+  fileUrl       String?
+
+  // Source Tracking
+  utmSource     String?
+  utmMedium     String?
+  utmCampaign   String?
+  referrerUrl   String?
+  landingPage   String
+  deviceType    String
+  ipAddress     String?
+
+  // Lead Management
+  status        String      @default("NEW") // NEW, CONTACTED, QUALIFIED, IN_PROGRESS, CONVERTED, LOST
+  assignedToId  String?     @db.ObjectId
+  assignedTo    AdminUser?  @relation(fields: [assignedToId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  // Compliance
+  consentGiven  Boolean     @default(false)
+  consentAt     DateTime?
+
+  // Timestamps
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  // Relations
+  notes         LeadNote[]
+}
+
+model LeadNote {
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  leadId    String    @db.ObjectId
+  lead      Lead      @relation(fields: [leadId], references: [id], onDelete: Cascade)
+
+  authorId  String    @db.ObjectId
+  author    AdminUser @relation(fields: [authorId], references: [id])
+
+  note      String
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model AnalyticsEvent {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+
+  // Event Details
+  eventType   String
+  eventData   Json
+
+  // Page Context
+  pageUrl     String
+  pagePath    String
+  pageTitle   String?
+
+  // Session Context
+  sessionId   String
+  userId      String?
+
+  // Device Context
+  deviceType  String
+  browser     String?
+  os          String?
+
+  // Timestamp
+  timestamp   DateTime @default(now())
+}
+
+model UserSession {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  sessionId   String    @unique
+
+  // Journey
+  entryPage   String
+  exitPage    String?
+  pageViews   Int       @default(1)
+
+  // Duration
+  startedAt   DateTime  @default(now())
+  endedAt     DateTime?
+  duration    Int?
+
+  // Context
+  deviceType  String
+  location    String?
+  referrer    String?
+}
+
+model AdminUser {
+  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+
+  // Authentication
+  email         String    @unique
+  passwordHash  String
+
+  // Profile
+  name          String
+  role          String    @default("EDITOR") // ADMIN, EDITOR, VIEWER
+
+  // Status
+  isActive      Boolean   @default(true)
+  lastLoginAt   DateTime?
+
+  // Timestamps
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Relations
+  assignedLeads Lead[]
+  leadNotes     LeadNote[]
+}

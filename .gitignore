@@ -12,6 +12,7 @@
 
 # testing
 /coverage
+.nyc_output
 
 # next.js
 /.next/
@@ -19,10 +20,12 @@
 
 # production
 /build
+dist/
 
 # misc
 .DS_Store
 *.pem
+Thumbs.db
 
 # debug
 npm-debug.log*
@@ -39,3 +42,21 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Prisma
+prisma/migrations/
+
+# Sanity
+sanity-studio/.sanity
+sanity-studio/dist
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Misc
+*.tmp
+.cache/
