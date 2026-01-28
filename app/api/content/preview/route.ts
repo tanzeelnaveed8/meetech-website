@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import { NextRequest, NextResponse } from 'next/server'
 import { getPageById } from '@/lib/sanity/queries'
 import { requireAuth } from '@/lib/auth/middleware'

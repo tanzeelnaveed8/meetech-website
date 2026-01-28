@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import { NextRequest, NextResponse } from 'next/server'
 import { getLeads } from '@/lib/db/queries/leads'
 import { requireAuth } from '@/lib/auth/middleware'
