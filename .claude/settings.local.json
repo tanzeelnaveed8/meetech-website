@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run build:*)",
+      "Bash(dir:*)",
+      "Bash(git remote add:*)",
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nAdd complete Meetech website with all features\n\n- Frontend pages: Home, About, Services, Solutions, Work, Process, Contact, Legal\n- Admin panel with authentication, leads management, analytics dashboard\n- Contact form with lead capture\n- Sanity CMS integration\n- Prisma database setup\n- Dark/Light theme support\n- Analytics tracking\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git push:*)",
+      "Bash(git pull:*)",
+      "Bash(git checkout:*)",
+      "Bash(git commit:*)",
+      "Bash(git stash:*)",
+      "Bash(git push)"
+    ]
+  }
+}
