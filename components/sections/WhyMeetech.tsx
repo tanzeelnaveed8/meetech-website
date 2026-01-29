@@ -83,7 +83,7 @@ export default function WhyMeetech() {
      return (
           <div className="bg-bg-page text-text-body">
                {/* WHY MEETECH */}
-               <section className="relative py-24 md:py-40 border-t border-border-subtle overflow-hidden">
+               <section className="relative py-16 md:py-24 border-t border-border-subtle overflow-hidden">
                     <div
                          className="absolute inset-0 opacity-[0.03] pointer-events-none"
                          style={{

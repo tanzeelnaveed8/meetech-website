@@ -38,7 +38,7 @@ const createLeadSchema = z.object({
   email: z.string().email('Invalid email address'),
   phone: z.string().optional(),
   company: z.string().max(100).optional(),
-  projectType: z.enum(['Web Development', 'Mobile App', 'Consulting', 'Other']),
+  projectType: z.enum(['Web Development', 'Mobile App', 'Custom Software', 'MVP Development', 'UI/UX Design', 'Consulting', 'Other']),
   message: z.string().min(10, 'Message must be at least 10 characters').max(5000),
   fileUrl: z.string().url().optional(),
   utmSource: z.string().optional(),

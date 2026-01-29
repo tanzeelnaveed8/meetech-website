@@ -131,22 +131,52 @@ export function ContactForm() {
     setSubmitStatus("submitting");
 
     try {
-      const formDataToSend = new FormData();
-      formDataToSend.append("name", formData.name);
-      formDataToSend.append("email", formData.email);
-      formDataToSend.append("phone", formData.phone);
-      formDataToSend.append("company", formData.company);
-      formDataToSend.append("projectType", formData.projectType);
-      formDataToSend.append("budget", formData.budget);
-      formDataToSend.append("timeline", formData.timeline);
-      formDataToSend.append("message", formData.message);
-      if (formData.file) {
-        formDataToSend.append("file", formData.file);
-      }
-      formDataToSend.append("source", "contact-page");
+      // Get UTM parameters from URL
+      const urlParams = new URLSearchParams(window.location.search);
+      const utmSource = urlParams.get('utm_source') || undefined;
+      const utmMedium = urlParams.get('utm_medium') || undefined;
+      const utmCampaign = urlParams.get('utm_campaign') || undefined;
 
-      // Mock API call for development
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      // Build message with budget and timeline info
+      let fullMessage = formData.message;
+      if (formData.budget) {
+        fullMessage += `\n\nBudget: ${formData.budget}`;
+      }
+      if (formData.timeline) {
+        fullMessage += `\nTimeline: ${formData.timeline}`;
+      }
+
+      // Submit to the leads API
+      const response = await fetch('/api/leads', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone || undefined,
+          company: formData.company || undefined,
+          projectType: formData.projectType === "Website Development" || formData.projectType === "E-commerce Platform" ? "Web Development" :
+                       formData.projectType === "Mobile App (iOS/Android)" ? "Mobile App" :
+                       formData.projectType === "Custom Software" ? "Custom Software" :
+                       formData.projectType === "MVP Development" ? "MVP Development" :
+                       formData.projectType === "UI/UX Design" ? "UI/UX Design" :
+                       formData.projectType === "Consulting" ? "Consulting" : "Other",
+          message: fullMessage,
+          consentGiven: true,
+          utmSource,
+          utmMedium,
+          utmCampaign,
+          referrerUrl: document.referrer || undefined,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Failed to submit form');
+      }
 
       setSubmitStatus("success");
       setFormData({
@@ -162,6 +192,7 @@ export function ContactForm() {
       });
       setErrors({});
     } catch (error) {
+      console.error('Form submission error:', error);
       setSubmitStatus("error");
     }
   };

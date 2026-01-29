@@ -1,6 +1,7 @@
 "use client";
 
 import { usePathname } from 'next/navigation';
+import Script from 'next/script';
 import { Header } from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 
@@ -31,6 +32,11 @@ export default function ConditionalLayout({
         </div>
       </main>
       <Footer />
+      <Script
+        src="https://app.livechatai.com/embed.js"
+        data-id="cmkz0sdxc0001lg04at8corp0"
+        strategy="lazyOnload"
+      />
     </>
   );
 }

@@ -9,7 +9,7 @@ const contactFormSchema = z.object({
   email: z.string().email('Invalid email address'),
   phone: z.string().optional(),
   company: z.string().max(100).optional(),
-  projectType: z.enum(['Web Development', 'Mobile App', 'Consulting', 'Other']),
+  projectType: z.enum(['Web Development', 'Mobile App', 'Custom Software', 'MVP Development', 'UI/UX Design', 'Consulting', 'Other']),
   message: z.string().min(10, 'Message must be at least 10 characters').max(5000),
   consentGiven: z.boolean().refine((val) => val === true, {
     message: 'You must agree to the privacy policy',

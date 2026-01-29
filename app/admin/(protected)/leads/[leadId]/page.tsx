@@ -8,13 +8,14 @@ export const metadata: Metadata = {
 };
 
 interface LeadDetailPageProps {
-  params: {
+  params: Promise<{
     leadId: string;
-  };
+  }>;
 }
 
 export default async function LeadDetailPage({ params }: LeadDetailPageProps) {
-  const lead = await getLeadById(params.leadId);
+  const { leadId } = await params;
+  const lead = await getLeadById(leadId);
 
   if (!lead) {
     notFound();

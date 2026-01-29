@@ -47,7 +47,7 @@ export default function PortfolioPage() {
              {/* Work Hero Section */}
 <motion.section
   style={{ opacity, scale }}
-  className="relative z-10 flex flex-col items-center justify-center min-h-[60vh] px-6 pt-20 text-center"
+  className="relative z-10 flex flex-col items-center justify-center min-h-[40vh] px-6 pt-12 text-center"
 >
   {/* Heading */}
   <motion.h1
