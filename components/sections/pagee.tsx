@@ -3,12 +3,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 import { ArrowRight, Globe, Shield, Zap, Server, ChevronRight } from 'lucide-react';
-import NeuralBackground from '../components/background/NeuralBackground';
+import NeuralBackground from '@/components/background/NeuralBackground';
 import { TrustSignals } from '@/components/sections/TrustSignals';
 import { WhatWeBuild } from '@/components/sections/WhatWeBuild';
 import WhyMeetech from '@/components/sections/WhyMeetech';
-import ProcessSection from './process/page';
-import Project from './portfolio/page';
+import ProcessSection from '@/components/sections/ProcessSection';
+import PortfolioSection from '@/components/sections/PortfolioSection';
 /**
  * MEETECH DESIGN SYSTEM VARIABLES (Extracted from PDF)
  * Primary: #0706F1 (Electric Blue)
@@ -176,7 +176,7 @@ export default function App() {
       <TrustSignals />
       <WhatWeBuild />
       <WhyMeetech />
-      <Project />
+      <PortfolioSection />
       <ProcessSection />
     </div>
   );

@@ -184,8 +184,10 @@ const LEGAL_CONTENT = {
   }
 };
 
+type LegalTab = keyof typeof LEGAL_CONTENT;
+
 export default function App() {
-  const [activeTab, setActiveTab] = useState('privacy');
+  const [activeTab, setActiveTab] = useState<LegalTab>('privacy');
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -215,7 +217,7 @@ export default function App() {
                 return (
                   <button
                     key={key}
-                    onClick={() => setActiveTab(key)}
+                    onClick={() => setActiveTab(key as LegalTab)}
                     className={`w-full group flex items-start gap-4 p-4 rounded-2xl transition-all relative overflow-hidden ${isActive
                         ? 'bg-bg-surface shadow-xl border border-border-subtle shadow-accent/5'
                         : 'hover:bg-bg-subtle border border-transparent'

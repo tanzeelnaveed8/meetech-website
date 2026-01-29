@@ -76,12 +76,12 @@ const WhatWeBuild = () => {
     },
   };
 
-  const itemVariants = {
+  const itemVariants: Variants = {
     hidden: { opacity: 0, y: shouldReduceMotion ? 0 : 30 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.6, ease: [0.23, 1, 0.32, 1] }
+      transition: { duration: 0.6, ease: [0.23, 1, 0.32, 1] as [number, number, number, number] }
     },
   };
 
@@ -169,7 +169,7 @@ const WhatWeBuild = () => {
                   inline-flex items-center justify-center p-4 rounded-2xl backdrop-blur-md border border-white/10
                   ${card.accent === "secondary" ? "text-accent-secondary bg-accent-secondary/10" : "text-accent bg-accent/10"}
                 `}>
-                  {React.cloneElement(card.icon as React.ReactElement, { className: "w-6 h-6" })}
+                  {React.cloneElement(card.icon as React.ReactElement<any>, { className: "w-6 h-6" })}
                 </div>
               </div>
 
