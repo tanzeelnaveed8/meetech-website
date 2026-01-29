@@ -42,7 +42,7 @@ const ProjectDetail = ({ project, category, close }: { project: any; category: s
      return (
           <motion.div
                initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-               className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-12"
+               className="fixed inset-0 z-60 flex items-center justify-center p-4 md:p-12"
           >
                <div className="absolute inset-0 bg-bg-page/90 backdrop-blur-xl" onClick={close} />
 
@@ -71,15 +71,10 @@ const ProjectDetail = ({ project, category, close }: { project: any; category: s
                                         )}
                                    </div>
 
-                                   <div className="absolute inset-0 pt-6 overflow-hidden bg-white">
-                                        <motion.div
-                                             animate={{ y: ["0%", "-60%", "0%"] }}
-                                             transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-                                             className="w-full"
-                                        >
+                                   <div className="absolute inset-0 pt-6 overflow-y-auto bg-white">
+                                        <div className="w-full">
                                              <img src={project.imgUrl} alt="" className="w-full h-auto" />
-                                             <img src={project.imgUrl} alt="" className="w-full h-auto" />
-                                        </motion.div>
+                                        </div>
                                    </div>
                               </div>
                          </div>

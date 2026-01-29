@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 type ParticleType = {
   x: number;
@@ -14,19 +14,28 @@ const NeuralBackground = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const ctxRef = useRef<CanvasRenderingContext2D | null>(null);
   const mouse = useRef({ x: 0, y: 0 });
+  const [shouldRender, setShouldRender] = useState(true);
 
   useEffect(() => {
+    // Check for reduced motion preference
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) {
+      setShouldRender(false);
+      return;
+    }
+
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext("2d", { alpha: true, desynchronized: true });
     if (!ctx) return;
-     canvas.width = window.innerWidth;
-     canvas.height = window.innerHeight;
+    canvas.width = document.documentElement.clientWidth;
+    canvas.height = document.documentElement.clientHeight;
     ctxRef.current = ctx;
 
     let animationFrameId = 0;
     let particles: Particle[] = [];
+    let lastMouseMove = 0;
 
     const getThemeColors = () => {
       if (typeof window === "undefined") {
@@ -40,8 +49,8 @@ const NeuralBackground = () => {
     };
 
     const resize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+      canvas.width = document.documentElement.clientWidth;
+      canvas.height = document.documentElement.clientHeight;
     };
 
     class Particle {
@@ -73,7 +82,9 @@ const NeuralBackground = () => {
     }
 
     const init = () => {
-      particles = Array.from({ length: 65 }, () => new Particle());
+      const isMobile = window.innerWidth < 768;
+      const particleCount = isMobile ? 20 : 30; // Reduced from 35/50
+      particles = Array.from({ length: particleCount }, () => new Particle());
     };
 
     const draw = () => {
@@ -81,6 +92,8 @@ const NeuralBackground = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       const colors = getThemeColors();
+      const now = Date.now();
+      const enableMouseInteraction = now - lastMouseMove < 3000; // Only show mouse lines for 3s after movement
 
       particles.forEach((p, i) => {
         p.update();
@@ -92,14 +105,16 @@ const NeuralBackground = () => {
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
         ctx.fill();
 
-        // links
+        // links - reduced distance from 200 to 150 for fewer connections
         for (let j = i + 1; j < particles.length; j++) {
           const p2 = particles[j];
-          const dist = Math.hypot(p.x - p2.x, p.y - p2.y);
+          const dx = p.x - p2.x;
+          const dy = p.y - p2.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
 
-          if (dist < 200) {
+          if (dist < 150) {
             const alpha = Math.floor(
-              (1 - dist / 200) * 45
+              (1 - dist / 150) * 45
             )
               .toString(16)
               .padStart(2, "0");
@@ -113,25 +128,26 @@ const NeuralBackground = () => {
           }
         }
 
-        // mouse interaction
-        const mDist = Math.hypot(
-          p.x - mouse.current.x,
-          p.y - mouse.current.y
-        );
+        // mouse interaction - only when mouse recently moved
+        if (enableMouseInteraction) {
+          const dx = p.x - mouse.current.x;
+          const dy = p.y - mouse.current.y;
+          const mDist = Math.sqrt(dx * dx + dy * dy);
 
-        if (mDist < 300) {
-          const mAlpha = Math.floor(
-            (1 - mDist / 300) * 70
-          )
-            .toString(16)
-            .padStart(2, "0");
+          if (mDist < 250) {
+            const mAlpha = Math.floor(
+              (1 - mDist / 250) * 70
+            )
+              .toString(16)
+              .padStart(2, "0");
 
-          ctx.strokeStyle = `${colors.accent}${mAlpha}`;
-          ctx.lineWidth = 1.2;
-          ctx.beginPath();
-          ctx.moveTo(p.x, p.y);
-          ctx.lineTo(mouse.current.x, mouse.current.y);
-          ctx.stroke();
+            ctx.strokeStyle = `${colors.accent}${mAlpha}`;
+            ctx.lineWidth = 1.2;
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(mouse.current.x, mouse.current.y);
+            ctx.stroke();
+          }
         }
       });
 
@@ -141,6 +157,7 @@ const NeuralBackground = () => {
     const handleMouseMove = (e: MouseEvent) => {
       mouse.current.x = e.clientX;
       mouse.current.y = e.clientY;
+      lastMouseMove = Date.now();
     };
 
     window.addEventListener("resize", resize);
@@ -157,12 +174,12 @@ const NeuralBackground = () => {
     };
   }, []);
 
-  return (
+  return shouldRender ? (
     <canvas
       ref={canvasRef}
       className="absolute inset-0 z-0 pointer-events-none opacity-90"
     />
-  );
+  ) : null;
 };
 
 export default NeuralBackground;
