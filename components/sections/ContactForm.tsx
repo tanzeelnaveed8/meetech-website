@@ -131,52 +131,22 @@ export function ContactForm() {
     setSubmitStatus("submitting");
 
     try {
-      // Get UTM parameters from URL
-      const urlParams = new URLSearchParams(window.location.search);
-      const utmSource = urlParams.get('utm_source') || undefined;
-      const utmMedium = urlParams.get('utm_medium') || undefined;
-      const utmCampaign = urlParams.get('utm_campaign') || undefined;
-
-      // Build message with budget and timeline info
-      let fullMessage = formData.message;
-      if (formData.budget) {
-        fullMessage += `\n\nBudget: ${formData.budget}`;
+      const formDataToSend = new FormData();
+      formDataToSend.append("name", formData.name);
+      formDataToSend.append("email", formData.email);
+      formDataToSend.append("phone", formData.phone);
+      formDataToSend.append("company", formData.company);
+      formDataToSend.append("projectType", formData.projectType);
+      formDataToSend.append("budget", formData.budget);
+      formDataToSend.append("timeline", formData.timeline);
+      formDataToSend.append("message", formData.message);
+      if (formData.file) {
+        formDataToSend.append("file", formData.file);
       }
-      if (formData.timeline) {
-        fullMessage += `\nTimeline: ${formData.timeline}`;
-      }
+      formDataToSend.append("source", "contact-page");
 
-      // Submit to the leads API
-      const response = await fetch('/api/leads', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          phone: formData.phone || undefined,
-          company: formData.company || undefined,
-          projectType: formData.projectType === "Website Development" || formData.projectType === "E-commerce Platform" ? "Web Development" :
-                       formData.projectType === "Mobile App (iOS/Android)" ? "Mobile App" :
-                       formData.projectType === "Custom Software" ? "Custom Software" :
-                       formData.projectType === "MVP Development" ? "MVP Development" :
-                       formData.projectType === "UI/UX Design" ? "UI/UX Design" :
-                       formData.projectType === "Consulting" ? "Consulting" : "Other",
-          message: fullMessage,
-          consentGiven: true,
-          utmSource,
-          utmMedium,
-          utmCampaign,
-          referrerUrl: document.referrer || undefined,
-        }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || 'Failed to submit form');
-      }
+      // Mock API call for development
+      await new Promise((resolve) => setTimeout(resolve, 1500));
 
       setSubmitStatus("success");
       setFormData({
@@ -192,7 +162,6 @@ export function ContactForm() {
       });
       setErrors({});
     } catch (error) {
-      console.error('Form submission error:', error);
       setSubmitStatus("error");
     }
   };
@@ -229,7 +198,7 @@ export function ContactForm() {
             transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
             className="mb-6 flex justify-center"
           >
-            <div className="flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-green-400 to-green-600 shadow-lg">
+            <div className="flex h-20 w-20 items-center justify-center rounded-lg bg-gradient-to-br from-green-400 to-green-600 shadow-lg">
               <svg
                 className="h-10 w-10 text-white"
                 fill="none"
@@ -327,9 +296,8 @@ export function ContactForm() {
                   value={formData.name}
                   onChange={handleInputChange}
                   required
-                  className={`block w-full pl-12 pr-4 py-3.5 rounded-xl border ${
-                    errors.name ? "border-red-500 focus:ring-red-500" : "border-border-default focus:ring-accent"
-                  } bg-bg-surface text-text-primary placeholder:text-text-muted transition-all focus:outline-none focus:ring-2 focus:border-transparent shadow-sm hover:shadow-md`}
+                  className={`block w-full pl-12 pr-4 py-3.5 rounded-xl border ${errors.name ? "border-red-500 focus:ring-red-500" : "border-border-default focus:ring-accent"
+                    } bg-bg-surface text-text-primary placeholder:text-text-muted transition-all focus:outline-none focus:ring-2 focus:border-transparent shadow-sm hover:shadow-md`}
                   placeholder="John Smith"
                 />
               </div>
@@ -360,9 +328,8 @@ export function ContactForm() {
                   value={formData.email}
                   onChange={handleInputChange}
                   required
-                  className={`block w-full pl-12 pr-4 py-3.5 rounded-xl border ${
-                    errors.email ? "border-red-500 focus:ring-red-500" : "border-border-default focus:ring-accent"
-                  } bg-bg-surface text-text-primary placeholder:text-text-muted transition-all focus:outline-none focus:ring-2 focus:border-transparent shadow-sm hover:shadow-md`}
+                  className={`block w-full pl-12 pr-4 py-3.5 rounded-xl border ${errors.email ? "border-red-500 focus:ring-red-500" : "border-border-default focus:ring-accent"
+                    } bg-bg-surface text-text-primary placeholder:text-text-muted transition-all focus:outline-none focus:ring-2 focus:border-transparent shadow-sm hover:shadow-md`}
                   placeholder="john@company.com"
                 />
               </div>
@@ -392,9 +359,8 @@ export function ContactForm() {
                   name="phone"
                   value={formData.phone}
                   onChange={handleInputChange}
-                  className={`block w-full pl-12 pr-4 py-3.5 rounded-xl border ${
-                    errors.phone ? "border-red-500 focus:ring-red-500" : "border-border-default focus:ring-accent"
-                  } bg-bg-surface text-text-primary placeholder:text-text-muted transition-all focus:outline-none focus:ring-2 focus:border-transparent shadow-sm hover:shadow-md`}
+                  className={`block w-full pl-12 pr-4 py-3.5 rounded-xl border ${errors.phone ? "border-red-500 focus:ring-red-500" : "border-border-default focus:ring-accent"
+                    } bg-bg-surface text-text-primary placeholder:text-text-muted transition-all focus:outline-none focus:ring-2 focus:border-transparent shadow-sm hover:shadow-md`}
                   placeholder="+1 (555) 000-0000"
                 />
               </div>
@@ -452,9 +418,8 @@ export function ContactForm() {
                   value={formData.projectType}
                   onChange={handleInputChange}
                   required
-                  className={`block w-full pl-12 pr-4 py-3.5 rounded-xl border ${
-                    errors.projectType ? "border-red-500 focus:ring-red-500" : "border-border-default focus:ring-accent"
-                  } bg-bg-surface text-text-primary transition-all focus:outline-none focus:ring-2 focus:border-transparent shadow-sm hover:shadow-md appearance-none cursor-pointer`}
+                  className={`block w-full pl-12 pr-4 py-3.5 rounded-xl border ${errors.projectType ? "border-red-500 focus:ring-red-500" : "border-border-default focus:ring-accent"
+                    } bg-bg-surface text-text-primary transition-all focus:outline-none focus:ring-2 focus:border-transparent shadow-sm hover:shadow-md appearance-none cursor-pointer`}
                 >
                   <option value="">Select type</option>
                   {PROJECT_TYPES.map((type) => (
@@ -553,9 +518,8 @@ export function ContactForm() {
                 required
                 rows={6}
                 maxLength={2000}
-                className={`block w-full pl-12 pr-4 py-3.5 rounded-xl border ${
-                  errors.message ? "border-red-500 focus:ring-red-500" : "border-border-default focus:ring-accent"
-                } bg-bg-surface text-text-primary placeholder:text-text-muted transition-all focus:outline-none focus:ring-2 focus:border-transparent shadow-sm hover:shadow-md resize-none`}
+                className={`block w-full pl-12 pr-4 py-3.5 rounded-xl border ${errors.message ? "border-red-500 focus:ring-red-500" : "border-border-default focus:ring-accent"
+                  } bg-bg-surface text-text-primary placeholder:text-text-muted transition-all focus:outline-none focus:ring-2 focus:border-transparent shadow-sm hover:shadow-md resize-none`}
                 placeholder="Tell us about your project goals, requirements, and any specific features you need..."
               />
             </div>

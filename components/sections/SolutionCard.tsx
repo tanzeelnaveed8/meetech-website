@@ -23,9 +23,9 @@ export function SolutionCard({ solution, index }: SolutionCardProps) {
         reduce
           ? {}
           : {
-              hidden: { scale: 0.92, opacity: 0 },
-              visible: { scale: 1, opacity: 1 },
-            }
+            hidden: { scale: 0.92, opacity: 0 },
+            visible: { scale: 1, opacity: 1 },
+          }
       }
       transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
     >
@@ -87,7 +87,7 @@ export function SolutionCard({ solution, index }: SolutionCardProps) {
               {/* Close Button */}
               <button
                 onClick={() => setIsExpanded(false)}
-                className="absolute top-8 right-8 w-10 h-10 rounded-full bg-accent/10 hover:bg-accent text-accent hover:text-text-inverse flex items-center justify-center transition-all duration-300"
+                className="absolute top-8 right-8 w-10 h-10 rounded-lg bg-accent/10 hover:bg-accent text-accent hover:text-text-inverse flex items-center justify-center transition-all duration-300"
               >
                 <ChevronDown className="rotate-180" size={20} />
               </button>
@@ -128,7 +128,7 @@ export function SolutionCard({ solution, index }: SolutionCardProps) {
                 <ul className="space-y-3" role="list">
                   {solution.useCases.map((useCase) => (
                     <li key={useCase} className="flex items-start gap-3">
-                      <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" aria-hidden />
+                      <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-lg bg-accent" aria-hidden />
                       <span className="text-sm text-text-body">{useCase}</span>
                     </li>
                   ))}

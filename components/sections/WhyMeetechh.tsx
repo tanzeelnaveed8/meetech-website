@@ -26,7 +26,7 @@ const WHY_MEETECH = [
           icon: <UserCheck className="w-5 h-5" />,
           stat: "100% Oversight",
           image:
-               "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80&w=800",
+               "https://i.pinimg.com/736x/32/72/fd/3272fdbde5f3f2a613b4bfa3bc3f9135.jpg",
           tag: "Integrity",
      },
      {
@@ -36,7 +36,7 @@ const WHY_MEETECH = [
           icon: <Users2 className="w-5 h-5" />,
           stat: "No Freelancers",
           image:
-               "https://images.unsplash.com/photo-1522071823991-b9671f903f79?auto=format&fit=crop&q=80&w=800",
+               "https://i.pinimg.com/736x/43/d4/e4/43d4e494f01c6bc41b56cfc4305007b7.jpg",
           tag: "Sovereignty",
      },
      {
@@ -64,9 +64,9 @@ const WHY_MEETECH = [
 
 
 // MAIN APP
-export default function App() {
+const WhyMeetechh = () => {
      return (
-          <div className="min-h-screen bg-[var(--bg-page)] text-[var(--text-body)] font-sans selection:bg-[var(--accent-primary)]/30 selection:text-[var(--text-inverse)]">
+          <div className="min-h-screen bg-[var(--bg-page)] text-[var(--text-body)] font-sans selection:bg-[var(--accent-primary)]/30 selection:text-[var(--text-inverse)] mb-40 md:mb-56 xl:px-6">
 
                {/* BACKGROUND DECORATION */}
                <div className="fixed inset-0 pointer-events-none z-0">
@@ -77,18 +77,18 @@ export default function App() {
                               backgroundSize: "48px 48px",
                          }}
                     />
-                    <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-[var(--accent-primary)]/10 blur-[150px] rounded-full" />
-                    <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-[var(--accent-secondary)]/10 blur-[150px] rounded-full" />
+                    <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-[var(--accent-primary)]/10 blur-[150px] rounded-lg" />
+                    <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-[var(--accent-secondary)]/10 blur-[150px] rounded-lg" />
                </div>
 
                <main className="relative z-10">
                     {/* HERO SECTION */}
                     <section className="relative py-32 md:py-56 border-b border-[var(--border-default)]/5">
-                         <div className="mx-auto max-w-7xl px-6 md:px-12 grid lg:grid-cols-12 gap-16 lg:gap-24 items-start">
+                         <div className="mx-auto max-w-7xl px-6  grid lg:grid-cols-12 gap-16 lg:gap-24 items-start">
 
                               {/* LEFT - STICKY CONTENT */}
                               <div className="lg:col-span-5 lg:sticky lg:top-32 space-y-8">
-                                   <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[var(--accent-primary)]/10 border border-[var(--accent-primary)]/20">
+                                   <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[var(--accent-primary)]/10 border border-[var(--accent-primary)]/20">
                                         <Cpu className="w-3.5 h-3.5 text-[var(--accent-primary)]" />
                                         <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-[var(--accent-primary)]">
                                              Engineering Edge
@@ -106,20 +106,20 @@ export default function App() {
                                         </p>
 
                                         <div className="grid grid-cols-2 gap-4 pt-8">
-                                             <div className="p-4 rounded-2xl bg-[var(--bg-card)]/5 border border-[var(--border-default)]/10">
-                                                  <div className="text-2xl font-black text-[var(--text-primary)]">400+</div>
-                                                  <div className="text-[10px] uppercase tracking-widest text-[var(--text-muted)]">Deployments</div>
+                                             <div className="p-4 rounded-2xl bg-[#1e40af]">
+                                                  <div className="text-2xl font-black text-[var(--text-inverse)]">400+</div>
+                                                  <div className="text-[10px] uppercase tracking-widest text-[var(--text-primary)]">Deployments</div>
                                              </div>
-                                             <div className="p-4 rounded-2xl bg-[var(--bg-card)]/5 border border-[var(--border-default)]/10">
-                                                  <div className="text-2xl font-black text-[var(--text-primary)]">99.9%</div>
-                                                  <div className="text-[10px] uppercase tracking-widest text-[var(--text-muted)]">Uptime SLA</div>
+                                             <div className="p-4 rounded-2xl  bg-[#1e40af]">
+                                                  <div className="text-2xl font-black text-[var(--text-inverse)]">99.9%</div>
+                                                  <div className="text-[10px] uppercase tracking-widest text-[var(--text-primary)]">Uptime SLA</div>
                                              </div>
                                         </div>
                                    </div>
                               </div>
 
                               {/* RIGHT - FEATURE CARDS */}
-                              <div className="lg:col-span-7 space-y-8">
+                              <div className=" md:col-span-6 lg:col-span-7 space-y-8 h-fit overflow-y-auto ">
                                    {WHY_MEETECH.map((item, i) => (
                                         <div
                                              key={i}
@@ -165,7 +165,7 @@ export default function App() {
                                                        <div className="absolute inset-0 bg-gradient-to-r from-[var(--bg-card)] via-transparent to-transparent md:block hidden" />
                                                        <div className="absolute inset-0 bg-gradient-to-t from-[var(--bg-card)] via-transparent to-transparent md:hidden" />
 
-                                                       <div className="absolute bottom-4 right-4 bg-[var(--bg-surface)]/60 backdrop-blur-md border border-[var(--border-default)]/10 px-3 py-1 rounded-full text-[9px] font-mono text-[var(--text-muted)]">
+                                                       <div className="absolute bottom-4 right-4 bg-[var(--bg-surface)]/60 backdrop-blur-md border border-[var(--border-default)]/10 px-3 py-1 rounded-lg text-[9px] font-mono text-[var(--text-muted)]">
                                                             SRV-0{i + 1}.MTCH
                                                        </div>
                                                   </div>
@@ -183,3 +183,5 @@ export default function App() {
           </div>
      );
 }
+
+export default WhyMeetechh;

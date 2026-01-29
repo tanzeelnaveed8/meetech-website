@@ -12,6 +12,7 @@ import {
   Phone,
   MapPin,
 } from "lucide-react";
+import NeuralBackground from "../background/NeuralBackground";
 
 type FooterLink = {
   name: string;
@@ -42,10 +43,10 @@ const footerLinks: FooterGroup[] = [
   {
     title: "Services",
     links: [
-      { name: "Web Development", href: "/services" },
-      { name: "Mobile Apps", href: "/services" },
-      { name: "E-commerce", href: "/services" },
-      { name: "Custom Software", href: "/services" },
+      { name: "Web Development", href: "/services/websites-web-apps" },
+      { name: "Mobile Apps", href: "/services/mobile-apps" },
+      { name: "Startup MVPs", href: "/services/startup-mvps" },
+      { name: "Custom Software", href: "/services/custom-software" },
     ],
   },
   {
@@ -94,15 +95,21 @@ const Footer: React.FC = () => {
   };
 
   return (
-    <footer className="relative bg-bg-page border-t border-border-default pt-20 pb-8 overflow-hidden">
+    <footer className="relative bg-black/95 text-gray-400 border-t border-border-default pt-20 pb-8 overflow-hidden">
       {/* Decorative gradient line at top */}
-      <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-accent/50 to-transparent" />
 
-      <div className="container mx-auto px-6 lg:px-12 max-w-7xl">
+      {/* Decorative Grid: Uses border-default variable for theme-aware lines
+      < div className="absolute inset-0 bg-[linear-gradient(to_right,var(--border-default)_1px,transparent_1px),linear-gradient(to_bottom,var(--border-default)_1px,transparent_1px)] bg-[size:50px_50px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-30 pointer-events-none " /> */}
+
+      <NeuralBackground />
+      {/* Atmospheric Radial Blur */}
+      <div className="absolute -top-[15%] left-1/2 -translate-x-1/2 h-[600px] w-[900px] bg-accent/5 blur-[140px] rounded-full pointer-events-none" />
+
+      <div className="container relative z-20 text-gray-400 mx-auto px-6 lg:px-12 max-w-7xl">
         {/* Main Footer Content */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 pb-12">
           {/* Brand & Description */}
-          <div className="lg:col-span-4 space-y-6">
+          <div className="lg:col-span-4 space-y-6 text-gray-400">
             <Link href="/" className="flex items-center group w-fit">
               <img
                 src="/icon.png"
@@ -111,12 +118,12 @@ const Footer: React.FC = () => {
               />
             </Link>
 
-            <p className="text-text-body text-sm leading-relaxed max-w-sm">
+            <p className="text-gray-400  text-sm leading-relaxed max-w-sm">
               We design and engineer scalable digital products with precision, performance, and long-term vision. Building the future, one line of code at a time.
             </p>
 
             {/* Social Icons */}
-            <div className="flex items-center gap-3 pt-2">
+            <div className="flex items-center gap-3 pt-2 text-gray-400">
               <SocialIconBtn
                 href="https://github.com"
                 icon={<Github size={18} />}
@@ -143,8 +150,8 @@ const Footer: React.FC = () => {
           {/* Links Grid */}
           <div className="lg:col-span-8 grid grid-cols-2 md:grid-cols-4 gap-8 lg:gap-10">
             {footerLinks.map((group) => (
-              <div key={group.title} className="space-y-5">
-                <h4 className="text-text-primary text-sm font-bold uppercase tracking-wider">
+              <div key={group.title} className="space-y-5 ">
+                <h4 className="text-gray-400 text-sm font-bold uppercase tracking-wider">
                   {group.title}
                 </h4>
                 <ul className="space-y-3">
@@ -152,7 +159,7 @@ const Footer: React.FC = () => {
                     <li key={link.name}>
                       <Link
                         href={link.href}
-                        className="text-text-muted text-sm hover:text-accent transition-colors flex items-center group"
+                        className="text-gray-400 text-sm hover:text-accent transition-colors flex items-center group"
                       >
                         <ChevronRight
                           size={14}
@@ -183,12 +190,12 @@ const Footer: React.FC = () => {
                   {item.href ? (
                     <a
                       href={item.href}
-                      className="text-sm font-medium text-text-primary hover:text-accent transition-colors"
+                      className="text-sm font-medium text-text-gray-400 hover:text-accent transition-colors"
                     >
                       {item.value}
                     </a>
                   ) : (
-                    <p className="text-sm font-medium text-text-primary">
+                    <p className="text-sm font-medium text-text-gray-400">
                       {item.value}
                     </p>
                   )}
@@ -236,8 +243,8 @@ const Footer: React.FC = () => {
       </div>
 
       {/* Background Glow Effects */}
-      <div className="absolute -bottom-32 -left-32 w-96 h-96 bg-accent/5 blur-[120px] rounded-full pointer-events-none" />
-      <div className="absolute -bottom-32 -right-32 w-96 h-96 bg-accent/5 blur-[120px] rounded-full pointer-events-none" />
+      <div className="absolute -bottom-32 -left-32 w-96 h-96 bg-accent/5 blur-[120px] rounded-lg pointer-events-none" />
+      <div className="absolute -bottom-32 -right-32 w-96 h-96 bg-accent/5 blur-[120px] rounded-lg pointer-events-none" />
     </footer>
   );
 };

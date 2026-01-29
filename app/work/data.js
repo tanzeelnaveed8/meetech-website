@@ -1,3 +1,4 @@
+
 // Enhanced Mock Data Structure with more entries
 export const DATA = {
      Websites: [

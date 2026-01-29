@@ -5,10 +5,11 @@ import { motion, useScroll, useTransform, useReducedMotion } from 'framer-motion
 import { ArrowRight, Globe, Shield, Zap, Server, ChevronRight, Clock, Award, Briefcase } from 'lucide-react';
 import NeuralBackground from '../components/background/NeuralBackground';
 import { WhatWeBuild } from '@/components/sections/WhatWeBuild';
-import WhyMeetech from '@/components/sections/WhyMeetech';
-import ProcessSection from './process/page';
+import WhyMeetechh from '@/components/sections/WhyMeetech';
+import ProcessSection from '@/components/sections/ProcessSection';
 import Project from './work/page';
-
+import PortfolioSection from '@/components/sections/PortfolioSection';
+import { FloatingCTA } from '@/components/ui/FloatingCTA';
 // Animation constants
 const DURATION = 0.6;
 const EASE = "easeOut";
@@ -113,28 +114,7 @@ export default function App() {
             </button>
           </motion.div>
 
-          {/* Technical Validation Grid */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 0.6 }}
-            className="mt-28 pt-12 border-t border-border-subtle grid grid-cols-2 md:grid-cols-4 gap-10"
-          >
-            {[
-              { icon: <Shield />, label: "Security", val: "Enterprise-Grade" },
-              { icon: <Zap />, label: "Performance", val: "Ultra-Low Latency" },
-              { icon: <Server />, label: "Infra", val: "Global Architecture" },
-              { icon: <Globe />, label: "Compliance", val: "US / MENA Standards" }
-            ].map((item, idx) => (
-              <div key={idx} className="flex flex-col items-center group cursor-default">
-                <div className="mb-4 p-3.5 rounded-2xl bg-accent-muted text-accent group-hover:bg-accent group-hover:text-text-inverse transition-all duration-300 shadow-sm">
-                  {React.cloneElement(item.icon, { size: 22 })}
-                </div>
-                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-text-muted mb-1.5">{item.label}</span>
-                <span className="text-xs font-bold text-text-primary">{item.val}</span>
-              </div>
-            ))}
-          </motion.div>
+      
         </div>
       </motion.section>
 
@@ -218,10 +198,10 @@ export default function App() {
           </motion.div>
         </motion.section>
       </div>
-
+<FloatingCTA />
       <WhatWeBuild />
-      <WhyMeetech />
-      <Project />
+      <WhyMeetechh />
+     <PortfolioSection />
       <ProcessSection />
     </div>
   );

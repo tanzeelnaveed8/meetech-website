@@ -1,8 +1,16 @@
 "use client";
 
-import { useReducedMotion } from "framer-motion";
-import Link from "next/link";
-import { motion } from "framer-motion";
+import React, { useEffect, useRef, useState, useMemo } from 'react';
+import { motion, useScroll, useTransform, AnimatePresence, useReducedMotion } from 'framer-motion';
+import { ArrowRight, Globe, Shield, Zap, Server, ChevronRight } from 'lucide-react';
+import NeuralBackground from '@/components/background/NeuralBackground';
+import { TrustSignals } from '@/components/sections/TrustSignals';
+import { WhatWeBuild } from '@/components/sections/WhatWeBuild';
+import WhyMeetech from '@/components/sections/WhyMeetech';
+import WhyMeetechh from '@/components/sections/WhyMeetechh';
+import TechnicalValidationGrid from '@/components/sections/TechnicalValidationGrid';
+import ProcessSection from '@/components/sections/ProcessSection';
+import { FloatingCTA } from '@/components/ui/FloatingCTA';
 
 type BreadcrumbItem = { label: string; href?: string };
 
@@ -12,62 +20,115 @@ type PageHeroProps = {
   description: string;
 };
 
-export function PageHero({ breadcrumbs, title, description }: PageHeroProps) {
+export function PageHero() {
   const reduce = Boolean(useReducedMotion());
+  const { scrollY } = useScroll();
+  const opacity = useTransform(scrollY, [0, 400], [1, 0]);
+  const scale = useTransform(scrollY, [0, 400], [1, 0.98]);
+
 
   return (
-    <motion.section
-      aria-labelledby="page-hero-heading"
-      className="relative mb-10 overflow-hidden rounded-2xl border border-border-default bg-bg-surface shadow-sm md:mb-12"
-      initial={reduce ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
-    >
-      <div
-        className="pointer-events-none absolute -bottom-16 -left-16 h-48 w-48 rounded-full bg-accent-secondary/10 blur-2xl"
-        aria-hidden
-      />
-      <div
-        className="pointer-events-none absolute inset-0 rounded-2xl bg-gradient-to-bl from-transparent via-transparent to-accent-secondary/5"
-        aria-hidden
-      />
-      <div className="relative z-10 px-6 py-10 md:px-10 md:py-14 lg:px-14 lg:py-16">
-        <nav
-          className="mb-6 flex flex-wrap items-center gap-2 text-sm"
-          aria-label="Breadcrumb"
+    <>
+      <div className="relative z-10 h-fit w-full text-text-primary   bg-bg-page selection:bg-accent selection:text-text-inverse overflow-hidden font-sans transition-colors duration-500">
+
+        {/* Decorative Grid: Uses border-default variable for theme-aware lines */}
+        < div className="absolute inset-0 bg-[linear-gradient(to_right,var(--border-default)_1px,transparent_1px),linear-gradient(to_bottom,var(--border-default)_1px,transparent_1px)] bg-[size:50px_50px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-30 pointer-events-none " />
+        {/* Hero Interactive Background */}
+        <NeuralBackground />
+
+
+
+        {/* Atmospheric Radial Blur */}
+        <div className="absolute -top-[15%] left-1/2 -translate-x-1/2 h-150 w-225 bg-accent/5 blur-[140px] rounded-lg pointer-events-none" />
+
+        {/* Main Hero Section */}
+        <motion.section
+          style={{ opacity, scale }}
+          className="relative z-10 flex flex-col items-center justify-center min-h-screen py-16 md:py-24 mb-20  text-center"
         >
-          {breadcrumbs.map((item, i) => (
-            <span key={item.label} className="flex items-center gap-2">
-              {i > 0 && <span className="text-border-strong">/</span>}
-              {item.href ? (
-                <Link
-                  href={item.href}
-                  className="font-medium text-text-muted transition-colors hover:text-accent"
-                >
-                  {item.label}
-                </Link>
-              ) : (
-                <span className="rounded-lg bg-accent/15 px-3 py-1.5 font-semibold text-accent">
-                  {item.label}
+          <div className="max-w-6xl w-full">
+
+            {/* Trust Badge */}
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.1 }}
+              className="group mb-12 inline-flex items-center gap-3 px-6 py-2.5 rounded-lg border border-border-default bg-bg-surface/60 backdrop-blur-2xl cursor-default hover:border-accent/40 transition-all shadow-sm"
+            >
+              <span className="relative flex h-2.5 w-2.5">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-lg bg-accent opacity-75"></span>
+                <span className="relative inline-flex rounded-lg h-2.5 w-2.5 bg-accent"></span>
+              </span>
+              <p className="text-[11px] md:text-xs font-bold tracking-[0.25em] uppercase text-text-muted">
+                Scaling Innovation &middot; USA &middot; UAE &middot; Global
+              </p>
+              <ChevronRight className="w-3.5 h-3.5 text-accent" />
+            </motion.div>
+
+            {/* Core Headline */}
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter leading-[0.92] mb-10 text-text-primary"
+            >
+              Where Visionary Ideas <br />
+              <span className="text-accent bg-clip-text">
+                Meet Technology.
+              </span>
+            </motion.h1>
+
+            {/* Credibility Sub-headline */}
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.3 }}
+              className="mx-auto max-w-2xl text-lg md:text-xl text-text-body mb-14 leading-relaxed font-light"
+            >
+              MEETECH architects high-performance digital ecosystems and production-grade products for enterprises requiring absolute reliability and global scale.
+            </motion.p>
+
+            {/* CTA Hub */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              className="flex flex-col sm:flex-row items-center justify-center gap-6"
+            >
+              <button className="group relative px-10 py-5 bg-accent text-text-inverse font-bold rounded-xl overflow-hidden transition-all hover:bg-accent-hover hover:shadow-[0_0_25px_-5px_rgba(37,99,235,0.4)] active:scale-95">
+                <span className="relative flex items-center gap-2">
+                  Explore Solutions <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                 </span>
-              )}
-            </span>
-          ))}
-        </nav>
-        <h1
-          id="page-hero-heading"
-          className="text-3xl font-bold tracking-tight text-text-primary md:text-4xl lg:text-[2.5rem]"
+              </button>
+
+              <button className="px-10 py-5 bg-transparent border border-border-strong hover:bg-bg-subtle text-text-primary font-bold rounded-xl transition-all active:scale-95">
+                Consult Our Engineers
+              </button>
+            </motion.div>
+
+
+
+          </div>
+        </motion.section>
+
+
+        {/* Infinite Scroll Indicator */}
+        <motion.div
+          animate={{ y: [0, 8, 0] }}
+          transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 opacity-40"
         >
-          {title}
-        </h1>
-        <div
-          className="mt-2 h-1 w-16 rounded-full bg-accent-secondary"
-          aria-hidden
-        />
-        <p className="mt-6 max-w-2xl text-base leading-relaxed text-text-body md:text-lg">
-          {description}
-        </p>
+          <span className="text-[9px] font-black tracking-[0.4em] uppercase text-text-muted">Discovery</span>
+          <div className="w-[1.5px] h-12 bg-gradient-to-b from-accent via-accent/50 to-transparent rounded-lg" />
+        </motion.div>
+        <FloatingCTA />
+        <TrustSignals />
+        <WhatWeBuild />
+        {/* <WhyMeetech /> */}
+        <WhyMeetechh />
+        {/* <Project /> */}
+        <ProcessSection />
       </div>
-    </motion.section>
+    </>
   );
 }

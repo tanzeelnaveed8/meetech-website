@@ -62,11 +62,11 @@ export function TrustSignals() {
   const reduce = Boolean(useReducedMotion());
 
   return (
-    <section aria-labelledby="trust-heading" className="relative w-full py-16 md:py-24 z-30">
+    <section aria-labelledby="trust-heading" className="relative w-full py-16  md:py-24 mb-20 md:mb-32 z-30">
       {/* Subtle Background */}
-      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+      {/* <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         <div className="absolute top-0 left-1/2 w-[120%] h-[120%] -translate-x-1/2 -translate-y-1/2 bg-gradient-to-tr from-accent/5 via-accent-secondary/5 to-accent/5 rounded-[4rem] blur-[150px]" />
-      </div>
+      </div> */}
 
       <div className="relative mx-auto max-w-6xl px-6">
         {/* Refined Headline */}

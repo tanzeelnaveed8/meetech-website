@@ -3,12 +3,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 import { ArrowRight, Globe, Shield, Zap, Server, ChevronRight } from 'lucide-react';
-import NeuralBackground from '../background/NeuralBackground';
+import NeuralBackground from '../components/background/NeuralBackground';
 import { TrustSignals } from '@/components/sections/TrustSignals';
-import {WhatWeBuild} from '@/components/sections/WhatWeBuild';
+import { WhatWeBuild } from '@/components/sections/WhatWeBuild';
 import WhyMeetech from '@/components/sections/WhyMeetech';
-import ProcessSection from '@/app/process/page';
-import Project from '@/app/work/page';
+import ProcessSection from './process/page';
+import Project from './portfolio/page';
 /**
  * MEETECH DESIGN SYSTEM VARIABLES (Extracted from PDF)
  * Primary: #0706F1 (Electric Blue)
@@ -63,7 +63,7 @@ export default function App() {
       <NeuralBackground />
 
       {/* Ambient Glow */}
-      <div className="absolute -top-[15%] left-1/2 -translate-x-1/2 h-125 w-[800px] bg-accent/5 blur-[140px] rounded-full pointer-events-none" />
+      <div className="absolute -top-[15%] left-1/2 -translate-x-1/2 h-125 w-[800px] bg-accent/5 blur-[140px] rounded-lg pointer-events-none" />
 
       {/* HERO */}
       <section className="relative z-10 flex min-h-screen items-center justify-center px-6 py-24 text-center md:px-12 lg:px-16">
@@ -72,14 +72,14 @@ export default function App() {
           {/* Trust Badge */}
           <div
             ref={badge.ref}
-            className={`mx-auto inline-flex items-center rounded-full border border-border-default bg-bg-surface/60 backdrop-blur-xl shadow-sm
+            className={`mx-auto inline-flex items-center rounded-lg border border-border-default bg-bg-surface/60 backdrop-blur-xl shadow-sm
               transition-all duration-500 ease-out
               motion-reduce:transition-none mb-12 px-6 py-2.5 gap-3
               ${badge.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3"}`}
           >
             <span className="relative flex h-2.5 w-2.5">
-              <span className="absolute inline-flex h-full w-full rounded-full bg-accent opacity-75" />
-              <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-accent" />
+              <span className="absolute inline-flex h-full w-full rounded-lg bg-accent opacity-75" />
+              <span className="relative inline-flex h-2.5 w-2.5 rounded-lg bg-accent" />
             </span>
             <p className="text-[11px] md:text-xs font-bold tracking-[0.25em] uppercase text-text-muted">
               Scaling Innovation · USA · UAE · Global

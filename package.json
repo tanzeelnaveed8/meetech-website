@@ -2,6 +2,22 @@
   "name": "company",
   "version": "0.1.0",
   "private": true,
+  "description": "Meetech website",
+  "homepage": "https://github.com/tanzeelnaveed8/meetech-website#readme",
+  "bugs": {
+    "url": "https://github.com/tanzeelnaveed8/meetech-website/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tanzeelnaveed8/meetech-website.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "prisma generate && next build",
@@ -13,9 +29,6 @@
     "db:push": "prisma db push",
     "db:seed": "tsx prisma/seed.ts",
     "db:studio": "prisma studio"
-  },
-  "prisma": {
-    "seed": "tsx prisma/seed.ts"
   },
   "dependencies": {
     "@prisma/client": "^5.22.0",
@@ -52,5 +65,8 @@
     "tsx": "^4.21.0",
     "typescript": "^5.9.3",
     "vitest": "^3.2.4"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
   }
 }

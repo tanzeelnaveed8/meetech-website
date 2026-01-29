@@ -7,7 +7,7 @@ export const CARDS = [
     description:
       "Fast, accessible web experiences that convert visitors and support your operations.",
     href: "/services/websites-web-apps",
-    image: "/web-app.png",
+    image: "/images/Websites.jpg",
     accent: "accent",
   },
   {
@@ -15,15 +15,15 @@ export const CARDS = [
     description:
       "Native and cross-platform apps that users rely on daily, from discovery to launch.",
     href: "/services/mobile-apps",
-    image: "/mobile%20app.png",
+    image: "/images/Mobile.jpg",
     accent: "secondary",
   },
   {
     title: "E-commerce Platforms",
     description:
       "Stores and marketplaces that handle growth, inventory, and checkout without friction.",
-    href: "/services/websites-web-apps",
-    image: "/ecommerce.png",
+    href: "/services/ecommerce",
+    image: "/images/ecommerce.jpg",
     accent: "accent",
   },
   {
@@ -31,7 +31,7 @@ export const CARDS = [
     description:
       "Tailored tools and systems that streamline workflows and replace off-the-shelf gaps.",
     href: "/services/custom-software",
-    image: "/software.png",
+    image: "/images/software.jpg",
     accent: "secondary",
   },
   {
@@ -39,7 +39,7 @@ export const CARDS = [
     description:
       "Lean, launch-ready products that validate ideas and iterate based on real feedback.",
     href: "/services/startup-mvps",
-    image: "/mvp.png",
+    image: "/images/mvp.jpg",
     accent: "accent",
   },
 ] as const;

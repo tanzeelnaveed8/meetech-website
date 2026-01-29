@@ -91,14 +91,14 @@ export function ProcessTimeline() {
           reduce
             ? {}
             : {
-                hidden: {},
-                visible: {
-                  transition: {
-                    staggerChildren: STAGGER_DELAY,
-                    delayChildren: STAGGER_DELAY_CHILDREN,
-                  },
+              hidden: {},
+              visible: {
+                transition: {
+                  staggerChildren: STAGGER_DELAY,
+                  delayChildren: STAGGER_DELAY_CHILDREN,
                 },
-              }
+              },
+            }
         }
         className="hidden lg:block"
       >
@@ -119,9 +119,9 @@ export function ProcessTimeline() {
                     reduce
                       ? {}
                       : {
-                          hidden: { opacity: 0, y: 20 },
-                          visible: { opacity: 1, y: 0 },
-                        }
+                        hidden: { opacity: 0, y: 20 },
+                        visible: { opacity: 1, y: 0 },
+                      }
                   }
                   transition={{ duration: DURATION, ease: EASE }}
                   className="group relative"
@@ -130,7 +130,7 @@ export function ProcessTimeline() {
                   <div className="relative z-10 mb-6 flex justify-center">
                     <motion.div
                       whileHover={reduce ? {} : { scale: 1.05 }}
-                      className="flex h-32 w-32 items-center justify-center rounded-full border-4 border-bg-page bg-accent/10 text-accent shadow-lg transition-all duration-200 group-hover:bg-accent/15 group-hover:shadow-xl"
+                      className="flex h-32 w-32 items-center justify-center rounded-lg border-4 border-bg-page bg-accent/10 text-accent shadow-lg transition-all duration-200 group-hover:bg-accent/15 group-hover:shadow-xl"
                     >
                       <IconComponent />
                     </motion.div>
@@ -138,7 +138,7 @@ export function ProcessTimeline() {
 
                   {/* Step Number */}
                   <div className="mb-3 text-center">
-                    <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-accent/10 text-sm font-bold text-accent">
+                    <span className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-accent/10 text-sm font-bold text-accent">
                       {step.order}
                     </span>
                   </div>
@@ -156,7 +156,7 @@ export function ProcessTimeline() {
                   {/* Arrow (except for last step) */}
                   {index < PROCESS_STEPS.length - 1 && (
                     <div
-                      className="absolute right-0 top-[4rem] z-20 -mr-3 flex h-6 w-6 items-center justify-center rounded-full bg-bg-page"
+                      className="absolute right-0 top-[4rem] z-20 -mr-3 flex h-6 w-6 items-center justify-center rounded-lg bg-bg-page"
                       aria-hidden="true"
                     >
                       <svg
@@ -190,14 +190,14 @@ export function ProcessTimeline() {
           reduce
             ? {}
             : {
-                hidden: {},
-                visible: {
-                  transition: {
-                    staggerChildren: STAGGER_DELAY,
-                    delayChildren: STAGGER_DELAY_CHILDREN,
-                  },
+              hidden: {},
+              visible: {
+                transition: {
+                  staggerChildren: STAGGER_DELAY,
+                  delayChildren: STAGGER_DELAY_CHILDREN,
                 },
-              }
+              },
+            }
         }
         className="lg:hidden"
       >
@@ -217,16 +217,16 @@ export function ProcessTimeline() {
                   reduce
                     ? {}
                     : {
-                        hidden: { opacity: 0, y: 20 },
-                        visible: { opacity: 1, y: 0 },
-                      }
+                      hidden: { opacity: 0, y: 20 },
+                      visible: { opacity: 1, y: 0 },
+                    }
                 }
                 transition={{ duration: DURATION, ease: EASE }}
                 className="relative flex gap-6"
               >
                 {/* Icon Circle */}
                 <div className="relative z-10 flex-shrink-0">
-                  <div className="flex h-16 w-16 items-center justify-center rounded-full border-4 border-bg-page bg-accent/10 text-accent shadow-lg">
+                  <div className="flex h-16 w-16 items-center justify-center rounded-lg border-4 border-bg-page bg-accent/10 text-accent shadow-lg">
                     <IconComponent />
                   </div>
                 </div>
@@ -234,7 +234,7 @@ export function ProcessTimeline() {
                 {/* Content */}
                 <div className="flex-1 pb-8">
                   <div className="mb-2 flex items-center gap-3">
-                    <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-accent/10 text-xs font-bold text-accent">
+                    <span className="inline-flex h-6 w-6 items-center justify-center rounded-lg bg-accent/10 text-xs font-bold text-accent">
                       {step.order}
                     </span>
                     <h3 className="text-xl font-bold tracking-tight text-text-primary">

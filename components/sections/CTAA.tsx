@@ -23,7 +23,7 @@ const MeetechCTA = () => {
      return (
           <section className="relative py-24 px-6 overflow-hidden">
                {/* Background Ambient Glows */}
-               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-150 h-150 bg-blue-600/20 blur-[120px] rounded-full -z-10" />
+               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-150 h-150 bg-blue-600/20 blur-[120px] rounded-lg -z-10" />
 
                <motion.div
                     {...fadeIn}
@@ -38,7 +38,7 @@ const MeetechCTA = () => {
                          <div className="relative z-10 flex flex-col items-center text-center space-y-10">
 
                               {/* Badge / Top Icon */}
-                              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-sm font-medium">
+                              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/10 border border-blue-500/20 text-blue-400 text-sm font-medium">
                                    <Zap className="w-4 h-4 fill-current" />
                                    <span>Limited Availability for Q1</span>
                               </div>
@@ -84,7 +84,7 @@ const MeetechCTA = () => {
                          </div>
 
                          {/* Decorative Corner Element */}
-                         <div className="absolute bottom-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-600/20 to-transparent blur-2xl rounded-full translate-x-10 translate-y-10" />
+                         <div className="absolute bottom-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-600/20 to-transparent blur-2xl rounded-lg translate-x-10 translate-y-10" />
                     </div>
                </motion.div>
           </section>
