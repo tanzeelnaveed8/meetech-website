@@ -3,10 +3,12 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { ThemeToggle } from "@/components/theme/ThemeToggle";
 import { CTA, NAV_LINKS } from "@/lib/nav-config";
 import { Github, Linkedin, Twitter, Instagram } from "lucide-react";
+import { getEffectiveTheme, type Theme } from "@/lib/theme";
 
 const SCROLL_THRESHOLD = 8;
 
@@ -133,6 +135,7 @@ export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [reduceMotion, setReduceMotion] = useState(false);
+  const [theme, setTheme] = useState<Theme>(() => getEffectiveTheme());
   const mobileMenuRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
 
@@ -152,6 +155,28 @@ export function Header() {
     const handle = () => setReduceMotion(mq.matches);
     mq.addEventListener("change", handle);
     return () => mq.removeEventListener("change", handle);
+  }, []);
+
+  useEffect(() => {
+    const updateTheme = () => {
+      setTheme(getEffectiveTheme());
+    };
+
+    // Listen for theme changes
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.attributeName === 'data-theme') {
+          updateTheme();
+        }
+      });
+    });
+
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-theme']
+    });
+
+    return () => observer.disconnect();
   }, []);
 
   const closeMobile = useCallback(() => setMobileOpen(false), []);
@@ -188,27 +213,30 @@ export function Header() {
     <header
       role="banner"
       data-scrolled={scrolled}
-      className="sticky top-0 z-50 w-full border-b border-border-default/30 bg-bg-surface/80 backdrop-blur-2xl transition-all duration-300 ease-out data-[scrolled=true]:border-border-default/60 data-[scrolled=true]:bg-bg-surface/95 data-[scrolled=true]:shadow-[0_8px_32px_-8px_rgba(0,0,0,0.12)] dark:data-[scrolled=true]:shadow-[0_8px_32px_-8px_rgba(0,0,0,0.4)]"
+      className="sticky top-0 z-50 w-full border-b border-border-default/30 bg-gradient-to-b from-bg-surface/95 via-bg-surface/90 to-bg-surface/80 dark:bg-bg-surface/80 backdrop-blur-2xl transition-all duration-300 ease-out data-[scrolled=true]:border-border-default/60 data-[scrolled=true]:bg-bg-surface/95 data-[scrolled=true]:shadow-[0_8px_32px_-8px_rgba(0,0,0,0.12)] dark:data-[scrolled=true]:shadow-[0_8px_32px_-8px_rgba(0,0,0,0.4)]"
     >
-      <div className="relative mx-auto flex h-[80px] max-w-7xl items-center justify-between px-5 md:px-10 lg:px-12">
+      <div className="relative flex h-[80px] w-full items-center justify-between px-5 md:px-10 lg:px-12">
         {/* Left: Logo */}
         <div className="flex items-center">
           <Link
             href="/"
             className="flex items-center group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 focus-visible:ring-offset-bg-surface rounded-lg"
           >
-            <img
-              src="/icon.png"
+            <Image
+              src={theme === "light" ? "/iconlight.png" : "/icon.png"}
               alt="Logo"
+              width={64}
+              height={64}
               className="h-16 w-auto transition-all duration-300 group-hover:scale-105 group-hover:drop-shadow-lg"
+              priority={true}
             />
           </Link>
         </div>
 
-        {/* Center: Navigation */}
+        {/* Right: Navigation */}
         <nav
           aria-label="Primary"
-          className="hidden md:flex items-center gap-8 lg:gap-10"
+          className="hidden md:flex items-center gap-6 lg:gap-8 ml-auto mr-6"
         >
           {NAV_LINKS.map(({ href, label }) => (
             <NavLink key={href} href={href} label={label} />

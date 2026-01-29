@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import {
   Github,
@@ -13,6 +13,7 @@ import {
   MapPin,
 } from "lucide-react";
 import NeuralBackground from "../background/NeuralBackground";
+import { getEffectiveTheme, type Theme } from "@/lib/theme";
 
 type FooterLink = {
   name: string;
@@ -90,6 +91,30 @@ const contactInfo = [
 ];
 
 const Footer: React.FC = () => {
+  const [theme, setTheme] = useState<Theme>(() => getEffectiveTheme());
+
+  useEffect(() => {
+    const updateTheme = () => {
+      setTheme(getEffectiveTheme());
+    };
+
+    // Listen for theme changes
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.attributeName === 'data-theme') {
+          updateTheme();
+        }
+      });
+    });
+
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-theme']
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
   const scrollToTop = (): void => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -112,7 +137,7 @@ const Footer: React.FC = () => {
           <div className="lg:col-span-4 space-y-6 text-gray-400">
             <Link href="/" className="flex items-center group w-fit">
               <img
-                src="/icon.png"
+                src={theme === "light" ? "/iconlight.png" : "/icon.png"}
                 alt="Logo"
                 className="h-24 w-auto transition-all duration-300 group-hover:scale-105 group-hover:drop-shadow-lg"
               />

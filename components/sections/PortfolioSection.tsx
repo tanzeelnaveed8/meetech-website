@@ -1,5 +1,6 @@
 "use client"
 import React, { useState } from 'react';
+import Image from 'next/image';
 import { motion, AnimatePresence, useScroll, useTransform, useReducedMotion } from 'framer-motion';
 import { ArrowRight, Eye, X, ChevronRight, Layout, Monitor, Smartphone, Briefcase, Award, TrendingUp, Users } from 'lucide-react';
 import NeuralBackground from '@/components/background/NeuralBackground';
@@ -79,33 +80,37 @@ const PortfolioSection = () => {
                                              className="group relative h-[550px] rounded-3xl overflow-hidden cursor-pointer border border-border-subtle bg-bg-card shadow-sm hover:shadow-2xl hover:shadow-accent/20 transition-all duration-700"
                                              onClick={() => setSelectedProject(item)}
                                         >
-                                             <img
+                                             <Image
                                                   src={item.imgUrl}
                                                   alt={item.title}
-                                                  className="w-full h-full object-cover
+                                                  fill
+                                                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                                                  className="object-cover
   grayscale-[0.7]
   brightness-75
   contrast-90
   saturate-75
   transition-all duration-1000"
+                                                  priority={false}
+                                                  quality={85}
                                              />
-                                             <div className="absolute inset-0 
-  bg-gradient-to-t from-bg-page via-bg-page/100 to-transparent 
-  opacity-40 group-hover:opacity-40 transition-opacity" />
+                                             <div className="absolute inset-0
+  bg-gradient-to-t from-black/90 via-black/60 to-transparent
+  opacity-90 group-hover:opacity-95 transition-opacity" />
 
 
                                              <div className="absolute bottom-0 left-0 p-12 w-full space-y-5">
                                                   <div className="flex gap-2">
                                                        {item.tags.slice(0, 2).map((tag, i) => (
-                                                            <span key={i} className="text-[10px] uppercase font-bold tracking-widest text-accent bg-accent-muted px-3 py-1 rounded">
+                                                            <span key={i} className="text-[10px] uppercase font-bold tracking-widest text-white bg-accent px-3 py-1 rounded shadow-lg">
                                                                  {tag}
                                                             </span>
                                                        ))}
                                                   </div>
 
                                                   <div>
-                                                       <h3 className="text-3xl font-black text-text-primary uppercase leading-tight">{item.title}</h3>
-                                                       <p className="text-text-muted font-bold text-xs uppercase tracking-widest mt-2">{item.industry}</p>
+                                                       <h3 className="text-3xl font-black text-white uppercase leading-tight drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">{item.title}</h3>
+                                                       <p className="text-gray-200 font-bold text-xs uppercase tracking-widest mt-2 drop-shadow-[0_2px_4px_rgba(0,0,0,0.6)]">{item.industry}</p>
                                                   </div>
 
                                                   <div className="flex items-center gap-3 text-accent font-black text-[11px] uppercase tracking-[0.3em] opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500">
