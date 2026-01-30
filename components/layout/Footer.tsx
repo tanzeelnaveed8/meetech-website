@@ -13,7 +13,6 @@ import {
   MapPin,
 } from "lucide-react";
 import NeuralBackground from "../background/NeuralBackground";
-import { getEffectiveTheme, type Theme } from "@/lib/theme";
 
 type FooterLink = {
   name: string;
@@ -91,36 +90,12 @@ const contactInfo = [
 ];
 
 const Footer: React.FC = () => {
-  const [theme, setTheme] = useState<Theme>(() => getEffectiveTheme());
-
-  useEffect(() => {
-    const updateTheme = () => {
-      setTheme(getEffectiveTheme());
-    };
-
-    // Listen for theme changes
-    const observer = new MutationObserver((mutations) => {
-      mutations.forEach((mutation) => {
-        if (mutation.attributeName === 'data-theme') {
-          updateTheme();
-        }
-      });
-    });
-
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ['data-theme']
-    });
-
-    return () => observer.disconnect();
-  }, []);
-
   const scrollToTop = (): void => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
-    <footer className="relative bg-black/95 text-gray-400 border-t border-border-default pt-20 pb-8 overflow-hidden">
+    <footer className="relative bg-bg-surface text-text-muted border-t border-border-default pt-20 pb-8 overflow-hidden">
       {/* Decorative gradient line at top */}
 
       {/* Decorative Grid: Uses border-default variable for theme-aware lines
@@ -130,25 +105,32 @@ const Footer: React.FC = () => {
       {/* Atmospheric Radial Blur */}
       <div className="absolute -top-[15%] left-1/2 -translate-x-1/2 h-[600px] w-[900px] bg-accent/5 blur-[140px] rounded-full pointer-events-none" />
 
-      <div className="container relative z-20 text-gray-400 mx-auto px-6 lg:px-12 max-w-7xl">
+      <div className="container relative z-20 text-text-muted mx-auto px-6 lg:px-12 max-w-7xl">
         {/* Main Footer Content */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 pb-12">
           {/* Brand & Description */}
-          <div className="lg:col-span-4 space-y-6 text-gray-400">
+          <div className="lg:col-span-4 space-y-6 text-text-muted">
             <Link href="/" className="flex items-center group w-fit">
+              {/* Dark mode logo */}
               <img
-                src={theme === "light" ? "/iconlight.png" : "/icon.png"}
+                src="/icon.png"
                 alt="Logo"
-                className="h-24 w-auto transition-all duration-300 group-hover:scale-105 group-hover:drop-shadow-lg"
+                className="h-24 w-auto transition-all duration-300 group-hover:scale-105 group-hover:drop-shadow-lg dark-logo"
+              />
+              {/* Light mode logo */}
+              <img
+                src="/iconlight.png"
+                alt="Logo"
+                className="h-24 w-auto transition-all duration-300 group-hover:scale-105 group-hover:drop-shadow-lg light-logo"
               />
             </Link>
 
-            <p className="text-gray-400  text-sm leading-relaxed max-w-sm">
+            <p className="text-text-muted text-sm leading-relaxed max-w-sm">
               We design and engineer scalable digital products with precision, performance, and long-term vision. Building the future, one line of code at a time.
             </p>
 
             {/* Social Icons */}
-            <div className="flex items-center gap-3 pt-2 text-gray-400">
+            <div className="flex items-center gap-3 pt-2 text-text-muted">
               <SocialIconBtn
                 href="https://github.com"
                 icon={<Github size={18} />}
@@ -176,7 +158,7 @@ const Footer: React.FC = () => {
           <div className="lg:col-span-8 grid grid-cols-2 md:grid-cols-4 gap-8 lg:gap-10">
             {footerLinks.map((group) => (
               <div key={group.title} className="space-y-5 ">
-                <h4 className="text-gray-400 text-sm font-bold uppercase tracking-wider">
+                <h4 className="text-text-primary text-sm font-bold uppercase tracking-wider">
                   {group.title}
                 </h4>
                 <ul className="space-y-3">
@@ -184,7 +166,7 @@ const Footer: React.FC = () => {
                     <li key={link.name}>
                       <Link
                         href={link.href}
-                        className="text-gray-400 text-sm hover:text-accent transition-colors flex items-center group"
+                        className="text-text-muted text-sm hover:text-accent transition-colors flex items-center group"
                       >
                         <ChevronRight
                           size={14}
@@ -215,12 +197,12 @@ const Footer: React.FC = () => {
                   {item.href ? (
                     <a
                       href={item.href}
-                      className="text-sm font-medium text-text-gray-400 hover:text-accent transition-colors"
+                      className="text-sm font-medium text-text-muted hover:text-accent transition-colors"
                     >
                       {item.value}
                     </a>
                   ) : (
-                    <p className="text-sm font-medium text-text-gray-400">
+                    <p className="text-sm font-medium text-text-muted">
                       {item.value}
                     </p>
                   )}

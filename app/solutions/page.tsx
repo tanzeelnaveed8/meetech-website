@@ -162,18 +162,18 @@ export default function SolutionsPage() {
 
           <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
             {[
-              { name: "Next.js", icon: <SiNextdotjs size={20} /> },
-              { name: "React", icon: <SiReact size={20} /> },
-              { name: "TypeScript", icon: <SiTypescript size={20} /> },
-              { name: "Node.js", icon: <SiNodedotjs size={20} /> },
-              { name: "PostgreSQL", icon: <SiPostgresql size={20} /> },
-              { name: "AWS", icon: <SiAmazon size={20} /> },
-              { name: "React Native", icon: <SiReact size={20} /> },
-              { name: "Flutter", icon: <SiFlutter size={20} /> },
-              { name: "Python", icon: <SiPython size={20} /> },
-              { name: "Docker", icon: <SiDocker size={20} /> },
-              { name: "Kubernetes", icon: <SiKubernetes size={20} /> },
-              { name: "GraphQL", icon: <SiGraphql size={20} /> },
+              { name: "Next.js", icon: <SiNextdotjs size={20} />, color: "#000000", bgColor: "#ffffff" },
+              { name: "React", icon: <SiReact size={20} />, color: "#61DAFB", bgColor: "#61DAFB20" },
+              { name: "TypeScript", icon: <SiTypescript size={20} />, color: "#3178C6", bgColor: "#3178C620" },
+              { name: "Node.js", icon: <SiNodedotjs size={20} />, color: "#339933", bgColor: "#33993320" },
+              { name: "PostgreSQL", icon: <SiPostgresql size={20} />, color: "#4169E1", bgColor: "#4169E120" },
+              { name: "AWS", icon: <SiAmazon size={20} />, color: "#FF9900", bgColor: "#FF990020" },
+              { name: "React Native", icon: <SiReact size={20} />, color: "#61DAFB", bgColor: "#61DAFB20" },
+              { name: "Flutter", icon: <SiFlutter size={20} />, color: "#02569B", bgColor: "#02569B20" },
+              { name: "Python", icon: <SiPython size={20} />, color: "#3776AB", bgColor: "#3776AB20" },
+              { name: "Docker", icon: <SiDocker size={20} />, color: "#2496ED", bgColor: "#2496ED20" },
+              { name: "Kubernetes", icon: <SiKubernetes size={20} />, color: "#326CE5", bgColor: "#326CE520" },
+              { name: "GraphQL", icon: <SiGraphql size={20} />, color: "#E10098", bgColor: "#E1009820" },
             ].map((tech, index) => (
               <motion.div
                 key={tech.name}
@@ -184,7 +184,13 @@ export default function SolutionsPage() {
                 className="group"
               >
                 <div className="flex flex-col items-center justify-center gap-3 rounded-[2rem] border border-border-subtle bg-bg-card px-4 py-8 text-sm font-bold text-text-primary shadow-sm hover:shadow-2xl hover:shadow-accent/20 transition-all duration-700 hover:border-accent/40">
-                  <div className="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center text-accent transition-all duration-500 group-hover:bg-accent/20 group-hover:scale-110">
+                  <div
+                    className="w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-500 group-hover:scale-110"
+                    style={{
+                      backgroundColor: tech.bgColor,
+                      color: tech.color
+                    }}
+                  >
                     {tech.icon}
                   </div>
                   <span>{tech.name}</span>

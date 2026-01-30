@@ -5,22 +5,14 @@ import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { motion, useScroll, useTransform, useReducedMotion } from 'framer-motion';
 import { ArrowRight, Globe, Shield, Zap, Server, ChevronRight, Clock, Award, Briefcase } from 'lucide-react';
+import { SiNextdotjs, SiReact, SiTypescript, SiNodedotjs, SiPostgresql, SiAmazon, SiFlutter, SiPython, SiDocker, SiKubernetes, SiGraphql } from "react-icons/si";
 import NeuralBackground from '../components/background/NeuralBackground';
 import { WhatWeBuild } from '@/components/sections/WhatWeBuild';
 import WhyMeetechh from '@/components/sections/WhyMeetech';
 import ProcessSection from '@/components/sections/ProcessSection';
+import FeaturedInsights from '@/components/sections/FeaturedInsights';
 import Project from './work/page';
 import { FloatingCTA } from '@/components/ui/FloatingCTA';
-
-// Lazy load PortfolioSection for better performance
-const PortfolioSection = dynamic(() => import('@/components/sections/PortfolioSection'), {
-  loading: () => (
-    <div className="flex items-center justify-center min-h-[400px]">
-      <div className="animate-pulse text-text-muted">Loading portfolio...</div>
-    </div>
-  ),
-  ssr: true
-});
 // Animation constants
 const DURATION = 0.6;
 const EASE = "easeOut";
@@ -148,8 +140,73 @@ export default function App() {
       {/* Services Section */}
       <WhatWeBuild />
 
-      {/* Portfolio Section */}
-      <PortfolioSection />
+      {/* Technology Stack Section */}
+      <section
+        aria-labelledby="tech-stack-heading"
+        className="relative z-10 mx-auto max-w-7xl border-t border-border-default px-4 py-20 md:px-8 md:py-28"
+      >
+        <motion.div
+          initial={reduce ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
+        >
+          <div className="max-w-xl space-y-6 mb-16">
+            <div className="flex items-center gap-4">
+              <span className="h-[2px] w-12 bg-accent"></span>
+              <span className="text-accent text-xs font-black uppercase tracking-[0.4em]">Technology</span>
+            </div>
+            <h2
+              id="tech-stack-heading"
+              className="text-5xl md:text-6xl font-black text-text-primary uppercase tracking-tighter leading-none"
+            >
+              Built with<br />Modern Tech<span className="text-accent">.</span>
+            </h2>
+            <p className="text-lg text-text-body md:text-xl leading-relaxed">
+              We use battle-tested technologies that ensure performance, scalability, and maintainability.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
+            {[
+              { name: "Next.js", icon: <SiNextdotjs size={20} />, color: "#000000", bgColor: "#ffffff" },
+              { name: "React", icon: <SiReact size={20} />, color: "#61DAFB", bgColor: "#61DAFB20" },
+              { name: "TypeScript", icon: <SiTypescript size={20} />, color: "#3178C6", bgColor: "#3178C620" },
+              { name: "Node.js", icon: <SiNodedotjs size={20} />, color: "#339933", bgColor: "#33993320" },
+              { name: "PostgreSQL", icon: <SiPostgresql size={20} />, color: "#4169E1", bgColor: "#4169E120" },
+              { name: "AWS", icon: <SiAmazon size={20} />, color: "#FF9900", bgColor: "#FF990020" },
+              { name: "React Native", icon: <SiReact size={20} />, color: "#61DAFB", bgColor: "#61DAFB20" },
+              { name: "Flutter", icon: <SiFlutter size={20} />, color: "#02569B", bgColor: "#02569B20" },
+              { name: "Python", icon: <SiPython size={20} />, color: "#3776AB", bgColor: "#3776AB20" },
+              { name: "Docker", icon: <SiDocker size={20} />, color: "#2496ED", bgColor: "#2496ED20" },
+              { name: "Kubernetes", icon: <SiKubernetes size={20} />, color: "#326CE5", bgColor: "#326CE520" },
+              { name: "GraphQL", icon: <SiGraphql size={20} />, color: "#E10098", bgColor: "#E1009820" },
+            ].map((tech, index) => (
+              <motion.div
+                key={tech.name}
+                initial={reduce ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94], delay: index * 0.05 }}
+                className="group"
+              >
+                <div className="flex flex-col items-center justify-center gap-3 rounded-[2rem] border border-border-subtle bg-bg-card px-4 py-8 text-sm font-bold text-text-primary shadow-sm hover:shadow-2xl hover:shadow-accent/20 transition-all duration-700 hover:border-accent/40">
+                  <div
+                    className="w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-500 group-hover:scale-110"
+                    style={{
+                      backgroundColor: tech.bgColor,
+                      color: tech.color
+                    }}
+                  >
+                    {tech.icon}
+                  </div>
+                  <span>{tech.name}</span>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+      </section>
 
       {/* Trust Signals Section */}
       <div className="relative z-10 mx-auto max-w-5xl px-4 md:px-8">
@@ -220,6 +277,9 @@ export default function App() {
           </motion.div>
         </motion.section>
       </div>
+
+      {/* Featured Insights Section */}
+      <FeaturedInsights />
 
       {/* Why Meetechh Section */}
       <WhyMeetechh />

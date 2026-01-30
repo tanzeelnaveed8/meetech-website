@@ -247,3 +247,36 @@ body {
     transition: none;
   }
 }
+
+/* ---------------------------------------------------------------------------
+   Theme-based logo switching (instant, no JavaScript lag)
+   --------------------------------------------------------------------------- */
+
+/* Default (dark mode): show dark logo, hide light logo */
+.dark-logo {
+  display: block !important;
+}
+
+.light-logo {
+  display: none !important;
+}
+
+/* Light mode: hide dark logo, show light logo */
+[data-theme="light"] .dark-logo {
+  display: none !important;
+}
+
+[data-theme="light"] .light-logo {
+  display: block !important;
+}
+
+/* Also handle system preference when no explicit theme is set */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) .dark-logo {
+    display: none !important;
+  }
+
+  :root:not([data-theme="dark"]) .light-logo {
+    display: block !important;
+  }
+}

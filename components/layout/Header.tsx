@@ -8,7 +8,6 @@ import { usePathname } from "next/navigation";
 import { ThemeToggle } from "@/components/theme/ThemeToggle";
 import { CTA, NAV_LINKS } from "@/lib/nav-config";
 import { Github, Linkedin, Twitter, Instagram } from "lucide-react";
-import { getEffectiveTheme, type Theme } from "@/lib/theme";
 
 const SCROLL_THRESHOLD = 8;
 
@@ -135,7 +134,6 @@ export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [reduceMotion, setReduceMotion] = useState(false);
-  const [theme, setTheme] = useState<Theme>(() => getEffectiveTheme());
   const mobileMenuRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
 
@@ -155,28 +153,6 @@ export function Header() {
     const handle = () => setReduceMotion(mq.matches);
     mq.addEventListener("change", handle);
     return () => mq.removeEventListener("change", handle);
-  }, []);
-
-  useEffect(() => {
-    const updateTheme = () => {
-      setTheme(getEffectiveTheme());
-    };
-
-    // Listen for theme changes
-    const observer = new MutationObserver((mutations) => {
-      mutations.forEach((mutation) => {
-        if (mutation.attributeName === 'data-theme') {
-          updateTheme();
-        }
-      });
-    });
-
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ['data-theme']
-    });
-
-    return () => observer.disconnect();
   }, []);
 
   const closeMobile = useCallback(() => setMobileOpen(false), []);
@@ -222,12 +198,22 @@ export function Header() {
             href="/"
             className="flex items-center group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 focus-visible:ring-offset-bg-surface rounded-lg"
           >
+            {/* Dark mode logo */}
             <Image
-              src={theme === "light" ? "/iconlight.png" : "/icon.png"}
+              src="/icon.png"
               alt="Logo"
               width={64}
               height={64}
-              className="h-16 w-auto transition-all duration-300 group-hover:scale-105 group-hover:drop-shadow-lg"
+              className="h-16 w-auto transition-all duration-300 group-hover:scale-105 group-hover:drop-shadow-lg dark-logo"
+              priority={true}
+            />
+            {/* Light mode logo */}
+            <Image
+              src="/iconlight.png"
+              alt="Logo"
+              width={64}
+              height={64}
+              className="h-16 w-auto transition-all duration-300 group-hover:scale-105 group-hover:drop-shadow-lg light-logo"
               priority={true}
             />
           </Link>

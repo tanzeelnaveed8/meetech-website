@@ -17,6 +17,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Meetech Labs",
   description: "Technology company",
+  icons: {
+    icon: "/iconlight.png",
+  },
 };
 
 export default function RootLayout({
