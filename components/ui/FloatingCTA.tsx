@@ -16,7 +16,7 @@ export function FloatingCTA() {
     >
       {/* WhatsApp Button */}
       <Link
-        href="https:wa.me/1234567890"
+        href="https:wa.me/+971503088512"
         target="_blank"
         rel="noopener noreferrer"
         className="group flex min-h-[56px] items-center justify-center gap-2 rounded-full bg-[#25D366] px-6 py-3 text-base font-semibold text-white shadow-lg transition-all duration-400  hover:shadow-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#25D366] focus-visible:ring-offset-2"

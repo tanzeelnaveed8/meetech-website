@@ -56,10 +56,14 @@ const ProjectDetail = ({ project, category, close }: { project: any; category: s
 
                     <div className="grid grid-cols-1 lg:grid-cols-12 min-h-[600px]">
                          {/* Visual Side */}
-                         <div className="lg:col-span-5 bg-bg-subtle relative overflow-hidden flex items-center justify-center border-b lg:border-b-0 lg:border-r border-border-subtle">
+                         <div className="lg:col-span-5 bg-bg-subtle relative overflow-hidden flex items-center justify-center border-b lg:border-b-0 lg:border-r border-border-subtle h-[60vh] lg:h-auto">
                               {/* Browser/Mobile Frame Container */}
-                              <div className={`w-full h-full relative  overflow-hidden border-4 border-text-primary/10`}>
-                                   <div className={`h-6 w-full bg-border-subtle/50 flex items-center px-3 gap-1 border-b border-border-subtle ${isMobile ? 'justify-center' : ''}`}>
+                              <div className="w-full h-full relative overflow-hidden border-4 border-text-primary/10">
+                                   {/* Frame Top Bar */}
+                                   <div
+                                        className={`h-6 w-full bg-border-subtle/50 flex items-center px-3 gap-1 border-b border-border-subtle ${isMobile ? 'justify-center' : ''
+                                             }`}
+                                   >
                                         {isMobile ? (
                                              <div className="w-12 h-1 bg-text-primary/20 rounded-full" />
                                         ) : (
@@ -71,13 +75,19 @@ const ProjectDetail = ({ project, category, close }: { project: any; category: s
                                         )}
                                    </div>
 
-                                   <div className="absolute inset-0 pt-6 overflow-y-auto bg-white">
-                                        <div className="w-full">
-                                             <img src={project.imgUrl} alt="" className="w-full h-auto" />
+                                   {/* Image Container */}
+                                   <div className="absolute inset-0 pt-6 overflow-hidden bg-white">
+                                        <div className="w-full h-full">
+                                             <img
+                                                  src={project.imgUrl}
+                                                  alt=""
+                                                  className="w-full h-full object-cover"
+                                             />
                                         </div>
                                    </div>
                               </div>
                          </div>
+
 
                          {/* Content Side */}
                          <div className="lg:col-span-7 p-8 md:p-16 flex flex-col justify-center">

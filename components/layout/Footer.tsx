@@ -11,6 +11,7 @@ import {
   Mail,
   Phone,
   MapPin,
+  Facebook,
 } from "lucide-react";
 import NeuralBackground from "../background/NeuralBackground";
 
@@ -72,14 +73,14 @@ const contactInfo = [
   {
     icon: <Mail size={18} />,
     label: "Email",
-    value: "hello@meetech.dev",
-    href: "mailto:hello@meetech.dev",
+    value: "meetechdevelopment@gmail.com",
+    href: "mailto:meetechdevelopment@gmail.com",
   },
   {
     icon: <Phone size={18} />,
     label: "Phone",
-    value: "+1 (555) 123-4567",
-    href: "tel:+15551234567",
+    value: "+97 1503088512",
+    href: "tel:+97 1503088512",
   },
   {
     icon: <MapPin size={18} />,
@@ -142,12 +143,12 @@ const Footer: React.FC = () => {
                 label="LinkedIn"
               />
               <SocialIconBtn
-                href="https://twitter.com"
-                icon={<Twitter size={18} />}
-                label="Twitter"
+                href="https://www.facebook.com/share/1AXzwMhXZL/?mibextid=wwXIfr"
+                icon={<Facebook size={18} />}
+                label="Facebook"
               />
               <SocialIconBtn
-                href="https://instagram.com"
+                href="https://www.instagram.com/meetechdevelopment?igsh=MXV3MDlydmRhczF2Nw%3D%3D&utm_source=qr"
                 icon={<Instagram size={18} />}
                 label="Instagram"
               />

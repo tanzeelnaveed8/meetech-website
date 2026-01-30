@@ -75,7 +75,7 @@ const LEGAL_CONTENT = {
       <p>We retain your personal data only for as long as necessary to fulfill the purposes outlined in this policy, typically for the duration of our business relationship and for a reasonable period thereafter for legal and accounting purposes.</p>
 
       <h4>Contact</h4>
-      <p>For privacy concerns or to exercise your rights, contact us at: <a href="mailto:privacy@meetech.dev">privacy@meetech.dev</a></p>
+      <p>For privacy concerns or to exercise your rights, contact us at: <a href="mailto:meetechdevelopment@gmail.com">meetechdevelopment@gmail.com</a></p>
     `
   },
   terms: {
@@ -162,7 +162,7 @@ const LEGAL_CONTENT = {
       <p>We reserve the right to modify these terms at any time. Changes will be posted on this page with an updated revision date.</p>
 
       <h4>Contact</h4>
-      <p>For questions about these terms, contact us at: <a href="mailto:legal@meetech.dev">legal@meetech.dev</a></p>
+      <p>For questions about these terms, contact us at: <a href="mailto:meetechdevelopment@gmail.com">meetechdevelopment@gmail.com</a></p>
     `
   },
   cookies: {
@@ -303,7 +303,7 @@ export default function App() {
                   <p className="text-sm font-bold text-text-primary">Contact our legal department</p>
                 </div>
                 <div className="flex items-center gap-4">
-                  <a href="mailto:legal@meetech.dev" className="flex items-center gap-3 px-6 py-4 rounded-2xl bg-bg-subtle hover:bg-border-subtle text-text-primary font-bold text-xs transition-all">
+                  <a href="mailto:meetechdevelopment@gmail.com" className="flex items-center gap-3 px-6 py-4 rounded-2xl bg-bg-subtle hover:bg-border-subtle text-text-primary font-bold text-xs transition-all">
                     <Mail size={16} /> Email Legal
                   </a>
                   <button className="flex items-center gap-3 px-6 py-4 rounded-2xl bg-accent text-text-inverse font-bold text-xs shadow-lg shadow-accent/30 hover:scale-105 transition-all active:scale-95">
