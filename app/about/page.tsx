@@ -29,7 +29,16 @@ const PILLARS = [
     body: "Security, accessibility, and performance baked in. We build for production, not demos.",
   },
 ] as const;
-const visionMission = [
+
+type VisionMissionType = "mission" | "vision";
+
+type VisionMissionItem = {
+  type: VisionMissionType;
+  title: string;
+  description: string;
+};
+
+const visionMission: VisionMissionItem[] =[
   {
     type: "mission",
     title: "Our Mission",
