@@ -14,7 +14,6 @@ import {
      Globe,
      BarChart3,
 } from "lucide-react";
-import CTA from "./CTA";
 
 
 // WHY MEETECH DATA
@@ -176,9 +175,6 @@ const WhyMeetechh = () => {
 
                          </div>
                     </section>
-
-                    {/* CTA */}
-                    <CTA />
                </main>
           </div>
      );
