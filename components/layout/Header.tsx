@@ -222,7 +222,7 @@ export function Header() {
         {/* Right: Navigation */}
         <nav
           aria-label="Primary"
-          className="hidden md:flex items-center gap-6 lg:gap-8 ml-auto mr-6"
+          className="hidden md:flex items-center gap-6 lg:gap-8 mx-auto "
         >
           {NAV_LINKS.map(({ href, label }) => (
             <NavLink key={href} href={href} label={label} />
@@ -231,13 +231,7 @@ export function Header() {
 
         {/* Right: Social Icons, CTA, Theme Toggle & Hamburger */}
         <div className="flex items-center gap-3">
-          {/* Social Icons - Hidden on mobile */}
-          <div className="hidden lg:flex items-center gap-2 mr-2">
-            <SocialIconBtn href="https://github.com" icon={<Github size={16} />} />
-            <SocialIconBtn href="https://linkedin.com" icon={<Linkedin size={16} />} />
-            <SocialIconBtn href="https://twitter.com" icon={<Twitter size={16} />} />
-            <SocialIconBtn href="https://instagram.com" icon={<Instagram size={16} />} />
-          </div>
+          
 
           {/* CTA Button - Hidden on mobile */}
           <div className="hidden md:block">
@@ -290,14 +284,14 @@ export function Header() {
               ))}
 
               {/* Social Icons in Mobile */}
-              <li className="pt-4 pb-2">
+              {/* <li className="pt-4 pb-2">
                 <div className="flex items-center justify-center gap-3">
                   <SocialIconBtn href="https://github.com" icon={<Github size={18} />} />
                   <SocialIconBtn href="https://linkedin.com" icon={<Linkedin size={18} />} />
                   <SocialIconBtn href="https://twitter.com" icon={<Twitter size={18} />} />
                   <SocialIconBtn href="https://instagram.com" icon={<Instagram size={18} />} />
                 </div>
-              </li>
+              </li> */}
 
               <li className="pt-2">
                 <CtaButton

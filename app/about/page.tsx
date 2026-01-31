@@ -5,7 +5,7 @@ import { useInView, useReducedMotion, useScroll, useTransform } from "framer-mot
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowRight, ChevronRight, Target, Users, Zap, Shield } from "lucide-react";
+import { ArrowRight, ChevronRight, Users, Zap, Shield, Target, Eye } from "lucide-react";
 import NeuralBackground from "@/components/background/NeuralBackground";
 
 const EASE = [0.25, 0.46, 0.45, 0.94] as const;
@@ -29,7 +29,25 @@ const PILLARS = [
     body: "Security, accessibility, and performance baked in. We build for production, not demos.",
   },
 ] as const;
+const visionMission = [
+  {
+    type: "mission",
+    title: "Our Mission",
+    description:
+      "To design and develop reliable web, app, and software solutions that solve real business problems. We deliver modern, secure, and scalable technology by combining creativity, technical expertise, and a future-focused mindset for clients in Dubai, the USA, and beyond."
+  },
+  {
+    type: "vision",
+    title: "Our Vision",
+    description:
+      "To become a globally trusted technology partner that transforms ideas into impactful digital products, empowering businesses worldwide through innovation, quality, and scalable solutions."
+  }
+];
 
+const icons = {
+  mission: Target,
+  vision: Eye
+};
 const TRUST_HEADLINE = "Trusted by founders & businesses across UAE, USA & beyond.";
 
 const TRUST_SIGNALS = [
@@ -257,6 +275,38 @@ export default function AboutPage() {
 
       {/* Content Sections */}
       <div className="relative z-10 mx-auto max-w-5xl px-4 md:px-8">
+
+        <div className="grid gap-8 md:grid-cols-2 my-10">
+          {visionMission.map((item) => {
+            const Icon = icons[item.type];
+
+            return (
+              <div
+                key={item.type}
+                className="group relative overflow-hidden rounded-2xl border border-border-subtle bg-bg-card p-8 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-accent/5"
+              >
+                {/* Subtle decorative background glow on hover */}
+                <div className="absolute -right-4 -top-4 h-24 w-24 rounded-full bg-accent/5 transition-all duration-500 group-hover:scale-150" />
+
+                <div className="relative">
+                  <div className="mb-6 flex items-center gap-4">
+                    <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-accent-muted text-accent ring-4 ring-accent/5 transition-transform duration-300 group-hover:scale-110">
+                      <Icon className="h-7 w-7" />
+                    </div>
+
+                    <h3 className="text-xl font-bold tracking-tight text-text-primary">
+                      {item.title}
+                    </h3>
+                  </div>
+
+                  <p className="text-base leading-relaxed text-text-muted">
+                    {item.description}
+                  </p>
+                </div>
+              </div>
+            );
+          })}
+        </div>
         {/* Trusted by founders & businesses - Simplified */}
         <motion.section
           aria-labelledby="trust-heading"
