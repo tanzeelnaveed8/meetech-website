@@ -11,6 +11,7 @@ import { WhatWeBuild } from '@/components/sections/WhatWeBuild';
 import WhyMeetechh from '@/components/sections/WhyMeetech';
 import ProcessSection from '@/components/sections/ProcessSection';
 import FeaturedInsights from '@/components/sections/FeaturedInsights';
+import MeetechCTA from '@/components/sections/CTA';
 import Project from './work/page';
 import { FloatingCTA } from '@/components/ui/FloatingCTA';
 // Animation constants
@@ -283,6 +284,9 @@ export default function App() {
 
       {/* Why Meetechh Section */}
       <WhyMeetechh />
+
+      {/* CTA Section */}
+      <MeetechCTA />
 
       {/* Floating CTA */}
       <FloatingCTA />

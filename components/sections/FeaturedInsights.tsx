@@ -87,7 +87,7 @@ const InsightCardComponent = ({ type, title, image, link, tags }: InsightCard) =
       <motion.div
         whileHover={{ scale: 1.03 }}
         transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] as const }}
-        className="group relative overflow-hidden rounded-[20px] cursor-pointer h-[240px] w-full bg-bg-card border border-border-subtle/50 shadow-lg hover:shadow-2xl hover:shadow-accent/30 transition-all duration-500"
+        className="group relative overflow-hidden rounded-2xl sm:rounded-[20px] cursor-pointer h-[200px] sm:h-[240px] w-full max-w-full bg-bg-card border border-border-subtle/50 shadow-lg hover:shadow-2xl hover:shadow-accent/30 transition-all duration-500"
       >
         {/* Background Image with Zoom Effect */}
         <div className="absolute inset-0 overflow-hidden">
@@ -101,11 +101,11 @@ const InsightCardComponent = ({ type, title, image, link, tags }: InsightCard) =
         </div>
 
         {/* Glassmorphism Content Overlay */}
-        <div className="absolute inset-0 flex flex-col justify-between p-5">
+        <div className="absolute inset-0 flex flex-col justify-between p-3 sm:p-5">
           {/* Top Section - Type Badge */}
           <div className="flex items-start justify-between">
             <span
-              className={`inline-block px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-[0.2em] backdrop-blur-md border transition-all duration-300 ${
+              className={`inline-block px-2 sm:px-3 py-1 sm:py-1.5 rounded-full text-[8px] sm:text-[10px] font-black uppercase tracking-[0.15em] sm:tracking-[0.2em] backdrop-blur-md border transition-all duration-300 ${
                 isCaseStudy
                   ? "bg-accent/20 text-accent border-accent/40 group-hover:bg-accent/30 group-hover:border-accent/60"
                   : "bg-accent-secondary/20 text-accent-secondary border-accent-secondary/40 group-hover:bg-accent-secondary/30 group-hover:border-accent-secondary/60"
@@ -116,14 +116,14 @@ const InsightCardComponent = ({ type, title, image, link, tags }: InsightCard) =
           </div>
 
           {/* Bottom Section - Title & Tags */}
-          <div className="space-y-3">
+          <div className="space-y-2 sm:space-y-3">
             {/* Tech Badges */}
             {tags && tags.length > 0 && (
-              <div className="flex flex-wrap gap-2">
-                {tags.slice(0, 3).map((tag, idx) => (
+              <div className="flex flex-wrap gap-1.5 sm:gap-2">
+                {tags.slice(0, 2).map((tag, idx) => (
                   <span
                     key={idx}
-                    className="px-2.5 py-1 rounded-lg text-[9px] font-bold uppercase tracking-wider bg-white/10 text-white/90 backdrop-blur-sm border border-white/20 transition-all duration-300 group-hover:bg-white/20 group-hover:border-white/30"
+                    className="px-1.5 sm:px-2.5 py-0.5 sm:py-1 rounded-lg text-[7px] sm:text-[9px] font-bold uppercase tracking-wider bg-white/10 text-white/90 backdrop-blur-sm border border-white/20 transition-all duration-300 group-hover:bg-white/20 group-hover:border-white/30"
                   >
                     {tag}
                   </span>
@@ -132,16 +132,16 @@ const InsightCardComponent = ({ type, title, image, link, tags }: InsightCard) =
             )}
 
             {/* Title with Glassmorphism */}
-            <div className="backdrop-blur-md bg-white/5 rounded-2xl p-4 border border-white/10 transition-all duration-300 group-hover:bg-white/10 group-hover:border-white/20">
-              <h3 className="text-sm font-bold leading-tight text-white line-clamp-2 group-hover:text-accent transition-colors duration-300">
+            <div className="backdrop-blur-md bg-white/5 rounded-xl sm:rounded-2xl p-2.5 sm:p-4 border border-white/10 transition-all duration-300 group-hover:bg-white/10 group-hover:border-white/20 overflow-hidden">
+              <h3 className="text-xs sm:text-sm font-bold leading-tight text-white line-clamp-2 group-hover:text-accent transition-colors duration-300 break-words">
                 {title}
               </h3>
             </div>
 
             {/* Read More Link */}
-            <div className="flex items-center gap-2 text-white/80 text-xs font-bold group-hover:text-accent transition-colors duration-300">
+            <div className="flex items-center gap-1.5 sm:gap-2 text-white/80 text-[10px] sm:text-xs font-bold group-hover:text-accent transition-colors duration-300">
               <span>Read More</span>
-              <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
+              <ArrowRight className="w-3 h-3 sm:w-3.5 sm:h-3.5 transition-transform group-hover:translate-x-1" />
             </div>
           </div>
         </div>
@@ -202,7 +202,7 @@ export default function FeaturedInsights() {
   };
 
   return (
-    <section className="relative z-10 mx-auto max-w-7xl border-t border-border-default px-4 py-20 md:px-8 md:py-28">
+    <section className="relative z-10 mx-auto max-w-7xl border-t border-border-default px-3 sm:px-4 py-20 md:px-8 md:py-28 overflow-hidden">
       <motion.div
         initial="hidden"
         whileInView="visible"
@@ -210,24 +210,24 @@ export default function FeaturedInsights() {
         variants={containerVariants}
       >
         {/* Main Grid Layout */}
-        <div className="grid gap-12 lg:grid-cols-2 lg:gap-16 mb-16">
+        <div className="grid gap-8 sm:gap-12 lg:grid-cols-2 lg:gap-16 mb-16">
           {/* Left Column - Hero Content with Staggered Animations */}
           <motion.div
-            className="flex flex-col justify-center space-y-6 lg:pr-8"
+            className="flex flex-col justify-center space-y-4 sm:space-y-6 lg:pr-8 w-full max-w-full overflow-hidden"
             variants={itemVariants}
           >
             <motion.div
-              className="flex items-center gap-4"
+              className="flex items-center gap-3 sm:gap-4"
               variants={itemVariants}
             >
-              <span className="h-[2px] w-12 bg-accent"></span>
-              <span className="text-accent text-xs font-black uppercase tracking-[0.4em]">
+              <span className="h-[2px] w-8 sm:w-12 bg-accent flex-shrink-0"></span>
+              <span className="text-accent text-[10px] sm:text-xs font-black uppercase tracking-[0.3em] sm:tracking-[0.4em]">
                 Featured Insights
               </span>
             </motion.div>
 
             <motion.h2
-              className="text-5xl md:text-6xl font-black text-text-primary uppercase tracking-tighter leading-none"
+              className="text-4xl sm:text-4xl md:text-5xl lg:text-5xl font-black text-text-primary uppercase tracking-tighter leading-none "
               variants={itemVariants}
             >
               Stories of our<br />
@@ -236,7 +236,7 @@ export default function FeaturedInsights() {
             </motion.h2>
 
             <motion.p
-              className="text-lg text-text-body md:text-xl leading-relaxed"
+              className="text-base sm:text-lg text-text-body md:text-xl leading-relaxed break-words"
               variants={itemVariants}
             >
               From concept to completion, explore how we've helped businesses across services and industries achieve their digital transformation goals.
@@ -244,7 +244,7 @@ export default function FeaturedInsights() {
 
             {/* Stats Grid */}
             <motion.div
-              className="grid grid-cols-2 gap-6 pt-6"
+              className="grid grid-cols-2 gap-4 sm:gap-6 pt-4 sm:pt-6"
               variants={itemVariants}
             >
               {[
@@ -260,7 +260,7 @@ export default function FeaturedInsights() {
                   viewport={{ once: true }}
                   transition={{ duration: 0.6, delay: 0.6 + idx * 0.1 }}
                 >
-                  <div className="text-4xl font-black text-accent mb-2">{stat.value}</div>
+                  <div className="text-3xl sm:text-4xl font-black text-accent mb-2">{stat.value}</div>
                   <div className="text-xs font-semibold text-text-muted uppercase tracking-wider">
                     {stat.label}
                   </div>
@@ -270,12 +270,12 @@ export default function FeaturedInsights() {
 
             {/* CTA Button */}
             <motion.div
-              className="pt-4"
+              className="pt-2 sm:pt-4"
               variants={itemVariants}
             >
               <Link
                 href="/work"
-                className="group inline-flex items-center gap-2 px-8 py-4 bg-accent text-text-inverse font-bold rounded-xl overflow-hidden transition-all hover:bg-accent-hover hover:shadow-[0_0_25px_-5px_rgba(37,99,235,0.4)] active:scale-95"
+                className="group inline-flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-4 bg-accent text-text-inverse font-bold rounded-xl overflow-hidden transition-all hover:bg-accent-hover hover:shadow-[0_0_25px_-5px_rgba(37,99,235,0.4)] active:scale-95"
               >
                 <span>Explore More</span>
                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
@@ -283,62 +283,42 @@ export default function FeaturedInsights() {
             </motion.div>
           </motion.div>
 
-          {/* Right Column - Staggered 3-Column Card Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          {/* Right Column - Card Grid */}
+          {/* Mobile: Simple 2-column grid */}
+          <div className="grid grid-cols-2 gap-2 sm:gap-3 lg:hidden w-full max-w-full">
+            {insights.slice(0, 8).map((card, index) => (
+              <div key={`mobile-${index}`} className="w-full min-w-0 max-w-full overflow-hidden">
+                <InsightCardComponent {...card} />
+              </div>
+            ))}
+          </div>
+
+          {/* Desktop: Staggered 3-Column Card Grid */}
+          <div className="hidden lg:grid lg:grid-cols-3 gap-5">
             {/* Column 1 - Starts with largest offset (leftmost, only 2 cards) */}
-            <div className="space-y-5 lg:mt-48 md:mt-24">
+            <div className="space-y-5 mt-48">
               {column1Cards.map((card, index) => (
-                <motion.div
-                  key={`col1-${index}`}
-                  initial={reduce ? {} : { opacity: 0, y: 100, scale: 0.85, rotateX: 15 }}
-                  whileInView={{ opacity: 1, y: 0, scale: 1, rotateX: 0 }}
-                  viewport={{ once: true, margin: "-80px", amount: 0.3 }}
-                  transition={{
-                    duration: 1,
-                    ease: [0.22, 1, 0.36, 1] as const,
-                    delay: index * 0.15
-                  }}
-                >
+                <div key={`col1-${index}`}>
                   <InsightCardComponent {...card} />
-                </motion.div>
+                </div>
               ))}
             </div>
 
             {/* Column 2 - Starts with medium offset (middle) */}
-            <div className="space-y-5 md:mt-8 lg:mt-16">
+            <div className="space-y-5 mt-16">
               {column2Cards.map((card, index) => (
-                <motion.div
-                  key={`col2-${index}`}
-                  initial={reduce ? {} : { opacity: 0, y: 100, scale: 0.85, rotateX: 15 }}
-                  whileInView={{ opacity: 1, y: 0, scale: 1, rotateX: 0 }}
-                  viewport={{ once: true, margin: "-80px", amount: 0.3 }}
-                  transition={{
-                    duration: 1,
-                    ease: [0.22, 1, 0.36, 1],
-                    delay: 0.3 + index * 0.15
-                  }}
-                >
+                <div key={`col2-${index}`}>
                   <InsightCardComponent {...card} />
-                </motion.div>
+                </div>
               ))}
             </div>
 
             {/* Column 3 - Starts from top (rightmost, 3 cards) */}
-            <div className="space-y-5 hidden lg:block">
+            <div className="space-y-5">
               {column3Cards.map((card, index) => (
-                <motion.div
-                  key={`col3-${index}`}
-                  initial={reduce ? {} : { opacity: 0, y: 100, scale: 0.85, rotateX: 15 }}
-                  whileInView={{ opacity: 1, y: 0, scale: 1, rotateX: 0 }}
-                  viewport={{ once: true, margin: "-80px", amount: 0.3 }}
-                  transition={{
-                    duration: 1,
-                    ease: [0.22, 1, 0.36, 1],
-                    delay: 0.6 + index * 0.15
-                  }}
-                >
+                <div key={`col3-${index}`}>
                   <InsightCardComponent {...card} />
-                </motion.div>
+                </div>
               ))}
             </div>
           </div>
