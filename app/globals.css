@@ -13,6 +13,8 @@
    --------------------------------------------------------------------------- */
 
 :root {
+   --font-primary: var(--font-work-sans);
+  --font-secondary: var(--font-work-sans);
   color-scheme: light;
   /* Backgrounds & surfaces */
   --bg-page: #ffffff;
@@ -198,13 +200,15 @@ html {
 body {
   background-color: var(--bg-page);
   color: var(--text-body);
-  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
-  font-size: 1rem;
+ font-family: var(--font-secondary), sans-serif;
+   font-size: 1rem;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
+h1, h2, h3, .logo, .hero-title {
+  font-family: var(--font-primary), sans-serif; /* Headers & special */
+}
 /* Focus visible for keyboard users */
 :focus-visible {
   outline: 2px solid var(--focus-ring);
