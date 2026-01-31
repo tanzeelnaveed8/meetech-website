@@ -2,7 +2,6 @@
 
 import React from "react";
 import Link from "next/link";
-import { motion, useReducedMotion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 
 interface InsightCard {
@@ -84,10 +83,7 @@ const InsightCardComponent = ({ type, title, image, link, tags }: InsightCard) =
 
   return (
     <Link href={link}>
-      <motion.div
-        whileHover={{ scale: 1.03 }}
-        transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] as const }}
-        className="group relative overflow-hidden rounded-2xl sm:rounded-[20px] cursor-pointer h-[200px] sm:h-[240px] w-full max-w-full bg-bg-card border border-border-subtle/50 shadow-lg hover:shadow-2xl hover:shadow-accent/30 transition-all duration-500"
+      <div className="group relative overflow-hidden rounded-2xl sm:rounded-[20px] cursor-pointer h-[200px] sm:h-[240px] w-full max-w-full bg-bg-card border border-border-subtle/50 shadow-lg hover:shadow-2xl hover:shadow-accent/30 transition-all duration-500"
       >
         {/* Background Image with Zoom Effect */}
         <div className="absolute inset-0 overflow-hidden">
@@ -150,129 +146,60 @@ const InsightCardComponent = ({ type, title, image, link, tags }: InsightCard) =
         <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
           <div className="absolute inset-0 bg-gradient-to-t from-accent/20 via-transparent to-transparent" />
         </div>
-      </motion.div>
+      </div>
     </Link>
   );
 };
 
 export default function FeaturedInsights() {
-  const reduce = Boolean(useReducedMotion());
-
   // Distribute cards across 3 columns: 2, 3, 3
   const column1Cards = [insights[0], insights[3]]; // Only 2 cards in leftmost column
   const column2Cards = [insights[1], insights[4], insights[7]]; // 3 cards in middle
   const column3Cards = [insights[2], insights[5], insights[6]]; // 3 cards in rightmost
 
-  // Animation variants for smoother scroll animations
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.15,
-        delayChildren: 0.1,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 60, scale: 0.95 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      transition: {
-        duration: 0.8,
-        ease: [0.25, 0.46, 0.45, 0.94] as const,
-      },
-    },
-  };
-
-  const cardVariants = {
-    hidden: { opacity: 0, y: 80, scale: 0.9 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      transition: {
-        duration: 0.9,
-        ease: [0.22, 1, 0.36, 1] as const,
-      },
-    },
-  };
-
   return (
     <section className="relative z-10 mx-auto max-w-7xl border-t border-border-default px-3 sm:px-4 py-20 md:px-8 md:py-28 overflow-hidden">
-      <motion.div
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-100px", amount: 0.2 }}
-        variants={containerVariants}
-      >
+      <div>
         {/* Main Grid Layout */}
         <div className="grid gap-8 sm:gap-12 lg:grid-cols-2 lg:gap-16 mb-16">
-          {/* Left Column - Hero Content with Staggered Animations */}
-          <motion.div
-            className="flex flex-col justify-center space-y-4 sm:space-y-6 lg:pr-8 w-full max-w-full overflow-hidden"
-            variants={itemVariants}
-          >
-            <motion.div
-              className="flex items-center gap-3 sm:gap-4"
-              variants={itemVariants}
-            >
+          {/* Left Column - Hero Content */}
+          <div className="flex flex-col justify-center space-y-4 sm:space-y-6 lg:pr-8 w-full max-w-full overflow-hidden">
+            <div className="flex items-center gap-3 sm:gap-4">
               <span className="h-[2px] w-8 sm:w-12 bg-accent flex-shrink-0"></span>
               <span className="text-accent text-[10px] sm:text-xs font-black uppercase tracking-[0.3em] sm:tracking-[0.4em]">
                 Featured Insights
               </span>
-            </motion.div>
+            </div>
 
-            <motion.h2
-              className="text-4xl sm:text-4xl md:text-5xl lg:text-5xl font-black text-text-primary uppercase tracking-tighter leading-none "
-              variants={itemVariants}
-            >
+            <h2 className="text-4xl sm:text-4xl md:text-5xl lg:text-5xl font-black text-text-primary uppercase tracking-tighter leading-none">
               Stories of our<br />
               <span className="text-accent">Transformations</span>
               <span className="text-accent">.</span>
-            </motion.h2>
+            </h2>
 
-            <motion.p
-              className="text-base sm:text-lg text-text-body md:text-xl leading-relaxed break-words"
-              variants={itemVariants}
-            >
+            <p className="text-base sm:text-lg text-text-body md:text-xl leading-relaxed break-words">
               From concept to completion, explore how we've helped businesses across services and industries achieve their digital transformation goals.
-            </motion.p>
+            </p>
 
             {/* Stats Grid */}
-            <motion.div
-              className="grid grid-cols-2 gap-4 sm:gap-6 pt-4 sm:pt-6"
-              variants={itemVariants}
-            >
+            <div className="grid grid-cols-2 gap-4 sm:gap-6 pt-4 sm:pt-6">
               {[
                 { value: "50+", label: "Case Studies" },
                 { value: "100+", label: "Blog Articles" },
                 { value: "20+", label: "Industries" },
                 { value: "5+", label: "Countries" },
               ].map((stat, idx) => (
-                <motion.div
-                  key={idx}
-                  initial={reduce ? {} : { opacity: 0, scale: 0.8 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: 0.6 + idx * 0.1 }}
-                >
+                <div key={idx}>
                   <div className="text-3xl sm:text-4xl font-black text-accent mb-2">{stat.value}</div>
                   <div className="text-xs font-semibold text-text-muted uppercase tracking-wider">
                     {stat.label}
                   </div>
-                </motion.div>
+                </div>
               ))}
-            </motion.div>
+            </div>
 
             {/* CTA Button */}
-            <motion.div
-              className="pt-2 sm:pt-4"
-              variants={itemVariants}
-            >
+            <div className="pt-2 sm:pt-4">
               <Link
                 href="/work"
                 className="group inline-flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-4 bg-accent text-text-inverse font-bold rounded-xl overflow-hidden transition-all hover:bg-accent-hover hover:shadow-[0_0_25px_-5px_rgba(37,99,235,0.4)] active:scale-95"
@@ -280,8 +207,8 @@ export default function FeaturedInsights() {
                 <span>Explore More</span>
                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
               </Link>
-            </motion.div>
-          </motion.div>
+            </div>
+          </div>
 
           {/* Right Column - Card Grid */}
           {/* Mobile: Simple 2-column grid */}
@@ -323,7 +250,7 @@ export default function FeaturedInsights() {
             </div>
           </div>
         </div>
-      </motion.div>
+      </div>
     </section>
   );
 }
