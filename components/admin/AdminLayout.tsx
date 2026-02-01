@@ -98,7 +98,7 @@ export default function AdminLayout({
       <footer className="border-t border-gray-200 mt-auto">
         <div className="max-w-7xl mx-auto px-6 py-6">
           <p className="text-xs text-gray-500">
-            © {new Date().getFullYear()} MEETECH. All rights reserved.
+            © {new Date().getFullYear()} MEETECH LABs. All rights reserved.
           </p>
         </div>
       </footer>

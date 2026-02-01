@@ -64,7 +64,7 @@ export default function App() {
           <motion.div
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.1 }}
+            transition={{ duration: 0.9, delay: 0.3 }}
             className="group mb-12 inline-flex items-center gap-3 px-6 py-2.5 rounded-full border border-border-default bg-bg-surface/60 backdrop-blur-2xl cursor-default hover:border-accent/40 transition-all shadow-sm"
           >
             <span className="relative flex h-2.5 w-2.5">
@@ -97,7 +97,7 @@ export default function App() {
             transition={{ duration: 0.8, delay: 0.3 }}
             className="mx-auto max-w-2xl text-lg md:text-xl text-text-body mb-14 leading-relaxed font-light"
           >
-            MEETECH architects high-performance digital ecosystems and production-grade products for enterprises requiring absolute reliability and global scale.
+            <span className=' font-bold'>MEETECH LABs</span> architects high-performance digital ecosystems and production-grade products for enterprises requiring absolute reliability and global scale.
           </motion.p>
 
           {/* CTA Hub */}

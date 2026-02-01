@@ -43,8 +43,8 @@ function LoginForm() {
     <div className="min-h-screen flex items-center justify-center bg-white px-4">
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
-          <h1 className="text-2xl font-semibold text-gray-900 mb-2">
-            Sign in to MEETECH
+          <h1 className="text-2xl font-semibold text-gray-900 mb-2 uppercase">
+            Sign in to MEETECH LAB Admin
           </h1>
           <p className="text-sm text-gray-600">
             Enter your credentials to access the admin panel

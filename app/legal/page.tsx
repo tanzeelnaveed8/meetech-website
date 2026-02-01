@@ -28,7 +28,7 @@ const LEGAL_CONTENT = {
     lastUpdated: "January 27, 2026",
     content: `
       <h4>Introduction</h4>
-      <p>MEETECH Development ("we", "our", "us") respects your privacy and is committed to protecting your personal data. This privacy policy explains how we collect, use, and safeguard your information when you use our website and services.</p>
+      <p>MEETECH LABs ("we", "our", "us") respects your privacy and is committed to protecting your personal data. This privacy policy explains how we collect, use, and safeguard your information when you use our website and services.</p>
 
       <h4>Data Collection</h4>
       <p>We collect the following information when you use our contact form:</p>
@@ -86,7 +86,7 @@ const LEGAL_CONTENT = {
     lastUpdated: "January 27, 2026",
     content: `
       <h4>Acceptance of Terms</h4>
-      <p>By accessing and using MEETECH Development's website and services, you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our services.</p>
+      <p>By accessing and using MEETECH LABs website and services, you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our services.</p>
 
       <h4>Services</h4>
       <p>We provide professional software development services including:</p>
@@ -137,7 +137,7 @@ const LEGAL_CONTENT = {
       </ul>
 
       <h4>Limitation of Liability</h4>
-      <p>MEETECH Development's liability is limited to the total amount paid for the specific project. We are not liable for:</p>
+      <p>MEETECH LABs liability is limited to the total amount paid for the specific project. We are not liable for:</p>
       <ul>
         <li>Indirect, incidental, or consequential damages</li>
         <li>Loss of profits, data, or business opportunities</li>
@@ -173,7 +173,7 @@ const LEGAL_CONTENT = {
     lastUpdated: "January 27, 2026",
     content: `
       <h4>Cookie Usage</h4>
-      <p>MEETECH uses cookies to improve your experience on our website. Cookies are small text files stored on your device that help us provide a secure and functional environment.</p>
+      <p>MEETECH LABs uses cookies to improve your experience on our website. Cookies are small text files stored on your device that help us provide a secure and functional environment.</p>
       
       <h4>Technical Necessity</h4>
       <p>We use essential cookies to maintain secure sessions and load-balancing across our global server nodes. These are strictly necessary for the website to function.</p>
@@ -253,7 +253,7 @@ export default function App() {
                 </div>
                 <h4 className="font-bold text-sm mb-2 text-accent">GDPR & UAE Data Compliant</h4>
                 <p className="text-[11px] text-text-muted leading-relaxed mb-6">
-                  MEETECH strictly adheres to international data protection frameworks for our global client base.
+                  MEETECH LABs strictly adheres to international data protection frameworks for our global client base.
                 </p>
                 <button className="w-full py-3 bg-accent hover:bg-accent-hover rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all">
                   Verify Credentials

@@ -85,7 +85,7 @@ export function PageHero() {
               transition={{ duration: 0.8, delay: 0.3 }}
               className="mx-auto max-w-2xl text-lg md:text-xl text-text-body mb-14 leading-relaxed font-light"
             >
-              MEETECH architects high-performance digital ecosystems and production-grade products for enterprises requiring absolute reliability and global scale.
+              MEETECH LABs architects high-performance digital ecosystems and production-grade products for enterprises requiring absolute reliability and global scale.
             </motion.p>
 
             {/* CTA Hub */}

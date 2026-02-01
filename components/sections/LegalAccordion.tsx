@@ -13,7 +13,7 @@ const LEGAL_SECTIONS = [
       <h4>Last updated: January 27, 2026</h4>
 
       <h5>Introduction</h5>
-      <p>MEETECH Development ("we", "our", "us") respects your privacy and is committed to protecting your personal data. This privacy policy explains how we collect, use, and safeguard your information when you use our website and services.</p>
+      <p>MEETECH LABs ("we", "our", "us") respects your privacy and is committed to protecting your personal data. This privacy policy explains how we collect, use, and safeguard your information when you use our website and services.</p>
 
       <h5>Data Collection</h5>
       <p>We collect the following information when you use our contact form:</p>
@@ -72,7 +72,7 @@ const LEGAL_SECTIONS = [
       <h4>Last updated: January 27, 2026</h4>
 
       <h5>Acceptance of Terms</h5>
-      <p>By accessing and using MEETECH Development's website and services, you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our services.</p>
+      <p>By accessing and using MEETECH LABs website and services, you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our services.</p>
 
       <h5>Services</h5>
       <p>We provide professional software development services including:</p>
@@ -123,7 +123,7 @@ const LEGAL_SECTIONS = [
       </ul>
 
       <h5>Limitation of Liability</h5>
-      <p>MEETECH Development's liability is limited to the total amount paid for the specific project. We are not liable for:</p>
+      <p>MEETECH LABs liability is limited to the total amount paid for the specific project. We are not liable for:</p>
       <ul>
         <li>Indirect, incidental, or consequential damages</li>
         <li>Loss of profits, data, or business opportunities</li>

@@ -86,7 +86,7 @@ export async function sendLeadNotification(lead: LeadNotificationData) {
               </div>
             </div>
             <div class="footer">
-              <p>This is an automated notification from MEETECH website contact form.</p>
+              <p>This is an automated notification from MEETECH LABs website contact form.</p>
             </div>
           </div>
         </body>
