@@ -83,7 +83,7 @@ const WhyMeetechh = () => {
                <main className="relative z-10">
                     {/* HERO SECTION */}
                     <section className="relative py-32 md:py-56 border-b border-[var(--border-default)]/5">
-                         <div className="mx-auto max-w-7xl px-6  grid lg:grid-cols-12 gap-16 lg:gap-24 items-start">
+                         <div className="mx-auto max-w-7xl px-6  grid lg:grid-cols-12 gap-12 lg:gap-16 items-start">
 
                               {/* LEFT - STICKY CONTENT */}
                               <div className="lg:col-span-5 lg:sticky lg:top-32 space-y-8">

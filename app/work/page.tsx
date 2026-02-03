@@ -142,7 +142,7 @@ export default function PortfolioPage() {
                                              <div className="absolute bottom-0 left-0 p-12 w-full space-y-5">
                                                   <div className="flex gap-2">
                                                        {item.tags.slice(0, 2).map((tag, i) => (
-                                                            <span key={i} className="text-[10px] uppercase font-bold tracking-widest text-accent bg-accent-muted px-3 py-1 rounded">
+                                                            <span key={i} className="text-[10px] uppercase font-bold tracking-widest text-white bg-accent/50 px-3 py-1 rounded">
                                                                  {tag}
                                                             </span>
                                                        ))}
@@ -170,18 +170,7 @@ export default function PortfolioPage() {
                     </div>
 
 
-                    {/* Infinite Scroll Indicator */}
-                    <motion.div
-                         animate={{ y: [0, 8, 0] }}
-                         transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
-                         className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 opacity-40"
-                    >
-                         <span className="text-[9px] font-black tracking-[0.4em] uppercase text-text-muted">
-                              Explore
-                         </span>
-                         <div className="w-[1.5px] h-12 bg-gradient-to-b from-accent via-accent/50 to-transparent rounded-lg" />
-                    </motion.div>
-
+                   
                </section>
 
                {/* Project Detail Modal */}

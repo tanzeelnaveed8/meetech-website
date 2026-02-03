@@ -49,12 +49,12 @@ const PortfolioSection = () => {
                                    </h2>
                               </div>
 
-                              <div className="flex p-2 bg-bg-card border border-border-subtle rounded-3xl shadow-xl overflow-x-auto w-fit">
+                              <div className="flex p-0 md:p-2 bg-bg-card border border-border-subtle rounded-3xl shadow-xl overflow-x-auto w-fit">
                                    {categories.map((cat) => (
                                         <button
                                              key={cat.id}
                                              onClick={() => setSelectedCategory(cat.id)}
-                                             className={`flex items-center gap-3 px-4 md:px-8 py-4 rounded-2xl text-[11px] font-black tracking-widest uppercase transition-all duration-500 whitespace-nowrap ${selectedCategory === cat.id
+                                             className={`flex items-center gap-2 px-2 md:px-8 py-4 rounded-2xl text-xs md:text-sm font-black tracking-wider uppercase transition-all duration-500 whitespace-nowrap ${selectedCategory === cat.id
                                                   ? 'bg-accent text-text-inverse shadow-xl shadow-accent/30'
                                                   : 'text-text-muted hover:text-text-primary'
                                                   }`}

@@ -161,7 +161,7 @@ export default function FeaturedInsights() {
     <section className="relative z-10 mx-auto max-w-7xl border-t border-border-default px-3 sm:px-4 py-20 md:px-8 md:py-28 overflow-hidden">
       <div>
         {/* Main Grid Layout */}
-        <div className="grid gap-8 sm:gap-12 lg:grid-cols-2 lg:gap-16 mb-16">
+        <div className="grid gap-8 sm:gap-12 lg:grid-cols-2 lg:gap-10 mb-16">
           {/* Left Column - Hero Content */}
           <div className="flex flex-col justify-center space-y-4 sm:space-y-6 lg:pr-8 w-full max-w-full overflow-hidden">
             <div className="flex items-center gap-3 sm:gap-4">

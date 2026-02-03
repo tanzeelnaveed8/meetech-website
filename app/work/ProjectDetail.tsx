@@ -93,7 +93,7 @@ const ProjectDetail = ({ project, category, close }: { project: any; category: s
                          <div className="lg:col-span-7 p-8 md:p-16 flex flex-col justify-center">
                               <div className="flex gap-2 mb-8">
                                    {project.tags.map((tag: string, i: number) => (
-                                        <span key={i} className="px-3 py-1 text-[10px] font-black uppercase tracking-widest text-accent bg-accent-muted border border-accent/10 rounded">
+                                        <span key={i} className="px-2 py-1 text-[10px] font-black uppercase tracking-widest text-accent bg-accent-muted border border-accent/10 rounded">
                                              {tag}
                                         </span>
                                    ))}
@@ -134,9 +134,9 @@ const ProjectDetail = ({ project, category, close }: { project: any; category: s
                                    </div>
                               </div>
 
-                              <button className="flex items-center justify-center gap-4 py-5 px-8 bg-accent text-text-inverse font-black uppercase tracking-[0.2em] rounded-2xl hover:bg-accent-hover transition-all group">
+                              {/* <button className="flex items-center justify-center gap-4 py-5 px-8 bg-accent text-text-inverse font-black uppercase tracking-[0.2em] rounded-2xl hover:bg-accent-hover transition-all group">
                                    Explore Live Case <ArrowRight size={20} className="group-hover:translate-x-2 transition-transform" />
-                              </button>
+                              </button> */}
                          </div>
                     </div>
                </motion.div>

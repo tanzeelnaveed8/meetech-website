@@ -270,17 +270,7 @@ export default function AboutPage() {
 
       
 
-      {/* Infinite Scroll Indicator */}
-      <motion.div
-        animate={{ y: [0, 8, 0] }}
-        transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 opacity-40"
-      >
-        <span className="text-[9px] font-black tracking-[0.4em] uppercase text-text-muted">
-          Discover
-        </span>
-        <div className="w-[1.5px] h-12 bg-linear-to-b from-accent via-accent/50 to-transparent rounded-full" />
-      </motion.div>
+  
 
       {/* Content Sections */}
       <div className="relative z-10 mx-auto max-w-5xl px-4 md:px-8">
@@ -601,7 +591,7 @@ export default function AboutPage() {
                       {author.split(' ').map(n => n[0]).join('')}
                     </div>
                     <div>
-                      <p className="font-bold text-text-primary text-sm">
+                      <p className="font-bold text-text-primary text-base md:text-sm">
                         {author}
                       </p>
                       <p className="text-xs text-text-muted">

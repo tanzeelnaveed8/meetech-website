@@ -23,7 +23,7 @@ const MVP_SERVICES: ServiceDetail[] = [
     bullets: [
       "Market Research & Analysis",
       "Competitor Benchmarking",
-      "User Persona Development",
+      "User Personal Development",
       "Feature Prioritization",
       "MVP Roadmap Planning",
     ],

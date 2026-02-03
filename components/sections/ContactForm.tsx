@@ -296,7 +296,7 @@ export function ContactForm() {
                   value={formData.name}
                   onChange={handleInputChange}
                   required
-                  className={`block w-full pl-12 pr-4 py-3.5 rounded-xl border ${errors.name ? "border-red-500 focus:ring-red-500" : "border-border-default focus:ring-accent"
+                  className={`block w-full pl-8 pr-4 py-3.5 rounded-xl border ${errors.name ? "border-red-500 focus:ring-red-500" : "border-border-default focus:ring-accent"
                     } bg-bg-surface text-text-primary placeholder:text-text-muted transition-all focus:outline-none focus:ring-2 focus:border-transparent shadow-sm hover:shadow-md`}
                   placeholder="John Smith"
                 />
@@ -328,7 +328,7 @@ export function ContactForm() {
                   value={formData.email}
                   onChange={handleInputChange}
                   required
-                  className={`block w-full pl-12 pr-4 py-3.5 rounded-xl border ${errors.email ? "border-red-500 focus:ring-red-500" : "border-border-default focus:ring-accent"
+                  className={`block w-full pl-8 pr-4 py-3.5 rounded-xl border ${errors.email ? "border-red-500 focus:ring-red-500" : "border-border-default focus:ring-accent"
                     } bg-bg-surface text-text-primary placeholder:text-text-muted transition-all focus:outline-none focus:ring-2 focus:border-transparent shadow-sm hover:shadow-md`}
                   placeholder="john@company.com"
                 />
@@ -359,7 +359,7 @@ export function ContactForm() {
                   name="phone"
                   value={formData.phone}
                   onChange={handleInputChange}
-                  className={`block w-full pl-12 pr-4 py-3.5 rounded-xl border ${errors.phone ? "border-red-500 focus:ring-red-500" : "border-border-default focus:ring-accent"
+                  className={`block w-full pl-8 pr-4 py-3.5 rounded-xl border ${errors.phone ? "border-red-500 focus:ring-red-500" : "border-border-default focus:ring-accent"
                     } bg-bg-surface text-text-primary placeholder:text-text-muted transition-all focus:outline-none focus:ring-2 focus:border-transparent shadow-sm hover:shadow-md`}
                   placeholder="+1 (555) 000-0000"
                 />
@@ -390,7 +390,7 @@ export function ContactForm() {
                   name="company"
                   value={formData.company}
                   onChange={handleInputChange}
-                  className="block w-full pl-12 pr-4 py-3.5 rounded-xl border border-border-default bg-bg-surface text-text-primary placeholder:text-text-muted transition-all focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent shadow-sm hover:shadow-md"
+                  className="block w-full pl-8 pr-4 py-3.5 rounded-xl border border-border-default bg-bg-surface text-text-primary placeholder:text-text-muted transition-all focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent shadow-sm hover:shadow-md"
                   placeholder="Your Company"
                 />
               </div>
@@ -405,23 +405,30 @@ export function ContactForm() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
             >
-              <label htmlFor="projectType" className="block text-sm font-semibold text-text-primary mb-2">
+              <label
+                htmlFor="projectType"
+                className="block text-sm font-semibold text-text-primary mb-2"
+              >
                 Project Type <span className="text-red-500">*</span>
               </label>
+
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                   <Briefcase className="h-5 w-5 text-text-muted" />
                 </div>
+
                 <select
                   id="projectType"
                   name="projectType"
                   value={formData.projectType}
                   onChange={handleInputChange}
                   required
-                  className={`block w-full pl-12 pr-4 py-3.5 rounded-xl border ${errors.projectType ? "border-red-500 focus:ring-red-500" : "border-border-default focus:ring-accent"
-                    } bg-bg-surface text-text-primary transition-all focus:outline-none focus:ring-2 focus:border-transparent shadow-sm hover:shadow-md appearance-none cursor-pointer`}
+                  className={`w-full pl-8 pr-10 py-3.5 rounded-xl border ${errors.projectType
+                      ? "border-red-500 focus:ring-red-500"
+                      : "border-border-default focus:ring-accent"
+                    } bg-bg-surface text-sm text-text-primary transition-all focus:outline-none focus:ring-2 focus:border-transparent shadow-sm hover:shadow-md appearance-none cursor-pointer`}
                 >
-                  <option value="">Select type</option>
+                  <option className=" text-sm w-fit" value="">Select type</option>
                   {PROJECT_TYPES.map((type) => (
                     <option key={type} value={type}>
                       {type}
@@ -429,6 +436,7 @@ export function ContactForm() {
                   ))}
                 </select>
               </div>
+
               {errors.projectType && (
                 <p className="mt-2 text-sm text-red-500 flex items-center gap-1">
                   <span>⚠</span> {errors.projectType}
@@ -442,23 +450,28 @@ export function ContactForm() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.35 }}
             >
-              <label htmlFor="budget" className="block text-sm font-semibold text-text-primary mb-2">
+              <label
+                htmlFor="budget"
+                className="block text-sm font-semibold text-text-primary mb-2"
+              >
                 Budget Range
               </label>
+
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                   <DollarSign className="h-5 w-5 text-text-muted" />
                 </div>
+
                 <select
                   id="budget"
                   name="budget"
                   value={formData.budget}
                   onChange={handleInputChange}
-                  className="block w-full pl-12 pr-4 py-3.5 rounded-xl border border-border-default bg-bg-surface text-text-primary transition-all focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent shadow-sm hover:shadow-md appearance-none cursor-pointer"
+                  className="w-full  text-sm pl-12 pr-10 py-3.5 rounded-xl border border-border-default bg-bg-surface text-text-primary transition-all focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent shadow-sm hover:shadow-md appearance-none cursor-pointer"
                 >
-                  <option value="">Select budget</option>
+                  <option className=" text-sm w-fit" value="">Select budget</option>
                   {BUDGET_RANGES.map((range) => (
-                    <option key={range} value={range}>
+                    <option className="text-sm w-fit" key={range} value={range}>
                       {range}
                     </option>
                   ))}
@@ -472,23 +485,30 @@ export function ContactForm() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}
             >
-              <label htmlFor="timeline" className="block text-sm font-semibold text-text-primary mb-2">
+              <label
+                htmlFor="timeline"
+                className="block text-sm font-semibold text-text-primary mb-2"
+              >
                 Timeline
               </label>
+
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                   <Calendar className="h-5 w-5 text-text-muted" />
                 </div>
+
                 <select
                   id="timeline"
                   name="timeline"
                   value={formData.timeline}
                   onChange={handleInputChange}
-                  className="block w-full pl-12 pr-4 py-3.5 rounded-xl border border-border-default bg-bg-surface text-text-primary transition-all focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent shadow-sm hover:shadow-md appearance-none cursor-pointer"
+                  className="w-full  pl-12 pr-10 py-3.5 rounded-xl border border-border-default bg-bg-surface text-text-primary transition-all focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent shadow-sm hover:shadow-md appearance-none cursor-pointer"
                 >
-                  <option value="">Select timeline</option>
+                  <option 
+
+                  value="">Select timeline</option>
                   {TIMELINE_OPTIONS.map((option) => (
-                    <option key={option} value={option}>
+                    <option className="text-sm w-fit" key={option} value={option}>
                       {option}
                     </option>
                   ))}
@@ -496,6 +516,7 @@ export function ContactForm() {
               </div>
             </motion.div>
           </div>
+
 
           {/* Message Field */}
           <motion.div
@@ -518,7 +539,7 @@ export function ContactForm() {
                 required
                 rows={6}
                 maxLength={2000}
-                className={`block w-full pl-12 pr-4 py-3.5 rounded-xl border ${errors.message ? "border-red-500 focus:ring-red-500" : "border-border-default focus:ring-accent"
+                className={`block w-full pl-8 pr-4 py-3.5 rounded-xl border ${errors.message ? "border-red-500 focus:ring-red-500" : "border-border-default focus:ring-accent"
                   } bg-bg-surface text-text-primary placeholder:text-text-muted transition-all focus:outline-none focus:ring-2 focus:border-transparent shadow-sm hover:shadow-md resize-none`}
                 placeholder="Tell us about your project goals, requirements, and any specific features you need..."
               />

@@ -185,10 +185,42 @@ const LEGAL_CONTENT = {
 };
 
 type LegalTab = keyof typeof LEGAL_CONTENT;
+const HASH_TO_TAB: Record<string, LegalTab> = {
+  privacypolicy: 'privacy',
+  termsofservice: 'terms',
+  cookiepolicy: 'cookies',
+};
+
+const TAB_TO_HASH: Record<LegalTab, string> = {
+  privacy: 'privacypolicy',
+  terms: 'termsofservice',
+  cookies: 'cookiepolicy',
+};
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<LegalTab>('privacy');
   const [scrolled, setScrolled] = useState(false);
+  
+  useEffect(() => {
+    const syncTabWithHash = () => {
+      const hash = window.location.hash.replace('#', '').toLowerCase();
+      if (HASH_TO_TAB[hash]) {
+        setActiveTab(HASH_TO_TAB[hash]);
+      }
+    };
+
+    syncTabWithHash(); // run on first load
+    window.addEventListener("hashchange", syncTabWithHash);
+
+    return () => {
+      window.removeEventListener("hashchange", syncTabWithHash);
+    };
+  }, []);
+
+  useEffect(() => {
+    const hash = TAB_TO_HASH[activeTab];
+    window.history.replaceState(null, '', `#${hash}`);
+  }, [activeTab]);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -217,7 +249,7 @@ export default function App() {
                 return (
                   <button
                     key={key}
-                    onClick={() => setActiveTab(key as LegalTab)}
+onClick={() => setActiveTab(key as LegalTab)}
                     className={`w-full group flex items-start gap-4 p-4 rounded-2xl transition-all relative overflow-hidden ${isActive
                         ? 'bg-bg-surface shadow-xl border border-border-subtle shadow-accent/5'
                         : 'hover:bg-bg-subtle border border-transparent'

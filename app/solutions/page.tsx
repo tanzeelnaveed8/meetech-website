@@ -2,7 +2,7 @@
 
 import React from "react";
 import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
-import { ArrowRight, ChevronRight, Code, Smartphone, ShoppingCart, Rocket, DollarSign, Store, Heart, GraduationCap, Briefcase, Users } from "lucide-react";
+import { ArrowRight, ChevronRight, Code2, Smartphone, ShoppingBag, Rocket, DollarSign, Store, Heart, GraduationCap, Briefcase, Users } from "lucide-react";
 import { SiNextdotjs, SiReact, SiTypescript, SiNodedotjs, SiPostgresql, SiAmazon, SiFlutter, SiPython, SiDocker, SiKubernetes, SiGraphql } from "react-icons/si";
 import NeuralBackground from "@/components/background/NeuralBackground";
 import { SolutionCard } from "@/components/sections/SolutionCard";
@@ -27,53 +27,50 @@ export default function SolutionsPage() {
       <div className="absolute -top-[15%] left-1/2 -translate-x-1/2 h-[600px] w-[900px] bg-accent/5 blur-[140px] rounded-full pointer-events-none" />
 
       {/* Solutions Hero Section */}
-      <motion.section
-        style={{ opacity, scale }}
-        className="relative z-10 flex flex-col items-center justify-center min-h-[60vh] px-6 pt-20 text-center"
-      >
-        {/* Heading */}
-        <motion.h1
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight mb-4"
-        >
-          Solutions Built for <span className="text-accent">Real Business Impact</span>
-        </motion.h1>
+      <section className="relative z-10 flex flex-col items-center justify-center min-h-[60vh] px-6 pt-20 text-center">
+        {/* Heading & Subheading (animated) */}
+        <motion.div style={{ opacity, scale }}>
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight mb-4"
+          >
+            Solutions Built for <span className="text-accent">Real Business Impact</span>
+          </motion.h1>
 
-        {/* Subheading */}
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="max-w-2xl text-lg md:text-xl text-text-body leading-relaxed"
-        >
-          From mobile apps to enterprise platforms, we deliver production-ready solutions that scale with your business. Choose the solution that fits your needs, or let us build something custom.
-        </motion.p>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="max-w-2xl text-lg md:text-xl text-text-body leading-relaxed"
+          >
+            From mobile apps to enterprise platforms, we deliver production-ready solutions that scale with your business. Choose the solution that fits your needs, or let us build something custom.
+          </motion.p>
+        </motion.div>
 
-        {/* Technical Validation Grid */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-          className="mt-10 flex flex-wrap justify-center gap-6"
-        >
+        {/* Technical Validation Grid (static, always visible) */}
+        <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
           {[
-            { icon: <Code />, label: "Web Apps", val: "Next.js & React" },
+            { icon: <Code2 />, label: "Web Apps", val: "Next.js & React" },
             { icon: <Smartphone />, label: "Mobile", val: "iOS & Android" },
-            { icon: <ShoppingCart />, label: "E-commerce", val: "Scalable Stores" },
-            { icon: <Rocket />, label: "MVPs", val: "Launch in Weeks" },
+            { icon: <ShoppingBag />, label: "E-commerce", val: "Scalable Stores" },
+            { icon: <Rocket />, label: "MVPs", val: "Launch Fast" },
           ].map((item, idx) => (
-            <div key={idx} className="px-5 py-3 rounded-xl border border-border-default bg-bg-card text-text-primary shadow-sm hover:shadow-md transition">
-              <div className="mb-2 p-2 rounded-full bg-accent-muted text-accent w-fit mx-auto">
-                {React.cloneElement(item.icon, { size: 20 })}
+            <div
+              key={idx}
+              className="flex flex-col items-center justify-center min-h-[160px] rounded-xl border border-border-default bg-bg-card text-text-primary shadow-sm hover:shadow-md transition p-5"
+            >
+              <div className="mb-3 p-4 rounded-full bg-accent-muted text-accent w-12 h-12 flex items-center justify-center">
+                {React.cloneElement(item.icon, { size: 24 })}
               </div>
               <p className="text-sm font-medium text-text-muted">{item.label}</p>
               <p className="text-base font-bold text-accent">{item.val}</p>
             </div>
           ))}
-        </motion.div>
-      </motion.section>
+        </div>
+      </section>
+
 
       {/* Infinite Scroll Indicator */}
       <motion.div

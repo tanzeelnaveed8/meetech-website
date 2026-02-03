@@ -62,9 +62,9 @@ const footerLinks: FooterGroup[] = [
   {
     title: "Legal",
     links: [
-      { name: "Privacy Policy", href: "/legal" },
-      { name: "Terms of Service", href: "/legal" },
-      { name: "Cookie Policy", href: "/legal" },
+      { name: "Privacy Policy", href: "/legal/privacy" },
+      { name: "Terms of Service", href: "/legal/terms_of_service" },
+      { name: "Cookie Policy", href: "/legal/cookie" },
     ],
   },
 ];
@@ -185,7 +185,7 @@ const Footer: React.FC = () => {
 
         {/* Contact Info Section */}
         <div className="border-t border-border-default pt-10 pb-10">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {contactInfo.map((item) => (
               <div key={item.label} className="flex items-start gap-4 group">
                 <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-text-inverse transition-all duration-300">
@@ -221,13 +221,13 @@ const Footer: React.FC = () => {
 
           <div className="flex items-center gap-6">
             <Link
-              href="/legal"
+              href="/legal/privacy"
               className="text-text-muted text-xs font-medium hover:text-accent transition-colors"
             >
               Privacy Policy
             </Link>
             <Link
-              href="/legal"
+              href="/legal/terms_of_service"
               className="text-text-muted text-xs font-medium hover:text-accent transition-colors"
             >
               Terms of Service

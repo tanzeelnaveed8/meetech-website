@@ -63,7 +63,7 @@ function CtaButton({
     <Link
       href={CTA.href}
       onClick={onClick}
-      className={`flex min-h-[44px] shrink-0 items-center justify-center rounded-xl bg-gradient-to-r from-accent to-accent-hover px-6 py-3 text-[0.9375rem] font-bold text-text-inverse shadow-md transition-all duration-200 ease-out hover:shadow-xl active:bg-accent-active focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 focus-visible:ring-offset-bg-surface whitespace-nowrap ${motion} ${fullWidth ? "w-full" : "inline-flex"
+      className={`flex min-h-[44px] w-fit shrink-0 items-center justify-center rounded-xl bg-gradient-to-r from-accent to-accent-hover px-4 py-2 text-[0.9375rem] font-bold text-text-inverse shadow-md transition-all duration-200 ease-out hover:shadow-xl active:bg-accent-active focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 focus-visible:ring-offset-bg-surface whitespace-nowrap ${motion} ${fullWidth ? "w-full" : "inline-flex"
         }`}
     >
       {CTA.label}
@@ -234,7 +234,7 @@ export function Header() {
           
 
           {/* CTA Button - Hidden on mobile */}
-          <div className="hidden md:block">
+          <div className="hidden lg:block">
             <CtaButton reduceMotion={reduceMotion} />
           </div>
 
