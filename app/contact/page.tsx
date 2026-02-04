@@ -37,7 +37,7 @@ export default function ContactPage() {
           transition={{ duration: 0.8 }}
           className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight mb-4"
         >
-          Let's Build Something <span className="text-accent">Extraordinary</span>
+          Let's Build Something <span className="text-accent">rdinary</span>
         </motion.h1>
 
         {/* Subheading */}
@@ -55,7 +55,7 @@ export default function ContactPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
-          className="mt-10 flex flex-wrap justify-center gap-6"
+          className="mt-10 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 justify-center gap-6"
         >
           {[
             { icon: <Clock />, label: "Response", val: "Within 24 Hours" },
@@ -63,7 +63,7 @@ export default function ContactPage() {
             { icon: <Phone />, label: "Support", val: "Direct Access" },
             { icon: <Mail />, label: "Follow-up", val: "Transparent Process" },
           ].map((item, idx) => (
-            <div key={idx} className="px-5 py-3 rounded-xl border border-border-default bg-bg-card text-text-primary shadow-sm hover:shadow-md transition">
+            <div key={idx} className="px-5 py-3  rounded-xl border border-border-default bg-bg-card text-text-primary shadow-sm hover:shadow-md transition">
               <div className="mb-2 p-2 rounded-full bg-accent-muted text-accent w-fit mx-auto">
                 {React.cloneElement(item.icon, { size: 20 })}
               </div>

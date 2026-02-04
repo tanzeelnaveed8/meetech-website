@@ -286,8 +286,8 @@ export function ContactForm() {
                 Full Name <span className="text-red-500">*</span>
               </label>
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                  <User className="h-5 w-5 text-text-muted" />
+                <div className="absolute inset-y-0 left-0 px-2 flex items-center pointer-events-none">
+                  <User className="h-5 w-5 text-text-muted mr-2" />
                 </div>
                 <input
                   type="text"
@@ -318,8 +318,8 @@ export function ContactForm() {
                 Email Address <span className="text-red-500">*</span>
               </label>
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                  <Mail className="h-5 w-5 text-text-muted" />
+                <div className="absolute inset-y-0 left-0 px-2 flex items-center pointer-events-none">
+                  <Mail className="h-5 w-5 text-text-muted mr-2" />
                 </div>
                 <input
                   type="email"
@@ -350,8 +350,8 @@ export function ContactForm() {
                 Phone Number
               </label>
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                  <Phone className="h-5 w-5 text-text-muted" />
+                <div className="absolute inset-y-0 left-0 px-2 flex items-center pointer-events-none">
+                  <Phone className="h-5 w-5 text-text-muted mr-2" />
                 </div>
                 <input
                   type="tel"
@@ -381,8 +381,8 @@ export function ContactForm() {
                 Company Name
               </label>
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                  <Building2 className="h-5 w-5 text-text-muted" />
+                <div className="absolute inset-y-0 left-0 px-2 flex items-center pointer-events-none">
+                  <Building2 className="h-5 w-5 text-text-muted mr-2" />
                 </div>
                 <input
                   type="text"
@@ -413,8 +413,8 @@ export function ContactForm() {
               </label>
 
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                  <Briefcase className="h-5 w-5 text-text-muted" />
+                <div className="absolute inset-y-0 left-0 px-2 flex items-center pointer-events-none">
+                  <Briefcase className="h-5 w-5 text-text-muted mr-2" />
                 </div>
 
                 <select
@@ -458,8 +458,8 @@ export function ContactForm() {
               </label>
 
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                  <DollarSign className="h-5 w-5 text-text-muted" />
+                <div className="absolute inset-y-0 left-0 px-2 flex items-center pointer-events-none">
+                  <DollarSign className="h-5 w-5 text-text-muted mr-2" />
                 </div>
 
                 <select
@@ -493,8 +493,8 @@ export function ContactForm() {
               </label>
 
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                  <Calendar className="h-5 w-5 text-text-muted" />
+                <div className="absolute inset-y-0 left-0 px-2 flex items-center pointer-events-none">
+                  <Calendar className="h-5 w-5 text-text-muted mr-2" />
                 </div>
 
                 <select
@@ -528,8 +528,8 @@ export function ContactForm() {
               Project Details <span className="text-red-500">*</span>
             </label>
             <div className="relative">
-              <div className="absolute top-4 left-4 pointer-events-none">
-                <MessageSquare className="h-5 w-5 text-text-muted" />
+              <div className="absolute top-4 px-2 pointer-events-none">
+                <MessageSquare className="h-5 w-5 text-text-muted mr-2" />
               </div>
               <textarea
                 id="message"
@@ -539,9 +539,9 @@ export function ContactForm() {
                 required
                 rows={6}
                 maxLength={2000}
-                className={`block w-full pl-8 pr-4 py-3.5 rounded-xl border ${errors.message ? "border-red-500 focus:ring-red-500" : "border-border-default focus:ring-accent"
+                className={`block w-full pl-10 pr-4 py-3.5 rounded-xl border ${errors.message ? "border-red-500 focus:ring-red-500" : "border-border-default focus:ring-accent"
                   } bg-bg-surface text-text-primary placeholder:text-text-muted transition-all focus:outline-none focus:ring-2 focus:border-transparent shadow-sm hover:shadow-md resize-none`}
-                placeholder="Tell us about your project goals, requirements, and any specific features you need..."
+                placeholder=" Tell us about your project goals, requirements, and any specific features you need..."
               />
             </div>
             <div className="mt-2 flex items-center justify-between">

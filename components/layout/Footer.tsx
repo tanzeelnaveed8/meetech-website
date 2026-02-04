@@ -85,7 +85,7 @@ const contactInfo = [
   {
     icon: <MapPin size={18} />,
     label: "Location",
-    value: "Dubai, UAE & USA",
+    value: "US",
     href: null,
   },
 ];
