@@ -29,12 +29,12 @@ export default function SolutionsPage() {
       {/* Solutions Hero Section */}
       <section className="relative z-10 flex flex-col items-center justify-center min-h-[60vh] px-6 pt-20 text-center">
         {/* Heading & Subheading (animated) */}
-        <motion.div style={{ opacity, scale }}>
+        <motion.div style={{ opacity, scale }} className="lg:px-20">
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight mb-4"
+            className="text-4xl md:text-5xl lg:text-6xl  font-extrabold tracking-tight mb-4"
           >
             Solutions Built for <span className="text-accent">Real Business Impact</span>
           </motion.h1>
@@ -43,7 +43,7 @@ export default function SolutionsPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="max-w-2xl text-lg md:text-xl text-text-body leading-relaxed"
+            className="text-lg md:text-xl text-text-body lg:max-w-4xl mx-auto leading-relaxed"
           >
             From mobile apps to enterprise platforms, we deliver production-ready solutions that scale with your business. Choose the solution that fits your needs, or let us build something custom.
           </motion.p>
@@ -141,7 +141,7 @@ export default function SolutionsPage() {
           viewport={{ once: true, margin: "-60px" }}
           transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
         >
-          <div className="max-w-xl space-y-6 mb-16">
+          <div className=" w-full space-y-6 mb-16">
             <div className="flex items-center gap-4">
               <span className="h-[2px] w-12 bg-accent"></span>
               <span className="text-accent text-xs font-black uppercase tracking-[0.4em]">Technology</span>

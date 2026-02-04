@@ -17,7 +17,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Meetech Labs",
+  title: "Meetech Development",
   description: "Technology company",
   icons: {
     icon: "/iconlight.png",

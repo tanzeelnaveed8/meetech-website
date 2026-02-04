@@ -97,7 +97,7 @@ export default function App() {
             transition={{ duration: 0.8, delay: 0.3 }}
             className="mx-auto max-w-2xl text-lg md:text-xl text-text-body mb-14 leading-relaxed font-light"
           >
-            <span className=' font-bold'>MEETECH LABs</span> architects high-performance digital ecosystems and production-grade products for enterprises requiring absolute reliability and global scale.
+            <span className=' font-bold'>Meetech Development</span> architects high-performance digital ecosystems and production-grade products for enterprises requiring absolute reliability and global scale.
           </motion.p>
 
           {/* CTA Hub */}
@@ -124,7 +124,7 @@ export default function App() {
             </Link>
           </motion.div>
 
-      
+
         </div>
       </motion.section>
 
@@ -144,7 +144,7 @@ export default function App() {
       {/* Technology Stack Section */}
       <section
         aria-labelledby="tech-stack-heading"
-        className="relative z-10 mx-auto max-w-7xl border-t border-border-default px-4 py-20 md:px-8 md:py-28"
+        className="relative z-10 mx-auto max-w-7xl border-t border-border-default px-4 py-20 w-full  px-4 md:px-8 md:py-28"
       >
         <motion.div
           initial={reduce ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}

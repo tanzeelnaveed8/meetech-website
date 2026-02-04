@@ -216,7 +216,7 @@ const Footer: React.FC = () => {
         {/* Bottom Bar */}
         <div className="border-t border-border-default pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-text-muted text-xs font-medium tracking-wide">
-            © {new Date().getFullYear()} MeeTech Labs. All rights reserved.
+            © {new Date().getFullYear()} Meetech Development. All rights reserved.
           </p>
 
           <div className="flex items-center gap-6">

@@ -38,7 +38,7 @@ type VisionMissionItem = {
   description: string;
 };
 
-const visionMission: VisionMissionItem[] =[
+const visionMission: VisionMissionItem[] = [
   {
     type: "mission",
     title: "Our Mission",
@@ -222,55 +222,55 @@ export default function AboutPage() {
       {/* Atmospheric Radial Blur */}
       <div className="absolute -top-[15%] left-1/2 -translate-x-1/2 h-150 w-225 bg-accent/5 blur-[140px] rounded-full pointer-events-none" />
 
-  {/* About Hero Section */}
-<motion.section
-  style={{ opacity, scale }}
-  className="relative z-10 flex flex-col items-center justify-center min-h-[60vh] px-6 py-20 text-center"
->
-  {/* Heading */}
-  <motion.h1
-    initial={{ opacity: 0, y: 20 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.8 }}
-    className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight mb-4"
-  >
-    About <span className="text-accent">Meetech Labs</span>
-  </motion.h1>
+      {/* About Hero Section */}
+      <motion.section
+        style={{ opacity, scale }}
+        className="relative z-10 flex flex-col items-center justify-center min-h-[60vh] px-6 py-20 text-center"
+      >
+        {/* Heading */}
+        <motion.h1
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight mb-4"
+        >
+          About <span className="text-accent">Meetech Development</span>
+        </motion.h1>
 
-  {/* Subheading */}
-  <motion.p
-    initial={{ opacity: 0, y: 20 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.8, delay: 0.2 }}
-    className="max-w-2xl text-lg md:text-xl text-text-body leading-relaxed"
-  >
-    We design and develop modern web, mobile, and software solutions. Our mission is to solve real business problems with scalable, secure, and future-focused technology.
-  </motion.p>
+        {/* Subheading */}
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="max-w-2xl text-lg md:text-xl text-text-body leading-relaxed"
+        >
+          We design and develop modern web, mobile, and software solutions. Our mission is to solve real business problems with scalable, secure, and future-focused technology.
+        </motion.p>
 
-  {/* Key Values - Simple Text */}
-  <motion.div
-    initial={{ opacity: 0, y: 20 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.8, delay: 0.4 }}
-    className="mt-10 flex flex-wrap justify-center gap-8 text-sm text-text-muted"
-  >
-    {[
-      "Founder-led teams",
-      "Global clients: UAE & USA",
-      "Production-grade systems",
-      "No hype, just execution",
-    ].map((item, idx) => (
-      <div key={idx} className="flex items-center gap-2">
-        <div className="w-1.5 h-1.5 rounded-full bg-accent" />
-        <span>{item}</span>
-      </div>
-    ))}
-  </motion.div>
-</motion.section>
+        {/* Key Values - Simple Text */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.4 }}
+          className="mt-10 flex flex-wrap justify-center gap-8 text-sm text-text-muted"
+        >
+          {[
+            "Founder-led teams",
+            "Global clients: UAE & USA",
+            "Production-grade systems",
+            "No hype, just execution",
+          ].map((item, idx) => (
+            <div key={idx} className="flex items-center gap-2">
+              <div className="w-1.5 h-1.5 rounded-full bg-accent" />
+              <span>{item}</span>
+            </div>
+          ))}
+        </motion.div>
+      </motion.section>
 
-      
 
-  
+
+
 
       {/* Content Sections */}
       <div className="relative z-10 mx-auto max-w-5xl px-4 md:px-8">

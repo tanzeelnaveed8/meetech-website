@@ -28,7 +28,7 @@ const LEGAL_CONTENT = {
     lastUpdated: "January 27, 2026",
     content: `
       <h4>Introduction</h4>
-      <p>MEETECH LABs ("we", "our", "us") respects your privacy and is committed to protecting your personal data. This privacy policy explains how we collect, use, and safeguard your information when you use our website and services.</p>
+      <p>Meetech Development ("we", "our", "us") respects your privacy and is committed to protecting your personal data. This privacy policy explains how we collect, use, and safeguard your information when you use our website and services.</p>
 
       <h4>Data Collection</h4>
       <p>We collect the following information when you use our contact form:</p>
@@ -86,7 +86,7 @@ const LEGAL_CONTENT = {
     lastUpdated: "January 27, 2026",
     content: `
       <h4>Acceptance of Terms</h4>
-      <p>By accessing and using MEETECH LABs website and services, you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our services.</p>
+      <p>By accessing and using Meetech Development website and services, you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our services.</p>
 
       <h4>Services</h4>
       <p>We provide professional software development services including:</p>
@@ -137,7 +137,7 @@ const LEGAL_CONTENT = {
       </ul>
 
       <h4>Limitation of Liability</h4>
-      <p>MEETECH LABs liability is limited to the total amount paid for the specific project. We are not liable for:</p>
+      <p>Meetech Development liability is limited to the total amount paid for the specific project. We are not liable for:</p>
       <ul>
         <li>Indirect, incidental, or consequential damages</li>
         <li>Loss of profits, data, or business opportunities</li>
@@ -173,7 +173,7 @@ const LEGAL_CONTENT = {
     lastUpdated: "January 27, 2026",
     content: `
       <h4>Cookie Usage</h4>
-      <p>MEETECH LABs uses cookies to improve your experience on our website. Cookies are small text files stored on your device that help us provide a secure and functional environment.</p>
+      <p>Meetech Development uses cookies to improve your experience on our website. Cookies are small text files stored on your device that help us provide a secure and functional environment.</p>
       
       <h4>Technical Necessity</h4>
       <p>We use essential cookies to maintain secure sessions and load-balancing across our global server nodes. These are strictly necessary for the website to function.</p>
@@ -200,7 +200,7 @@ const TAB_TO_HASH: Record<LegalTab, string> = {
 export default function App() {
   const [activeTab, setActiveTab] = useState<LegalTab>('privacy');
   const [scrolled, setScrolled] = useState(false);
-  
+
   useEffect(() => {
     const syncTabWithHash = () => {
       const hash = window.location.hash.replace('#', '').toLowerCase();
@@ -232,7 +232,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-bg-page text-text-body font-sans selection:bg-accent/10 selection:text-accent">
-      
+
 
       <main className="max-w-7xl mx-auto px-6 pt-32 pb-24">
         <div className="grid lg:grid-cols-12 gap-12 lg:gap-20 items-start">
@@ -249,10 +249,10 @@ export default function App() {
                 return (
                   <button
                     key={key}
-onClick={() => setActiveTab(key as LegalTab)}
+                    onClick={() => setActiveTab(key as LegalTab)}
                     className={`w-full group flex items-start gap-4 p-4 rounded-2xl transition-all relative overflow-hidden ${isActive
-                        ? 'bg-bg-surface shadow-xl border border-border-subtle shadow-accent/5'
-                        : 'hover:bg-bg-subtle border border-transparent'
+                      ? 'bg-bg-surface shadow-xl border border-border-subtle shadow-accent/5'
+                      : 'hover:bg-bg-subtle border border-transparent'
                       }`}
                   >
                     {isActive && <div className="absolute left-0 top-1/4 bottom-1/4 w-1 bg-accent rounded-r-full" />}
@@ -285,7 +285,7 @@ onClick={() => setActiveTab(key as LegalTab)}
                 </div>
                 <h4 className="font-bold text-sm mb-2 text-accent">GDPR & UAE Data Compliant</h4>
                 <p className="text-[11px] text-text-muted leading-relaxed mb-6">
-                  MEETECH LABs strictly adheres to international data protection frameworks for our global client base.
+                  Meetech Development strictly adheres to international data protection frameworks for our global client base.
                 </p>
                 <button className="w-full py-3 bg-accent hover:bg-accent-hover rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all">
                   Verify Credentials
@@ -349,7 +349,7 @@ onClick={() => setActiveTab(key as LegalTab)}
         </div>
       </main>
 
-   
+
 
       <style jsx global>{`
         .legal-hub-content h4 {

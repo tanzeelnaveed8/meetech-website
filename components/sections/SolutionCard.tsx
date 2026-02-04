@@ -59,7 +59,7 @@ export function SolutionCard({ solution, index }: SolutionCardProps) {
         {/* View Details Button */}
         <button
           onClick={() => setIsExpanded(!isExpanded)}
-          className="flex items-center gap-3 text-white text-base hover:cursor-pointer uppercase tracking-[0.3em] opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500"
+          className="flex items-center gap-3 text-body  text-base hover:cursor-pointer uppercase tracking-[0.3em] opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500"
         >
           {isExpanded ? "Show Less" : "View Details"} <ArrowRight size={16} />
         </button>

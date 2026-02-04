@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'Admin Dashboard | MEETECH LABS',
+  title: 'Admin Dashboard | Meetech Development',
   description: 'Admin dashboard for managing leads, content, and analytics',
 };
 

@@ -34,11 +34,10 @@ export default function AdminLayout({
                     <Link
                       key={item.href}
                       href={item.href}
-                      className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-                        isActive
+                      className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${isActive
                           ? 'text-gray-900'
                           : 'text-gray-600 hover:text-gray-900'
-                      }`}
+                        }`}
                     >
                       {item.label}
                     </Link>
@@ -75,11 +74,10 @@ export default function AdminLayout({
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`px-3 py-2 rounded-md text-sm font-medium whitespace-nowrap transition-colors ${
-                    isActive
+                  className={`px-3 py-2 rounded-md text-sm font-medium whitespace-nowrap transition-colors ${isActive
                       ? 'text-gray-900'
                       : 'text-gray-600 hover:text-gray-900'
-                  }`}
+                    }`}
                 >
                   {item.label}
                 </Link>
@@ -98,7 +96,7 @@ export default function AdminLayout({
       <footer className="border-t border-gray-200 mt-auto">
         <div className="max-w-7xl mx-auto px-6 py-6">
           <p className="text-xs text-gray-500">
-            © {new Date().getFullYear()} MEETECH LABs. All rights reserved.
+            © {new Date().getFullYear()} Meetech Development. All rights reserved.
           </p>
         </div>
       </footer>

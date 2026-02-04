@@ -8,7 +8,7 @@ export type Solution = {
   title: string;
   tagline: string;
   description: string;
-  image: string;
+  image: string; 
   features: string[];
   technologies: string[];
   useCases: string[];
@@ -22,7 +22,7 @@ export const SOLUTIONS: Solution[] = [
     tagline: "Native and cross-platform apps users rely on daily",
     description:
       "Build powerful mobile experiences that engage users and drive business growth. From consumer apps to enterprise mobility solutions, we deliver high-performance applications for iOS and Android that users love.",
-    image: "/mobile app.png",
+    image: "/images/Mobile.webp",
     features: [
       "iOS & Android native development",
       "Cross-platform with React Native & Flutter",
@@ -56,7 +56,7 @@ export const SOLUTIONS: Solution[] = [
     tagline: "Scalable online stores that convert browsers into buyers",
     description:
       "Launch and scale your online business with custom e-commerce solutions built for performance and conversion. From product catalogs to checkout flows, we create shopping experiences that drive revenue.",
-    image: "/ecommerce.png",
+    image: "/images/ecommerce.webp",
     features: [
       "Custom storefront design",
       "Product catalog management",
@@ -90,7 +90,7 @@ export const SOLUTIONS: Solution[] = [
     tagline: "Tailored solutions for unique business challenges",
     description:
       "When off-the-shelf software doesn't cut it, we build custom solutions designed specifically for your workflows, processes, and business logic. Scalable, maintainable, and built to evolve with your needs.",
-    image: "/software.png",
+    image: "/images/software.webp",
     features: [
       "Requirements analysis & discovery",
       "Custom business logic implementation",
@@ -124,7 +124,7 @@ export const SOLUTIONS: Solution[] = [
     tagline: "Validate your idea fast with a production-ready MVP",
     description:
       "Launch your startup idea in weeks, not months. We help founders build lean, focused MVPs that validate product-market fit while maintaining the quality and architecture needed to scale when you find traction.",
-    image: "/mvp.png",
+    image: "/images/mvp.webp",
     features: [
       "Rapid prototyping & iteration",
       "Core feature prioritization",
@@ -158,7 +158,7 @@ export const SOLUTIONS: Solution[] = [
     tagline: "Modern web experiences that perform and convert",
     description:
       "From marketing websites to complex web applications, we build fast, accessible, and beautiful web experiences. SEO-optimized, mobile-responsive, and designed to achieve your business goals.",
-    image: "/web-app.png",
+    image: "/images/Websites.webp",
     features: [
       "Responsive design for all devices",
       "SEO optimization & performance",
