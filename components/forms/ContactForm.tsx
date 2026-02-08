@@ -206,9 +206,8 @@ export default function ContactForm() {
           name="name"
           value={formData.name}
           onChange={handleChange}
-          className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-            errors.name ? 'border-red-500' : 'border-gray-300'
-          }`}
+          className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${errors.name ? 'border-red-500' : 'border-gray-300'
+            }`}
           disabled={isSubmitting}
         />
         {errors.name && <p className="mt-1 text-sm text-red-600">{errors.name}</p>}
@@ -225,9 +224,8 @@ export default function ContactForm() {
           name="email"
           value={formData.email}
           onChange={handleChange}
-          className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-            errors.email ? 'border-red-500' : 'border-gray-300'
-          }`}
+          className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${errors.email ? 'border-red-500' : 'border-gray-300'
+            }`}
           disabled={isSubmitting}
         />
         {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email}</p>}
@@ -296,9 +294,8 @@ export default function ContactForm() {
           value={formData.message}
           onChange={handleChange}
           rows={5}
-          className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-            errors.message ? 'border-red-500' : 'border-gray-300'
-          }`}
+          className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${errors.message ? 'border-red-500' : 'border-gray-300'
+            }`}
           disabled={isSubmitting}
         />
         {errors.message && <p className="mt-1 text-sm text-red-600">{errors.message}</p>}
@@ -347,11 +344,10 @@ export default function ContactForm() {
       <button
         type="submit"
         disabled={isSubmitting}
-        className={`w-full px-6 py-3 text-white font-semibold rounded-lg transition-colors ${
-          isSubmitting
+        className={`w-full px-6 py-3 text-[#F8FAFC] font-semibold rounded-lg transition-colors ${isSubmitting
             ? 'bg-gray-400 cursor-not-allowed'
             : 'bg-blue-600 hover:bg-blue-700 active:bg-blue-800'
-        }`}
+          }`}
       >
         {isSubmitting ? 'Submitting...' : 'Submit Inquiry'}
       </button>

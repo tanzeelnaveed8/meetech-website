@@ -15,7 +15,7 @@ export default function AdminLayout({
   return (
     <div className="min-h-screen bg-white">
       {/* Admin Header */}
-      <header className="bg-white border-b border-gray-200">
+      <header className="bg-[#F8FAFC] border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-8">
@@ -35,8 +35,8 @@ export default function AdminLayout({
                       key={item.href}
                       href={item.href}
                       className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${isActive
-                          ? 'text-gray-900'
-                          : 'text-gray-600 hover:text-gray-900'
+                        ? 'text-gray-900'
+                        : 'text-gray-600 hover:text-gray-900'
                         }`}
                     >
                       {item.label}
@@ -49,13 +49,13 @@ export default function AdminLayout({
               <Link
                 href="/"
                 target="_blank"
-                className="text-sm text-gray-600 hover:text-gray-900 transition-colors"
+                className="text-sm text-gray-600 hover:text-[#1E293B] transition-colors"
               >
                 View Site
               </Link>
               <button
                 onClick={() => signOut({ callbackUrl: '/admin/login' })}
-                className="px-3 py-1.5 text-sm text-gray-600 hover:text-gray-900 border border-gray-300 rounded-md hover:border-gray-400 transition-colors"
+                className="px-3 py-1.5 text-sm text-gray-600 hover:text-[#1E293B] border border-gray-300 rounded-md hover:border-gray-400 transition-colors"
               >
                 Sign Out
               </button>
@@ -65,7 +65,7 @@ export default function AdminLayout({
       </header>
 
       {/* Mobile Navigation */}
-      <nav className="md:hidden bg-white border-b border-gray-200">
+      <nav className="md:hidden bg-[#F8FAFC] border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-6 py-2">
           <div className="flex items-center gap-2 overflow-x-auto">
             {ADMIN_NAV_ITEMS.map((item) => {
@@ -75,8 +75,8 @@ export default function AdminLayout({
                   key={item.href}
                   href={item.href}
                   className={`px-3 py-2 rounded-md text-sm font-medium whitespace-nowrap transition-colors ${isActive
-                      ? 'text-gray-900'
-                      : 'text-gray-600 hover:text-gray-900'
+                    ? 'text-gray-900'
+                    : 'text-gray-600 hover:text-gray-900'
                     }`}
                 >
                   {item.label}

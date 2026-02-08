@@ -40,10 +40,10 @@ function LoginForm() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-white px-4">
+    <div className="min-h-screen flex items-center justify-center bg-[#F8FAFC] px-4">
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
-          <h1 className="text-2xl font-semibold text-gray-900 mb-2 uppercase">
+          <h1 className="text-2xl font-semibold text-[#1E293B] mb-2 uppercase">
             Sign in to MEETECH LAB Admin
           </h1>
           <p className="text-sm text-gray-600">
@@ -101,7 +101,7 @@ function LoginForm() {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full px-4 py-2 text-sm font-medium text-white bg-gray-900 rounded-md hover:bg-gray-800 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+            className="w-full px-4 py-2 text-sm font-medium text-[#F8FAFC] bg-[#1E293B] rounded-md hover:bg-gray-800 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
           >
             {isLoading ? 'Signing in...' : 'Sign in'}
           </button>
@@ -120,7 +120,7 @@ function LoginForm() {
 export default function AdminLoginPage() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen flex items-center justify-center bg-white px-4">
+      <div className="min-h-screen flex items-center justify-center bg-[#F8FAFC] px-4">
         <div className="w-full max-w-sm text-center">
           <p className="text-gray-600">Loading...</p>
         </div>

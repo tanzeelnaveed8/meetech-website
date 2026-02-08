@@ -14,7 +14,7 @@ export default function LegalLayout({ type }: { type: keyof typeof LEGAL_CONTENT
                             before:absolute before:inset-0 before:bg-gradient-to-b before:from-transparent before:to-bg-surface before:rounded-t-[3rem]">
                     <div className="flex items-center gap-4">
                          {Icon && <Icon className="w-10 h-10 text-accent" />}
-                         <h2 className="text-5xl font-bold text-blue-800 uppercase tracking-wide">
+                         <h2 className="text-5xl font-bold text-[#0706F1] uppercase tracking-wide">
                               {doc.title}
                          </h2>
                     </div>

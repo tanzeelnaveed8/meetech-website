@@ -122,7 +122,7 @@ export default function LeadDetailView({ lead }: LeadDetailViewProps) {
       <div className="mb-6">
         <button
           onClick={() => router.back()}
-          className="text-gray-600 hover:text-gray-900 mb-4 flex items-center gap-2 text-sm transition-colors"
+          className="text-gray-600 hover:text-[#1E293B] mb-4 flex items-center gap-2 text-sm transition-colors"
         >
           ← Back to Leads
         </button>
@@ -184,7 +184,7 @@ export default function LeadDetailView({ lead }: LeadDetailViewProps) {
 
             <div className="mt-6">
               <dt className="text-xs font-medium text-gray-600 mb-2">Message</dt>
-              <dd className="text-sm text-gray-900 whitespace-pre-wrap bg-gray-50 p-4 rounded-md border border-gray-200">
+              <dd className="text-sm text-[#1E293B] whitespace-pre-wrap bg-gray-50 p-4 rounded-md border border-gray-200">
                 {lead.message}
               </dd>
             </div>
@@ -196,7 +196,7 @@ export default function LeadDetailView({ lead }: LeadDetailViewProps) {
                   href={lead.fileUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-sm text-gray-900 hover:text-gray-600 transition-colors"
+                  className="text-sm text-[#1E293B] hover:text-gray-600 transition-colors"
                 >
                   View Attachment →
                 </a>
@@ -221,7 +221,7 @@ export default function LeadDetailView({ lead }: LeadDetailViewProps) {
               <button
                 type="submit"
                 disabled={isAddingNote || !newNote.trim()}
-                className="mt-2 px-4 py-2 text-sm bg-gray-900 text-white rounded-md hover:bg-gray-800 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+                className="mt-2 px-4 py-2 text-sm bg-[#1E293B] text-[#F8FAFC] rounded-md hover:bg-gray-800 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
               >
                 {isAddingNote ? 'Adding...' : 'Add Note'}
               </button>
@@ -232,7 +232,7 @@ export default function LeadDetailView({ lead }: LeadDetailViewProps) {
               {lead.notes && lead.notes.length > 0 ? (
                 lead.notes.map((note) => (
                   <div key={note.id} className="border-l-2 border-gray-900 pl-4 py-2">
-                    <p className="text-sm text-gray-900 whitespace-pre-wrap">{note.note}</p>
+                    <p className="text-sm text-[#1E293B] whitespace-pre-wrap">{note.note}</p>
                     <p className="text-xs text-gray-500 mt-2">
                       {note.author.name} • {formatDistanceToNow(new Date(note.createdAt), { addSuffix: true })}
                     </p>
@@ -256,11 +256,10 @@ export default function LeadDetailView({ lead }: LeadDetailViewProps) {
                   key={option.value}
                   onClick={() => handleStatusUpdate(option.value)}
                   disabled={isUpdating || status === option.value}
-                  className={`w-full text-left px-3 py-2 text-sm rounded-md transition-colors ${
-                    status === option.value
-                      ? option.color
-                      : 'bg-gray-50 hover:bg-gray-100 text-gray-700'
-                  } disabled:cursor-not-allowed`}
+                  className={`w-full text-left px-3 py-2 text-sm rounded-md transition-colors ${status === option.value
+                    ? option.color
+                    : 'bg-gray-50 hover:bg-gray-100 text-gray-700'
+                    } disabled:cursor-not-allowed`}
                 >
                   {option.label}
                 </button>
@@ -292,12 +291,12 @@ export default function LeadDetailView({ lead }: LeadDetailViewProps) {
               )}
               <div>
                 <dt className="text-xs font-medium text-gray-600">Landing Page</dt>
-                <dd className="mt-1 text-sm text-gray-900 break-all">{lead.landingPage}</dd>
+                <dd className="mt-1 text-sm text-[#1E293B] break-all">{lead.landingPage}</dd>
               </div>
               {lead.referrerUrl && (
                 <div>
                   <dt className="text-xs font-medium text-gray-600">Referrer</dt>
-                  <dd className="mt-1 text-sm text-gray-900 break-all">{lead.referrerUrl}</dd>
+                  <dd className="mt-1 text-sm text-[#1E293B] break-all">{lead.referrerUrl}</dd>
                 </div>
               )}
               <div>

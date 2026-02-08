@@ -45,7 +45,7 @@ const PortfolioSection = () => {
                                         <span className="text-accent text-xs font-black uppercase tracking-[0.4em]">Expertise</span>
                                    </div>
                                    <h2 className="text-5xl md:text-6xl font-black text-text-primary uppercase tracking-tighter leading-none">
-                                        Featured<br />Portfolios<span className="text-accent">.</span>
+                                        Featured<br />Portfolios
                                    </h2>
                               </div>
 
@@ -102,14 +102,14 @@ const PortfolioSection = () => {
                                              <div className="absolute bottom-0 left-0 p-12 w-full space-y-5">
                                                   <div className="flex gap-2">
                                                        {item.tags.slice(0, 2).map((tag, i) => (
-                                                            <span key={i} className="text-[10px] uppercase font-bold tracking-widest text-white bg-accent px-3 py-1 rounded shadow-lg">
+                                                            <span key={i} className="text-[10px] uppercase font-bold tracking-widest text-[#F8FAFC] bg-accent px-3 py-1 rounded shadow-lg">
                                                                  {tag}
                                                             </span>
                                                        ))}
                                                   </div>
 
                                                   <div>
-                                                       <h3 className="text-3xl font-black text-white uppercase leading-tight drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">{item.title}</h3>
+                                                       <h3 className="text-3xl font-black text-[#F8FAFC] uppercase leading-tight drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">{item.title}</h3>
                                                        <p className="text-gray-200 font-bold text-xs uppercase tracking-widest mt-2 drop-shadow-[0_2px_4px_rgba(0,0,0,0.6)]">{item.industry}</p>
                                                   </div>
 

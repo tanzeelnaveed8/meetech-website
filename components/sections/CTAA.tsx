@@ -45,7 +45,7 @@ const MeetechCTA = () => {
 
                               {/* Heading with Fluid Typography */}
                               <div className="space-y-4">
-                                   <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white leading-[1.1]">
+                                   <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight text-[#F8FAFC] leading-[1.1]">
                                         Ready to scale your <br className="hidden md:block" />
                                         <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400">
                                              Engineering?
@@ -58,12 +58,12 @@ const MeetechCTA = () => {
 
                               {/* Action Buttons */}
                               <div className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto">
-                                   <button className="group w-full sm:w-auto px-8 py-4 bg-blue-600 hover:bg-blue-500 text-white rounded-2xl font-bold text-lg transition-all duration-300 flex items-center justify-center gap-2 shadow-lg shadow-blue-600/25 active:scale-95">
+                                   <button className="group w-full sm:w-auto px-8 py-4 bg-blue-600 hover:bg-blue-500 text-[#F8FAFC] rounded-2xl font-bold text-lg transition-all duration-300 flex items-center justify-center gap-2 shadow-lg shadow-blue-600/25 active:scale-95">
                                         Book Strategy Call
                                         <ArrowUpRight className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
                                    </button>
 
-                                   <button className="w-full sm:w-auto px-8 py-4 bg-white/5 hover:bg-white/10 text-white border border-white/10 rounded-2xl font-bold text-lg transition-all duration-300 active:scale-95">
+                                   <button className="w-full sm:w-auto px-8 py-4 bg-white/5 hover:bg-white/10 text-[#F8FAFC] border border-white/10 rounded-2xl font-bold text-lg transition-all duration-300 active:scale-95">
                                         View Case Studies
                                    </button>
                               </div>

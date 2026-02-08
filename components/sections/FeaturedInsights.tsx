@@ -101,11 +101,10 @@ const InsightCardComponent = ({ type, title, image, link, tags }: InsightCard) =
           {/* Top Section - Type Badge */}
           <div className="flex items-start justify-between">
             <span
-              className={`inline-block px-2 sm:px-3 py-1 sm:py-1.5 rounded-full text-[8px] sm:text-[10px] font-black uppercase tracking-[0.15em] sm:tracking-[0.2em] backdrop-blur-md border transition-all duration-300 ${
-                isCaseStudy
-                  ? "bg-accent/20 text-accent border-accent/40 group-hover:bg-accent/30 group-hover:border-accent/60"
-                  : "bg-accent-secondary/20 text-accent-secondary border-accent-secondary/40 group-hover:bg-accent-secondary/30 group-hover:border-accent-secondary/60"
-              }`}
+              className={`inline-block px-2 sm:px-3 py-1 sm:py-1.5 rounded-full text-[8px] sm:text-[10px] font-black uppercase tracking-[0.15em] sm:tracking-[0.2em] backdrop-blur-md border transition-all duration-300 ${isCaseStudy
+                ? "bg-accent/20 text-accent border-accent/40 group-hover:bg-accent/30 group-hover:border-accent/60"
+                : "bg-accent-secondary/20 text-accent-secondary border-accent-secondary/40 group-hover:bg-accent-secondary/30 group-hover:border-accent-secondary/60"
+                }`}
             >
               {type}
             </span>
@@ -129,7 +128,7 @@ const InsightCardComponent = ({ type, title, image, link, tags }: InsightCard) =
 
             {/* Title with Glassmorphism */}
             <div className="backdrop-blur-md bg-white/5 rounded-xl sm:rounded-2xl p-2.5 sm:p-4 border border-white/10 transition-all duration-300 group-hover:bg-white/10 group-hover:border-white/20 overflow-hidden">
-              <h3 className="text-xs sm:text-sm font-bold leading-tight text-white line-clamp-2 group-hover:text-accent transition-colors duration-300 break-words">
+              <h3 className="text-xs sm:text-sm font-bold leading-tight text-[#F8FAFC] line-clamp-2 group-hover:text-accent transition-colors duration-300 break-words">
                 {title}
               </h3>
             </div>
@@ -174,7 +173,7 @@ export default function FeaturedInsights() {
             <h2 className="text-4xl sm:text-4xl md:text-5xl lg:text-5xl font-black text-text-primary uppercase tracking-tighter leading-none">
               Stories of our<br />
               <span className="text-accent">Transformations</span>
-              <span className="text-accent">.</span>
+
             </h2>
 
             <p className="text-base sm:text-lg text-text-body md:text-xl leading-relaxed break-words">

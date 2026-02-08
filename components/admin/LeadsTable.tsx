@@ -153,7 +153,7 @@ export default function LeadsTable({ initialLeads = [] }: LeadsTableProps) {
                   </th>
                 </tr>
               </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
+              <tbody className="bg-[#F8FAFC] divide-y divide-gray-200">
                 {leads.map((lead) => (
                   <tr key={lead.id} className="hover:bg-gray-50">
                     <td className="px-4 py-3 whitespace-nowrap">
@@ -163,7 +163,7 @@ export default function LeadsTable({ initialLeads = [] }: LeadsTableProps) {
                       )}
                     </td>
                     <td className="px-4 py-3 whitespace-nowrap">
-                      <a href={`mailto:${lead.email}`} className="text-sm text-gray-900 hover:text-gray-600">
+                      <a href={`mailto:${lead.email}`} className="text-sm text-[#1E293B] hover:text-gray-600">
                         {lead.email}
                       </a>
                     </td>
@@ -188,7 +188,7 @@ export default function LeadsTable({ initialLeads = [] }: LeadsTableProps) {
                     <td className="px-4 py-3 whitespace-nowrap text-sm">
                       <Link
                         href={`/admin/leads/${lead.id}`}
-                        className="text-gray-900 hover:text-gray-600 font-medium"
+                        className="text-[#1E293B] hover:text-gray-600 font-medium"
                       >
                         View
                       </Link>
@@ -206,7 +206,7 @@ export default function LeadsTable({ initialLeads = [] }: LeadsTableProps) {
             <button
               onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
               disabled={currentPage === 1}
-              className="px-3 py-1.5 text-xs font-medium text-gray-700 border border-gray-300 rounded-md hover:bg-white disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              className="px-3 py-1.5 text-xs font-medium text-gray-700 border border-gray-300 rounded-md hover:bg-[#F8FAFC] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
               Previous
             </button>
@@ -216,7 +216,7 @@ export default function LeadsTable({ initialLeads = [] }: LeadsTableProps) {
             <button
               onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
               disabled={currentPage === totalPages}
-              className="px-3 py-1.5 text-xs font-medium text-gray-700 border border-gray-300 rounded-md hover:bg-white disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              className="px-3 py-1.5 text-xs font-medium text-gray-700 border border-gray-300 rounded-md hover:bg-[#F8FAFC] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
               Next
             </button>

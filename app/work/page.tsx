@@ -101,7 +101,7 @@ export default function PortfolioPage() {
                                         <span className="text-accent text-xs font-black uppercase tracking-[0.4em]">Expertise</span>
                                    </div>
                                    <h2 className="text-5xl md:text-6xl font-black text-text-primary uppercase tracking-tighter leading-none">
-                                        Featured<br />Portfolios<span className="text-accent">.</span>
+                                        Featured<br />Portfolios
                                    </h2>
                               </div>
 
@@ -142,7 +142,7 @@ export default function PortfolioPage() {
                                              <div className="absolute bottom-0 left-0 p-12 w-full space-y-5">
                                                   <div className="flex gap-2">
                                                        {item.tags.slice(0, 2).map((tag, i) => (
-                                                            <span key={i} className="text-[10px] uppercase font-bold tracking-widest text-white bg-accent/50 px-3 py-1 rounded">
+                                                            <span key={i} className="text-[10px] uppercase font-bold tracking-widest text-[#F8FAFC] bg-accent/50 px-3 py-1 rounded">
                                                                  {tag}
                                                             </span>
                                                        ))}
@@ -170,7 +170,7 @@ export default function PortfolioPage() {
                     </div>
 
 
-                   
+
                </section>
 
                {/* Project Detail Modal */}

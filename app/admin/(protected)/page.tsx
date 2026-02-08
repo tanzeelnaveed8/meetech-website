@@ -10,7 +10,7 @@ export default function AdminDashboardPage() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-semibold text-gray-900 mb-1">Dashboard</h1>
+        <h1 className="text-2xl font-semibold text-[#1E293B] mb-1">Dashboard</h1>
         <p className="text-sm text-gray-600">
           Manage your leads, content, and view analytics.
         </p>
@@ -91,7 +91,7 @@ export default function AdminDashboardPage() {
 
       {/* Getting Started */}
       <div className="bg-gray-50 border border-gray-200 rounded-lg p-6">
-        <h2 className="text-base font-semibold text-gray-900 mb-2">Getting Started</h2>
+        <h2 className="text-base font-semibold text-[#1E293B] mb-2">Getting Started</h2>
         <p className="text-sm text-gray-600 mb-4">
           New to the admin panel? Here are some helpful resources:
         </p>
@@ -120,7 +120,7 @@ function StatCard({
       href={href}
       className="block border border-gray-200 rounded-lg p-5 transition-all hover:border-gray-300 hover:shadow-sm"
     >
-      <h3 className="text-sm font-semibold text-gray-900 mb-1">{title}</h3>
+      <h3 className="text-sm font-semibold text-[#1E293B] mb-1">{title}</h3>
       <p className="text-xs text-gray-600">{description}</p>
     </Link>
   );
@@ -140,7 +140,7 @@ function ActionButton({
       href={href}
       className="block p-4 border border-gray-200 rounded-md hover:border-gray-300 hover:bg-gray-50 transition-all"
     >
-      <h4 className="text-sm font-medium text-gray-900 mb-1">{label}</h4>
+      <h4 className="text-sm font-medium text-[#1E293B] mb-1">{label}</h4>
       <p className="text-xs text-gray-600">{description}</p>
     </Link>
   );

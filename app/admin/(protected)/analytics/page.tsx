@@ -11,7 +11,7 @@ export default function AnalyticsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold text-gray-900 mb-1">Analytics</h1>
+        <h1 className="text-2xl font-semibold text-[#1E293B] mb-1">Analytics</h1>
         <p className="text-sm text-gray-600">
           Track user behavior and conversion metrics
         </p>

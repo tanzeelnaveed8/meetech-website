@@ -100,7 +100,7 @@ const ProjectDetail = ({ project, category, close }: { project: any; category: s
                               </div>
 
                               <h2 className="text-4xl md:text-5xl font-black text-text-primary uppercase tracking-tight mb-6">
-                                   {project.title}<span className="text-accent">.</span>
+                                   {project.title}
                               </h2>
 
                               <p className="text-text-body text-xl mb-12 leading-relaxed opacity-80">

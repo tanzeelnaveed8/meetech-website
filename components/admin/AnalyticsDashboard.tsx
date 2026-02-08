@@ -206,11 +206,10 @@ export default function AnalyticsDashboard() {
                 </div>
                 <div className="w-full bg-gray-100 rounded-full h-2">
                   <div
-                    className={`h-2 rounded-full ${
-                      index === 0 ? 'bg-gray-900' :
+                    className={`h-2 rounded-full ${index === 0 ? 'bg-gray-900' :
                       index === 1 ? 'bg-gray-700' :
-                      'bg-gray-500'
-                    }`}
+                        'bg-gray-500'
+                      }`}
                     style={{ width: `${stage.percentage}%` }}
                   />
                 </div>
@@ -229,7 +228,7 @@ export default function AnalyticsDashboard() {
               {topPages.pages.map((page) => (
                 <div key={page.path} className="flex justify-between items-center">
                   <span className="text-sm text-gray-700 truncate flex-1">{page.path}</span>
-                  <span className="text-sm font-medium text-gray-900 ml-4">
+                  <span className="text-sm font-medium text-[#1E293B] ml-4">
                     {page.views.toLocaleString()}
                   </span>
                 </div>
@@ -258,7 +257,7 @@ export default function AnalyticsDashboard() {
                   </div>
                   <div className="w-full bg-gray-100 rounded-full h-2">
                     <div
-                      className="bg-gray-900 h-2 rounded-full"
+                      className="bg-[#1E293B] h-2 rounded-full"
                       style={{ width: `${device.percentage}%` }}
                     />
                   </div>

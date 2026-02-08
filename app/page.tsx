@@ -86,7 +86,7 @@ export default function App() {
           >
             Where Visionary Ideas <br />
             <span className="text-accent bg-clip-text">
-              Meet Technology.
+              Meet Technology
             </span>
           </motion.h1>
 
@@ -161,7 +161,7 @@ export default function App() {
               id="tech-stack-heading"
               className="text-5xl md:text-6xl font-black text-text-primary uppercase tracking-tighter leading-none"
             >
-              Built with<br />Modern Tech<span className="text-accent">.</span>
+              Built with<br />Modern Tech
             </h2>
             <p className="text-lg text-text-body md:text-xl leading-relaxed">
               We use battle-tested technologies that ensure performance, scalability, and maintainability.

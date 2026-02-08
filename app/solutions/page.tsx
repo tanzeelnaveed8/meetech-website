@@ -98,7 +98,7 @@ export default function SolutionsPage() {
             id="solutions-heading"
             className="text-5xl md:text-6xl font-black text-text-primary uppercase tracking-tighter leading-none"
           >
-            Our Core<br />Solutions<span className="text-accent">.</span>
+            Our Core<br />Solutions
           </h2>
           <p className="text-lg text-text-body md:text-xl leading-relaxed">
             Proven approaches to common business challenges, backed by modern technology and best practices.
@@ -114,14 +114,14 @@ export default function SolutionsPage() {
             reduce
               ? {}
               : {
-                  hidden: {},
-                  visible: {
-                    transition: {
-                      staggerChildren: 0.12,
-                      delayChildren: 0.08,
-                    },
+                hidden: {},
+                visible: {
+                  transition: {
+                    staggerChildren: 0.12,
+                    delayChildren: 0.08,
                   },
-                }
+                },
+              }
           }
         >
           {SOLUTIONS.map((solution, index) => (
@@ -150,7 +150,7 @@ export default function SolutionsPage() {
               id="tech-stack-heading"
               className="text-5xl md:text-6xl font-black text-text-primary uppercase tracking-tighter leading-none"
             >
-              Built with<br />Modern Tech<span className="text-accent">.</span>
+              Built with<br />Modern Tech
             </h2>
             <p className="text-lg text-text-body md:text-xl leading-relaxed">
               We use battle-tested technologies that ensure performance, scalability, and maintainability.
@@ -218,7 +218,7 @@ export default function SolutionsPage() {
               id="use-cases-heading"
               className="text-5xl md:text-6xl font-black text-text-primary uppercase tracking-tighter leading-none"
             >
-              Industries<br />We Serve<span className="text-accent">.</span>
+              Industries<br />We Serve
             </h2>
             <p className="text-lg text-text-body md:text-xl leading-relaxed">
               Our solutions power businesses across diverse industries and verticals.

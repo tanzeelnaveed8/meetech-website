@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight, Eye } from "lucide-react";
-import {CARDS} from "./data";
+import { CARDS } from "./data";
 
 export function WhatWeBuild() {
   const reduce = Boolean(useReducedMotion());
@@ -35,7 +35,7 @@ export function WhatWeBuild() {
             id="what-we-build-heading"
             className="text-5xl md:text-6xl font-black text-text-primary uppercase tracking-tighter leading-none"
           >
-            What we<br />Build<span className="text-accent">.</span>
+            What we<br />Build
           </h2>
           <p className="text-lg text-text-body md:text-xl leading-relaxed">
             Modern solutions that drive growth and scale with you.

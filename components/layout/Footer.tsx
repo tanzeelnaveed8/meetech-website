@@ -133,12 +133,12 @@ const Footer: React.FC = () => {
             {/* Social Icons */}
             <div className="flex items-center gap-3 pt-2 text-text-muted">
               <SocialIconBtn
-                href="https://github.com"
+                href="#"
                 icon={<Github size={18} />}
                 label="GitHub"
               />
               <SocialIconBtn
-                href="https://linkedin.com"
+                href="#"
                 icon={<Linkedin size={18} />}
                 label="LinkedIn"
               />
