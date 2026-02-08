@@ -79,8 +79,8 @@ const contactInfo = [
   {
     icon: <Phone size={18} />,
     label: "Phone",
-    value: "+971 503088512",
-    href: "tel:+971503088512",
+    value: "+1 334 926 9060",
+    href: "tel:+1 334 926 9060",
   },
   {
     icon: <MapPin size={18} />,
