@@ -32,7 +32,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${workSans.variable} ${workSans.variable} min-h-screen antialiased`}
+        className={`${workSans.variable} ${workSans.variable} min-h-screen antialiased work-sans`}
       >
         <Script
           src="/theme-init.js"
@@ -44,7 +44,7 @@ export default function RootLayout({
         >
           Skip to main content
         </a>
-        <div className="flex min-h-screen flex-col overflow-x-hidden">
+        <div className="flex min-h-screen flex-col overflow-x-hidden work-sans">
           <ConditionalLayout>
             {children}
           </ConditionalLayout>

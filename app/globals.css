@@ -66,6 +66,10 @@
   }
 }
 
+.work-sans{
+  font-family:var(--font-work-sans) ;
+}
+
 [data-theme="light"] {
   color-scheme: light;
   --bg-page: #ffffff;
@@ -138,9 +142,9 @@
    --------------------------------------------------------------------------- */
 
 @theme inline {
-  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
-  --font-headline: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-work-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-work-sans), ui-monospace, monospace;
+  --font-headline: var(--font-work-sans), ui-sans-serif, system-ui, sans-serif;
 
   --font-size-headline-xl: clamp(2rem, 4vw, 3rem);
   --font-size-headline-lg: clamp(1.5rem, 3vw, 2rem);
