@@ -72,7 +72,7 @@ export function WhatWeBuild() {
                       <p className="text-text-body text-sm mt-3 leading-relaxed">{description}</p>
                     </div>
 
-                    <div className="flex items-center gap-3 text-accent font-black text-[11px] uppercase tracking-[0.3em] opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500">
+                    <div className="flex items-center gap-3 text-accent font-black text-[11px] uppercase tracking-[0.3em] translate-y-4 group-hover:translate-y-0 transition-all duration-500">
                       Learn More <ArrowRight size={16} />
                     </div>
                   </div>

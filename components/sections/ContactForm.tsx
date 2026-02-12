@@ -78,6 +78,11 @@ export function ContactForm() {
   const [errors, setErrors] = useState<FormErrors>({});
   const [submitStatus, setSubmitStatus] = useState<SubmitStatus>("idle");
 
+  const validateName = (name: string): boolean => {
+    const nameRegex = /^[A-Za-z\s]+$/;
+    return nameRegex.test(name.trim());
+  };
+
   const validateEmail = (email: string): boolean => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
@@ -93,6 +98,8 @@ export function ContactForm() {
 
     if (!formData.name.trim()) {
       newErrors.name = "Name is required";
+    } else if (!validateName(formData.name)) {
+      newErrors.name = "Name can contain letters and spaces only";
     }
 
     if (!formData.email.trim()) {

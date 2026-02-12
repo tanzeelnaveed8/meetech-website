@@ -86,7 +86,7 @@ const contactInfo = [
     icon: <MapPin size={18} />,
     label: "Location",
     value: "United States",
-    href: null,
+    href: "https://www.google.com/maps?q=United+States",
   },
 ];
 
@@ -106,7 +106,7 @@ const Footer: React.FC = () => {
       {/* Atmospheric Radial Blur */}
       <div className="absolute -top-[15%] left-1/2 -translate-x-1/2 h-[600px] w-[900px] bg-accent/5 blur-[140px] rounded-full pointer-events-none" />
 
-      <div className="container relative z-20 text-text-muted mx-auto px-6 lg:px-12 max-w-7xl">
+      <div className="container relative z-20 text-text-muted mx-auto px-3 md:px-8 lg:px-12 max-w-7xl">
         {/* Main Footer Content */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 pb-12">
           {/* Brand & Description */}
@@ -198,10 +198,13 @@ const Footer: React.FC = () => {
                   {item.href ? (
                     <a
                       href={item.href}
-                      className="text-sm font-medium text-text-muted hover:text-accent transition-colors"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-sm font-medium text-text-muted hover:text-accent hover:cursor-pointer transition-colors"
                     >
                       {item.value}
                     </a>
+
                   ) : (
                     <p className="text-sm font-medium text-text-muted">
                       {item.value}

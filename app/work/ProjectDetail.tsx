@@ -61,7 +61,7 @@ const ProjectDetail = ({ project, category, close }: { project: any; category: s
                               <div className="w-full h-full relative overflow-hidden border-4 border-text-primary/10">
                                    {/* Frame Top Bar */}
                                    <div
-                                        className={`h-6 w-full bg-border-subtle/50 flex items-center px-3 gap-1 border-b border-border-subtle ${isMobile ? 'justify-center' : ''
+                                        className={`w-full bg-border-subtle/50 flex items-center px-3 gap-1 border-b border-border-subtle ${isMobile ? 'justify-center' : ''
                                              }`}
                                    >
                                         {isMobile ? (
@@ -76,7 +76,7 @@ const ProjectDetail = ({ project, category, close }: { project: any; category: s
                                    </div>
 
                                    {/* Image Container */}
-                                   <div className="absolute inset-0 pt-6 overflow-hidden bg-white">
+                                   <div className="absolute inset-0 overflow-hidden bg-white">
                                         <div className="w-full h-full">
                                              <img
                                                   src={project.imgUrl}
@@ -90,20 +90,20 @@ const ProjectDetail = ({ project, category, close }: { project: any; category: s
 
 
                          {/* Content Side */}
-                         <div className="lg:col-span-7 p-8 md:p-16 flex flex-col justify-center">
+                         <div className="lg:col-span-7 p-4 md:p-16 flex flex-col justify-center">
                               <div className="flex gap-2 mb-8">
                                    {project.tags.map((tag: string, i: number) => (
-                                        <span key={i} className="px-2 py-1 text-[10px] font-black uppercase tracking-widest text-accent bg-accent-muted border border-accent/10 rounded">
+                                        <span key={i} className="px-2 py-1 text-[8px] font-black uppercase tracking-widest text-accent bg-accent-muted border border-accent/10 rounded">
                                              {tag}
                                         </span>
                                    ))}
                               </div>
 
-                              <h2 className="text-4xl md:text-5xl font-black text-text-primary uppercase tracking-tight mb-6">
+                              <h2 className="text-3xl md:text-5xl font-black text-text-primary uppercase tracking-tight mb-6">
                                    {project.title}
                               </h2>
 
-                              <p className="text-text-body text-xl mb-12 leading-relaxed opacity-80">
+                              <p className="text-text-body text-lg md:text-xl mb-12 leading-relaxed opacity-80">
                                    {project.description}
                               </p>
 

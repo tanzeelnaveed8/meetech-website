@@ -38,7 +38,7 @@ export function SolutionCard({ solution, index }: SolutionCardProps) {
       <div className="absolute inset-0 bg-gradient-to-t from-bg-page via-bg-page/40 to-transparent opacity-90 group-hover:opacity-100 transition-opacity" />
 
       {/* Content at Bottom */}
-      <div className="absolute bottom-0 left-0 p-12 w-full space-y-5">
+      <div className="absolute bottom-0 left-0 p-6 md:p-12 w-full space-y-5">
         {/* Technology Tags */}
         <div className="flex gap-2 flex-wrap">
           {solution.technologies.slice(0, 2).map((tech) => (
@@ -59,7 +59,7 @@ export function SolutionCard({ solution, index }: SolutionCardProps) {
         {/* View Details Button */}
         <button
           onClick={() => setIsExpanded(!isExpanded)}
-          className="flex items-center gap-3 text-body  text-base hover:cursor-pointer uppercase tracking-[0.3em] opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500"
+          className="flex items-center gap-3 text-body  text-base hover:cursor-pointer uppercase tracking-[0.3em] hover:text-accent transition-all duration-500"
         >
           {isExpanded ? "Show Less" : "View Details"} <ArrowRight size={16} />
         </button>

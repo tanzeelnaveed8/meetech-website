@@ -49,7 +49,7 @@ const PortfolioSection = () => {
                                    </h2>
                               </div>
 
-                              <div className="flex p-0 md:p-2 bg-bg-card border border-border-subtle rounded-3xl shadow-xl overflow-x-auto w-fit">
+                              <div className="flex flex-col md:flex-row p-0 md:p-2 bg-bg-card border border-border-subtle rounded-3xl shadow-xl overflow-x-auto w-fit">
                                    {categories.map((cat) => (
                                         <button
                                              key={cat.id}

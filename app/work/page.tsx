@@ -34,7 +34,7 @@ export default function PortfolioPage() {
      const reduce = Boolean(useReducedMotion());
 
      return (
-          <div className="relative z-20 h-[420vh] md:h-full w-full text-text-primary selection:bg-accent selection:text-text-inverse font-sans transition-colors duration-500 ">
+          <div className="relative z-20 h-[420vh] md:h-full w-full text-text-primary selection:bg-accent selection:text-text-inverse font-sans transition-colors duration-500 py-5 md:py-0">
                {/* Decorative Grid */}
                <div className="absolute inset-0 bg-[linear-gradient(to_right,var(--border-default)_1px,transparent_1px),linear-gradient(to_bottom,var(--border-default)_1px,transparent_1px)] bg-[size:50px_50px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-30 pointer-events-none" />
 
@@ -80,7 +80,7 @@ export default function PortfolioPage() {
                               { label: "Mobile Apps", val: "30+" },
                               { label: "Industries", val: "15+" },
                          ].map((item, idx) => (
-                              <div key={idx} className="px-6 py-4 rounded-xl border border-border-default bg-bg-card text-text-primary shadow-sm hover:shadow-md transition-all duration-300">
+                              <div key={idx} className=" w-44 px-6 py-4 rounded-xl border border-border-default bg-bg-card text-text-primary shadow-sm hover:shadow-md transition-all duration-300">
                                    <p className="text-sm font-semibold text-text-muted mb-1">{item.label}</p>
                                    <p className="text-2xl font-bold text-accent">{item.val}</p>
                               </div>
@@ -105,12 +105,12 @@ export default function PortfolioPage() {
                                    </h2>
                               </div>
 
-                              <div className="flex p-2 bg-bg-card border border-border-subtle rounded-3xl shadow-xl overflow-x-auto w-fit">
+                              <div className="flex flex-col md:flex-row w-full  p-2 bg-bg-card border border-border-subtle rounded-3xl shadow-xl overflow-x-auto md:w-fit">
                                    {categories.map((cat) => (
                                         <button
                                              key={cat.id}
                                              onClick={() => setSelectedCategory(cat.id)}
-                                             className={`flex items-center gap-3 px-4 md:px-8 py-4 rounded-2xl text-[11px] font-black tracking-widest uppercase transition-all duration-500 whitespace-nowrap ${selectedCategory === cat.id
+                                             className={`flex items-center gap-3 px-4 md:px-8 py-4 rounded-2xl text-[11px] text-center font-black tracking-widest uppercase transition-all duration-500 whitespace-nowrap ${selectedCategory === cat.id
                                                   ? 'bg-accent text-text-inverse shadow-xl shadow-accent/30'
                                                   : 'text-text-muted hover:text-text-primary'
                                                   }`}
@@ -139,7 +139,7 @@ export default function PortfolioPage() {
                                              <img src={item.imgUrl} alt={item.title} className="w-full h-full object-cover grayscale-[0.4] group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-110" />
                                              <div className="absolute inset-0 bg-gradient-to-t from-bg-page via-bg-page/40 to-transparent opacity-90 group-hover:opacity-100 transition-opacity" />
 
-                                             <div className="absolute bottom-0 left-0 p-12 w-full space-y-5">
+                                             <div className="absolute bottom-0 left-0 p-6 md:p-12 w-full space-y-5">
                                                   <div className="flex gap-2">
                                                        {item.tags.slice(0, 2).map((tag, i) => (
                                                             <span key={i} className="text-[10px] uppercase font-bold tracking-widest text-[#F8FAFC] bg-accent/50 px-3 py-1 rounded">
@@ -153,7 +153,7 @@ export default function PortfolioPage() {
                                                        <p className="text-text-muted font-bold text-xs uppercase tracking-widest mt-2">{item.industry}</p>
                                                   </div>
 
-                                                  <div className="flex items-center gap-3 text-accent font-black text-[11px] uppercase tracking-[0.3em] opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500">
+                                                  <div className="flex items-center gap-3 text-accent font-black text-[11px] uppercase tracking-[0.3em]  translate-y-1 group-hover:translate-y-0 transition-all duration-500">
                                                        View Case Study <ArrowRight size={16} />
                                                   </div>
                                              </div>

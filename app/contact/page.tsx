@@ -37,7 +37,7 @@ export default function ContactPage() {
           transition={{ duration: 0.8 }}
           className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight mb-4"
         >
-          Let's Build Something <span className="text-accent">rdinary</span>
+          Let's Build Something <span className="text-accent">Ordinary</span>
         </motion.h1>
 
         {/* Subheading */}

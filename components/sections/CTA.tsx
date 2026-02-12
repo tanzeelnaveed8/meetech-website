@@ -46,25 +46,25 @@ const MeetechCTA = () => {
 
                               {/* Heading with Fluid Typography */}
                               <div className="space-y-4">
-                                   <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight text-[#F8FAFC] leading-[1.1]">
+                                   <h2 className="text-3xl md:text-6xl lg:text-7xl font-bold tracking-tight text-[#F8FAFC] leading-[1.1]">
                                         Ready to scale your <br className="hidden md:block" />
                                         <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400">
                                              Engineering?
                                         </span>
                                    </h2>
-                                   <p className="mx-auto max-w-2xl text-lg md:text-xl text-slate-400 leading-relaxed">
+                                   <p className="mx-auto max-w-2xl text-base` md:text-xl text-slate-400 leading-relaxed">
                                         Join 50+ high-growth teams dominating their markets with Meetech's managed engineering partnerships.
                                    </p>
                               </div>
 
                               {/* Action Buttons */}
                               <div className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto">
-                                   <Link href="/contact" className="group w-full sm:w-auto px-8 py-4 bg-blue-600 hover:bg-blue-500 text-[#F8FAFC] rounded-2xl font-bold text-lg transition-all duration-300 flex items-center justify-center gap-2 shadow-lg shadow-blue-600/25 active:scale-95">
+                                   <Link href="/contact" className="group w-full sm:w-auto  px-4 md:px-8 py-4 bg-blue-600 hover:bg-blue-500 text-[#F8FAFC] rounded-2xl font-bold text-sm md:text-lg transition-all duration-300 flex items-center justify-center gap-2 shadow-lg shadow-blue-600/25 active:scale-95">
                                         Book Strategy Call
                                         <ArrowUpRight className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
                                    </Link>
 
-                                   <Link href="/work" className="w-full sm:w-auto px-8 py-4 bg-white/5 hover:bg-white/10 text-[#F8FAFC] border border-white/10 rounded-2xl font-bold text-lg transition-all duration-300 active:scale-95">
+                                   <Link href="/work" className="w-full sm:w-auto px-8 py-4 bg-white/5 hover:bg-white/10 text-[#F8FAFC] border border-white/10 rounded-2xl font-bold text-sm md:text-lg transition-all duration-300 active:scale-95">
                                         View Case Studies
                                    </Link>
                               </div>
