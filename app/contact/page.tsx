@@ -83,7 +83,7 @@ export default function ContactPage() {
       </div>
 
       {/* Contact Form */}
-      <div className="relative z-10 mx-auto max-w-4xl px-4 md:px-8 py-16">
+      <div id="contact-form" className="relative z-10 mx-auto max-w-4xl px-4 md:px-8 py-16">
         <ContactForm />
       </div>
 
