@@ -24,6 +24,7 @@ export const ADMIN_ROLES = [
   { value: 'ADMIN', label: 'Administrator', description: 'Full access to all features' },
   { value: 'EDITOR', label: 'Editor', description: 'Can manage leads and content' },
   { value: 'VIEWER', label: 'Viewer', description: 'Read-only access' },
+  { value: 'CLIENT', label: 'Client', description: 'Access to assigned projects only' },
 ] as const;
 
 // ============================================================================
@@ -167,6 +168,7 @@ export const VALIDATION = {
 export const ADMIN_NAV_ITEMS = [
   { href: '/admin', label: 'Dashboard' },
   { href: '/admin/leads', label: 'Leads' },
-  { href: '/admin/analytics', label: 'Analytics' },
-  { href: '/admin/content', label: 'Content' },
+  { href: '/admin/clients', label: 'Clients' },
+  { href: '/admin/projects', label: 'Projects' },
+  { href: '/admin/change-requests', label: 'Change Requests' },
 ] as const;

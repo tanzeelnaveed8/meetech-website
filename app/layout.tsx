@@ -3,6 +3,7 @@ import Script from "next/script";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import ConditionalLayout from "@/components/layout/ConditionalLayout";
+import SessionProvider from "@/components/providers/SessionProvider";
 import { Work_Sans } from "next/font/google";
 
 const workSans = Work_Sans({
@@ -44,11 +45,13 @@ export default function RootLayout({
         >
           Skip to main content
         </a>
-        <div className="flex min-h-screen flex-col overflow-x-hidden work-sans">
-          <ConditionalLayout>
-            {children}
-          </ConditionalLayout>
-        </div>
+        <SessionProvider>
+          <div className="flex min-h-screen flex-col overflow-x-hidden work-sans">
+            <ConditionalLayout>
+              {children}
+            </ConditionalLayout>
+          </div>
+        </SessionProvider>
       </body>
     </html>
   );

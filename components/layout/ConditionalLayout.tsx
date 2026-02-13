@@ -13,10 +13,13 @@ export default function ConditionalLayout({
 }) {
   const pathname = usePathname();
   const isAdminRoute = pathname.startsWith('/admin');
+  const isClientRoute = pathname.startsWith('/client');
+  const isAuthRoute = pathname.startsWith('/auth');
   const [loadChat, setLoadChat] = useState(false);
 
   useEffect(() => {
-    if (isAdminRoute) return;
+    // Don't load chat for admin, client, or auth routes
+    if (isAdminRoute || isClientRoute || isAuthRoute) return;
 
     // Load chat after 5 seconds or on user interaction
     const timer = setTimeout(() => setLoadChat(true), 5000);
@@ -36,10 +39,10 @@ export default function ConditionalLayout({
       window.removeEventListener('mousemove', handleInteraction);
       window.removeEventListener('touchstart', handleInteraction);
     };
-  }, [isAdminRoute]);
+  }, [isAdminRoute, isClientRoute, isAuthRoute]);
 
-  if (isAdminRoute) {
-    // Admin routes have their own layout, so just render children
+  if (isAdminRoute || isClientRoute || isAuthRoute) {
+    // Admin, client, and auth routes have their own layout, so just render children
     return <>{children}</>;
   }
 

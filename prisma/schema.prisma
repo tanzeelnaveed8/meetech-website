@@ -35,7 +35,7 @@ model Lead {
   // Lead Management
   status        String      @default("NEW") // NEW, CONTACTED, QUALIFIED, IN_PROGRESS, CONVERTED, LOST
   assignedToId  String?     @db.ObjectId
-  assignedTo    AdminUser?  @relation(fields: [assignedToId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  assignedTo    User?       @relation(fields: [assignedToId], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
   // Compliance
   consentGiven  Boolean     @default(false)
@@ -55,7 +55,7 @@ model LeadNote {
   lead      Lead      @relation(fields: [leadId], references: [id], onDelete: Cascade)
 
   authorId  String    @db.ObjectId
-  author    AdminUser @relation(fields: [authorId], references: [id])
+  author    User      @relation(fields: [authorId], references: [id])
 
   note      String
 
@@ -108,7 +108,7 @@ model UserSession {
   referrer    String?
 }
 
-model AdminUser {
+model User {
   id            String    @id @default(auto()) @map("_id") @db.ObjectId
 
   // Authentication
@@ -117,7 +117,7 @@ model AdminUser {
 
   // Profile
   name          String
-  role          String    @default("EDITOR") // ADMIN, EDITOR, VIEWER
+  role          String    @default("EDITOR") // ADMIN, EDITOR, VIEWER, CLIENT
 
   // Status
   isActive      Boolean   @default(true)
@@ -128,6 +128,152 @@ model AdminUser {
   updatedAt     DateTime  @updatedAt
 
   // Relations
-  assignedLeads Lead[]
-  leadNotes     LeadNote[]
+  assignedLeads       Lead[]
+  leadNotes           LeadNote[]
+  clientProjects      Project[] @relation("ClientProjects")
+  managedProjects     Project[] @relation("ManagedProjects")
+  uploadedFiles       ProjectFile[]
+  changeRequests      ChangeRequest[]
+}
+
+model Project {
+  id              String    @id @default(auto()) @map("_id") @db.ObjectId
+
+  // Basic Info
+  name            String
+  description     String
+  scope           String
+
+  // Status & Progress
+  status          String    @default("PLANNING") // PLANNING, IN_PROGRESS, ON_HOLD, COMPLETED, CANCELLED
+  progress        Int       @default(0) // 0-100
+
+  // Relations
+  clientId        String    @db.ObjectId
+  client          User      @relation("ClientProjects", fields: [clientId], references: [id], onDelete: Cascade)
+
+  managerId       String    @db.ObjectId
+  manager         User      @relation("ManagedProjects", fields: [managerId], references: [id])
+
+  // Timeline
+  startDate       DateTime?
+  expectedEndDate DateTime?
+  actualEndDate   DateTime?
+
+  // Timestamps
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  // Relations
+  milestones      Milestone[]
+  files           ProjectFile[]
+  changeRequests  ChangeRequest[]
+  payments        Payment[]
+
+  @@index([clientId])
+  @@index([managerId])
+  @@index([status])
+}
+
+model Milestone {
+  id              String    @id @default(auto()) @map("_id") @db.ObjectId
+
+  // Basic Info
+  title           String
+  description     String
+  status          String    @default("PENDING") // PENDING, IN_PROGRESS, COMPLETED, BLOCKED
+  order           Int       @default(0)
+
+  // Timeline
+  expectedDate    DateTime?
+  completedDate   DateTime?
+
+  // Relations
+  projectId       String    @db.ObjectId
+  project         Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  // Timestamps
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@index([projectId])
+}
+
+model ProjectFile {
+  id              String    @id @default(auto()) @map("_id") @db.ObjectId
+
+  // File Info
+  fileName        String
+  fileUrl         String
+  fileSize        Int
+  fileType        String
+  category        String    @default("GENERAL") // GENERAL, DESIGN, DOCUMENT, CODE, OTHER
+
+  // Metadata
+  description     String?
+  uploadedById    String    @db.ObjectId
+  uploadedBy      User      @relation(fields: [uploadedById], references: [id])
+
+  // Relations
+  projectId       String    @db.ObjectId
+  project         Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  // Timestamps
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@index([projectId])
+}
+
+model ChangeRequest {
+  id              String    @id @default(auto()) @map("_id") @db.ObjectId
+
+  // Request Info
+  title           String
+  message         String
+  status          String    @default("PENDING") // PENDING, APPROVED, REJECTED, IN_REVIEW
+
+  // Admin Response
+  adminResponse   String?
+  reviewedAt      DateTime?
+
+  // Relations
+  projectId       String    @db.ObjectId
+  project         Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  clientId        String    @db.ObjectId
+  client          User      @relation(fields: [clientId], references: [id])
+
+  // Timestamps
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@index([projectId])
+  @@index([clientId])
+  @@index([status])
+}
+
+model Payment {
+  id              String    @id @default(auto()) @map("_id") @db.ObjectId
+
+  // Payment Info
+  amount          Float
+  currency        String    @default("USD")
+  description     String
+  status          String    @default("PENDING") // PENDING, PAID, OVERDUE, CANCELLED
+
+  // Timeline
+  dueDate         DateTime
+  paidDate        DateTime?
+
+  // Relations
+  projectId       String    @db.ObjectId
+  project         Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  // Timestamps
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@index([projectId])
+  @@index([status])
 }

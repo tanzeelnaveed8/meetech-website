@@ -1,20 +1,17 @@
 'use client';
 
-import { Suspense, useState } from 'react';
+import { useState } from 'react';
 import { signIn } from 'next-auth/react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { FiMail, FiLock, FiAlertCircle } from 'react-icons/fi';
 
-function LoginForm() {
+export default function ClientLoginPage() {
   const router = useRouter();
-  const searchParams = useSearchParams();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-
-  const callbackUrl = searchParams.get('callbackUrl') || '/admin';
+  const [error, setError] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -31,7 +28,7 @@ function LoginForm() {
       if (result?.error) {
         setError('Invalid email or password');
       } else if (result?.ok) {
-        router.push(callbackUrl);
+        router.push('/client/dashboard');
         router.refresh();
       }
     } catch (err) {
@@ -56,10 +53,10 @@ function LoginForm() {
             />
           </div>
           <h1 className="text-3xl font-bold text-white mb-2">
-            Admin Portal
+            Client Portal
           </h1>
           <p className="text-gray-400">
-            Sign in to manage projects and clients
+            Access your projects and updates
           </p>
         </div>
 
@@ -92,7 +89,7 @@ function LoginForm() {
                   required
                   autoComplete="email"
                   className="w-full pl-10 pr-4 py-3 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black transition-all"
-                  placeholder="admin@meetech.com"
+                  placeholder="your@email.com"
                   disabled={isLoading}
                 />
               </div>
@@ -130,24 +127,15 @@ function LoginForm() {
             >
               {isLoading ? 'Signing in...' : 'Sign In'}
             </button>
+
+            <div className="pt-2 text-center">
+              <p className="text-sm text-gray-600">
+                Need help? Contact your project manager
+              </p>
+            </div>
           </form>
         </div>
       </div>
     </div>
-  );
-}
-
-export default function AdminLoginPage() {
-  return (
-    <Suspense fallback={
-      <div className="min-h-screen flex items-center justify-center bg-black px-4">
-        <div className="w-full max-w-md text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4"></div>
-          <p className="text-gray-400">Loading...</p>
-        </div>
-      </div>
-    }>
-      <LoginForm />
-    </Suspense>
   );
 }

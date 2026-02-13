@@ -1,106 +1,97 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
+import { FiUsers, FiFolder, FiMessageSquare, FiFileText } from 'react-icons/fi';
+import { prisma } from '@/lib/db/client';
 
 export const metadata: Metadata = {
-  title: 'Admin Dashboard | Meetech Development',
-  description: 'Admin dashboard for managing leads, content, and analytics',
+  title: 'Admin Dashboard | Meetech',
+  description: 'Project management dashboard',
 };
 
-export default function AdminDashboardPage() {
+async function getDashboardStats() {
+  const [leadsCount, clientsCount, projectsCount, changeRequestsCount] = await Promise.all([
+    prisma.lead.count({ where: { status: 'NEW' } }),
+    prisma.user.count({ where: { role: 'CLIENT', isActive: true } }),
+    prisma.project.count({ where: { status: { in: ['PLANNING', 'IN_PROGRESS'] } } }),
+    prisma.changeRequest.count({ where: { status: 'PENDING' } }),
+  ]);
+
+  return {
+    leads: leadsCount,
+    clients: clientsCount,
+    projects: projectsCount,
+    changeRequests: changeRequestsCount,
+  };
+}
+
+export default async function AdminDashboardPage() {
+  const stats = await getDashboardStats();
+
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-semibold text-[#1E293B] mb-1">Dashboard</h1>
-        <p className="text-sm text-gray-600">
-          Manage your leads, content, and view analytics.
+        <h1 className="text-3xl font-bold text-[#1E293B] mb-2">Dashboard</h1>
+        <p className="text-gray-600">
+          Manage clients, projects, and change requests
         </p>
       </div>
 
       {/* Quick Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <StatCard
-          title="Leads"
-          description="Manage contact form submissions"
+          title="New Leads"
+          count={stats.leads}
+          description="Pending inquiries"
           href="/admin/leads"
+          icon={FiFileText}
+          color="blue"
         />
         <StatCard
-          title="Analytics"
-          description="View user behavior and metrics"
-          href="/admin/analytics"
+          title="Active Clients"
+          count={stats.clients}
+          description="Total clients"
+          href="/admin/clients"
+          icon={FiUsers}
+          color="green"
         />
         <StatCard
-          title="Content"
-          description="Manage pages and content"
-          href="/admin/content"
+          title="Active Projects"
+          count={stats.projects}
+          description="In progress"
+          href="/admin/projects"
+          icon={FiFolder}
+          color="purple"
+        />
+        <StatCard
+          title="Pending Requests"
+          count={stats.changeRequests}
+          description="Awaiting review"
+          href="/admin/change-requests"
+          icon={FiMessageSquare}
+          color="orange"
         />
       </div>
 
       {/* Quick Actions */}
-      <div className="border border-gray-200 rounded-lg p-6">
-        <h2 className="text-base font-semibold mb-4 text-gray-900">Quick Actions</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+      <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+        <h2 className="text-lg font-semibold mb-4 text-[#1E293B]">Quick Actions</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           <ActionButton
-            href="/admin/leads?status=NEW"
-            label="View New Leads"
-            description="Check recent contact form submissions"
+            href="/admin/clients/new"
+            label="Create Client"
+            description="Add a new client account"
           />
           <ActionButton
-            href="/admin/leads/export"
-            label="Export Leads"
-            description="Download leads as CSV"
+            href="/admin/projects/new"
+            label="Create Project"
+            description="Start a new project"
           />
           <ActionButton
-            href="/admin/analytics"
-            label="View Analytics"
-            description="Check website performance metrics"
-          />
-          <ActionButton
-            href="/admin/content"
-            label="Manage Content"
-            description="Edit pages and content blocks"
+            href="/admin/leads"
+            label="View Leads"
+            description="Check new inquiries"
           />
         </div>
-      </div>
-
-      {/* System Status */}
-      <div className="border border-gray-200 rounded-lg p-6">
-        <h2 className="text-base font-semibold mb-4 text-gray-900">System Status</h2>
-        <div className="space-y-3">
-          <StatusItem
-            label="Database"
-            status="operational"
-            description="MongoDB connection active"
-          />
-          <StatusItem
-            label="Email Service"
-            status="operational"
-            description="Resend API connected"
-          />
-          <StatusItem
-            label="Analytics"
-            status="operational"
-            description="Tracking active"
-          />
-          <StatusItem
-            label="CMS"
-            status="operational"
-            description="Sanity connected"
-          />
-        </div>
-      </div>
-
-      {/* Getting Started */}
-      <div className="bg-gray-50 border border-gray-200 rounded-lg p-6">
-        <h2 className="text-base font-semibold text-[#1E293B] mb-2">Getting Started</h2>
-        <p className="text-sm text-gray-600 mb-4">
-          New to the admin panel? Here are some helpful resources:
-        </p>
-        <ul className="space-y-2 text-sm text-gray-700">
-          <li><strong>Lead Management:</strong> View and manage contact form submissions in the Leads section</li>
-          <li><strong>Analytics:</strong> Track user behavior, conversions, and website performance</li>
-          <li><strong>Content:</strong> Edit pages and manage content through Sanity CMS</li>
-          <li><strong>Documentation:</strong> Check IMPLEMENTATION_GUIDE.md for detailed instructions</li>
-        </ul>
       </div>
     </div>
   );
@@ -108,19 +99,38 @@ export default function AdminDashboardPage() {
 
 function StatCard({
   title,
+  count,
   description,
   href,
+  icon: Icon,
+  color,
 }: {
   title: string;
+  count: number;
   description: string;
   href: string;
+  icon: any;
+  color: 'blue' | 'green' | 'purple' | 'orange';
 }) {
+  const colorClasses = {
+    blue: 'bg-blue-50 text-blue-600',
+    green: 'bg-green-50 text-green-600',
+    purple: 'bg-purple-50 text-purple-600',
+    orange: 'bg-orange-50 text-orange-600',
+  };
+
   return (
     <Link
       href={href}
-      className="block border border-gray-200 rounded-lg p-5 transition-all hover:border-gray-300 hover:shadow-sm"
+      className="block bg-white border border-gray-200 rounded-xl p-6 transition-all hover:border-gray-300 hover:shadow-md"
     >
-      <h3 className="text-sm font-semibold text-[#1E293B] mb-1">{title}</h3>
+      <div className="flex items-center justify-between mb-4">
+        <div className={`p-3 rounded-lg ${colorClasses[color]}`}>
+          <Icon className="w-6 h-6" />
+        </div>
+      </div>
+      <h3 className="text-2xl font-bold text-[#1E293B] mb-1">{count}</h3>
+      <p className="text-sm font-medium text-gray-900 mb-1">{title}</p>
       <p className="text-xs text-gray-600">{description}</p>
     </Link>
   );
@@ -138,39 +148,10 @@ function ActionButton({
   return (
     <Link
       href={href}
-      className="block p-4 border border-gray-200 rounded-md hover:border-gray-300 hover:bg-gray-50 transition-all"
+      className="block p-4 border border-gray-200 rounded-lg hover:border-gray-300 hover:bg-gray-50 transition-all group"
     >
-      <h4 className="text-sm font-medium text-[#1E293B] mb-1">{label}</h4>
+      <h4 className="text-sm font-semibold text-[#1E293B] mb-1 group-hover:text-gray-900">{label}</h4>
       <p className="text-xs text-gray-600">{description}</p>
     </Link>
-  );
-}
-
-function StatusItem({
-  label,
-  status,
-  description,
-}: {
-  label: string;
-  status: 'operational' | 'degraded' | 'down';
-  description: string;
-}) {
-  const statusColors = {
-    operational: 'bg-green-500',
-    degraded: 'bg-yellow-500',
-    down: 'bg-red-500',
-  };
-
-  return (
-    <div className="flex items-center justify-between py-2.5">
-      <div className="flex items-center gap-3">
-        <div className={`w-2 h-2 rounded-full ${statusColors[status]}`} />
-        <div>
-          <p className="text-sm font-medium text-gray-900">{label}</p>
-          <p className="text-xs text-gray-600">{description}</p>
-        </div>
-      </div>
-      <span className="text-xs text-gray-500 capitalize">{status}</span>
-    </div>
   );
 }
