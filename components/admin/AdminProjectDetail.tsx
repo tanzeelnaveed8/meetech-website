@@ -414,10 +414,9 @@ export default function AdminProjectDetail({ projectId }: AdminProjectDetailProp
           <Card>
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-semibold text-text-primary">Project Files</h2>
-              <label>
-                <Button variant="outline" size="sm" leftIcon={<FiUpload className="w-4 h-4" />} className="cursor-pointer" asChild>
-                  <span>Upload File</span>
-                </Button>
+              <label className="cursor-pointer inline-flex items-center px-4 py-2 text-sm font-medium rounded-lg border border-border-default bg-bg-surface text-text-primary hover:bg-bg-subtle transition-colors duration-200">
+                <FiUpload className="w-4 h-4 mr-2" />
+                Upload File
                 <input
                   type="file"
                   onChange={handleFileUpload}
