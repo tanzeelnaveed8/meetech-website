@@ -9,6 +9,9 @@ import {
   FiCheck,
   FiCheckCircle,
   FiClock,
+  FiPlus,
+  FiSearch,
+  FiX,
 } from 'react-icons/fi';
 import Button from '@/components/ui/Button';
 
@@ -45,6 +48,15 @@ interface Conversation {
   lastMessageAt: string;
 }
 
+interface ProjectForConversation {
+  id: string;
+  name: string;
+  status: string;
+  client: { id: string; name: string; email: string };
+  manager: { id: string; name: string };
+  conversation: { id: string } | null;
+}
+
 interface MessagesClientProps {
   userId: string;
   userRole: string;
@@ -77,6 +89,11 @@ export default function MessagesClient({
   const [isLoadingMessages, setIsLoadingMessages] = useState(false);
   const [isSending, setIsSending] = useState(false);
   const [showMobileThread, setShowMobileThread] = useState(false);
+  const [showNewConvoModal, setShowNewConvoModal] = useState(false);
+  const [projects, setProjects] = useState<ProjectForConversation[]>([]);
+  const [projectSearch, setProjectSearch] = useState('');
+  const [isLoadingProjects, setIsLoadingProjects] = useState(false);
+  const [isCreatingConvo, setIsCreatingConvo] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const pollIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -204,15 +221,87 @@ export default function MessagesClient({
     return isAdmin ? conv.project.client.name : conv.project.manager.name;
   };
 
+  // Fetch projects for new conversation modal (admin only)
+  const openNewConvoModal = async () => {
+    setShowNewConvoModal(true);
+    setIsLoadingProjects(true);
+    setProjectSearch('');
+    try {
+      const res = await fetch('/api/messages/projects');
+      const data = await res.json();
+      if (res.ok) {
+        setProjects(data.projects);
+      }
+    } catch (err) {
+      console.error('Failed to fetch projects:', err);
+    } finally {
+      setIsLoadingProjects(false);
+    }
+  };
+
+  // Start a new conversation for a project
+  const startNewConversation = async (projectId: string) => {
+    setIsCreatingConvo(true);
+    try {
+      const res = await fetch('/api/messages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ projectId }),
+      });
+
+      if (res.ok) {
+        setShowNewConvoModal(false);
+        await fetchConversations();
+        // Find and open the new/existing conversation
+        const convRes = await fetch('/api/messages');
+        const convData = await convRes.json();
+        if (convRes.ok) {
+          setConversations(convData.conversations);
+          const targetConv = convData.conversations.find(
+            (c: Conversation) => c.projectId === projectId
+          );
+          if (targetConv) {
+            openConversation(targetConv);
+          }
+        }
+      }
+    } catch (err) {
+      console.error('Failed to create conversation:', err);
+    } finally {
+      setIsCreatingConvo(false);
+    }
+  };
+
+  // Filter projects in modal
+  const filteredProjects = projects.filter((p) => {
+    const q = projectSearch.toLowerCase();
+    return (
+      p.name.toLowerCase().includes(q) ||
+      p.client.name.toLowerCase().includes(q) ||
+      p.client.email.toLowerCase().includes(q)
+    );
+  });
+
   // ─── Main Render ───────────────────────────────────────────────
 
   const conversationListJSX = (
     <div className="flex flex-col h-full">
       <div className="p-4 border-b border-border-default">
-        <h2 className="text-lg font-semibold text-text-primary flex items-center gap-2">
-          <FiMessageSquare className="w-5 h-5" />
-          Messages
-        </h2>
+        <div className="flex items-center justify-between">
+          <h2 className="text-lg font-semibold text-text-primary flex items-center gap-2">
+            <FiMessageSquare className="w-5 h-5" />
+            Messages
+          </h2>
+          {isAdmin && (
+            <button
+              onClick={openNewConvoModal}
+              className="p-2 rounded-lg bg-accent text-text-inverse hover:bg-accent-hover transition-colors duration-150"
+              title="New Conversation"
+            >
+              <FiPlus className="w-4 h-4" />
+            </button>
+          )}
+        </div>
         <p className="text-xs text-text-muted mt-1">
           {isAdmin
             ? 'Client conversations'
@@ -454,6 +543,97 @@ export default function MessagesClient({
       <div className="lg:hidden h-full">
         {showMobileThread ? messageThreadJSX : conversationListJSX}
       </div>
+
+      {/* New Conversation Modal (admin only) */}
+      {showNewConvoModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          {/* Backdrop */}
+          <div
+            className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+            onClick={() => setShowNewConvoModal(false)}
+          />
+          {/* Modal */}
+          <div className="relative w-full max-w-lg bg-bg-card rounded-2xl border border-border-default shadow-2xl overflow-hidden">
+            {/* Header */}
+            <div className="flex items-center justify-between p-4 border-b border-border-default">
+              <h3 className="text-lg font-semibold text-text-primary">Start New Conversation</h3>
+              <button
+                onClick={() => setShowNewConvoModal(false)}
+                className="p-1.5 text-text-muted hover:text-text-primary rounded-lg hover:bg-bg-subtle transition-colors"
+              >
+                <FiX className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Search */}
+            <div className="p-4 border-b border-border-default">
+              <div className="relative">
+                <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-disabled" />
+                <input
+                  type="text"
+                  placeholder="Search by project or client name..."
+                  value={projectSearch}
+                  onChange={(e) => setProjectSearch(e.target.value)}
+                  className="w-full pl-10 pr-4 py-2.5 text-sm rounded-xl border border-border-default bg-bg-page text-text-primary placeholder-text-disabled focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent"
+                  autoFocus
+                />
+              </div>
+            </div>
+
+            {/* Project List */}
+            <div className="max-h-80 overflow-y-auto">
+              {isLoadingProjects ? (
+                <div className="flex items-center justify-center py-12">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-accent" />
+                </div>
+              ) : filteredProjects.length === 0 ? (
+                <div className="text-center py-12 px-4">
+                  <p className="text-sm text-text-muted">
+                    {projectSearch ? 'No matching projects found' : 'No projects available'}
+                  </p>
+                </div>
+              ) : (
+                <div className="divide-y divide-border-default">
+                  {filteredProjects.map((project) => (
+                    <button
+                      key={project.id}
+                      onClick={() => startNewConversation(project.id)}
+                      disabled={isCreatingConvo}
+                      className="w-full text-left p-4 hover:bg-bg-subtle transition-colors duration-150 disabled:opacity-50"
+                    >
+                      <div className="flex items-start gap-3">
+                        {/* Client Avatar */}
+                        <div className="w-10 h-10 rounded-full bg-accent flex items-center justify-center text-text-inverse text-sm font-semibold flex-shrink-0">
+                          {project.client.name.charAt(0).toUpperCase()}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center justify-between mb-0.5">
+                            <span className="text-sm font-semibold text-text-primary truncate">
+                              {project.client.name}
+                            </span>
+                            {project.conversation && (
+                              <span className="text-[10px] bg-accent/10 text-accent px-2 py-0.5 rounded-full flex-shrink-0 ml-2">
+                                Active
+                              </span>
+                            )}
+                          </div>
+                          <p className="text-xs text-text-muted truncate">{project.client.email}</p>
+                          <p className="text-xs font-medium text-accent truncate mt-0.5">
+                            {project.name}
+                          </p>
+                          <p className="text-[10px] text-text-disabled truncate mt-0.5">
+                            Status: {project.status} • Manager: {project.manager.name}
+                          </p>
+                        </div>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
