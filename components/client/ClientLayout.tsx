@@ -70,7 +70,8 @@ export default function ClientLayout({ children, user }: ClientLayoutProps) {
     if (isSigningOut) return;
     setIsSigningOut(true);
     try {
-      await signOut({ callbackUrl: '/client/login' });
+      await signOut({ redirect: false });
+      window.location.href = '/client/login';
     } catch {
       setIsSigningOut(false);
     }

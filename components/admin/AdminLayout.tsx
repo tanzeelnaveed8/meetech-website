@@ -40,7 +40,8 @@ export default function AdminLayout({
     if (isSigningOut) return;
     setIsSigningOut(true);
     try {
-      await signOut({ callbackUrl: '/admin/login' });
+      await signOut({ redirect: false });
+      window.location.href = '/admin/login';
     } catch {
       setIsSigningOut(false);
     }
