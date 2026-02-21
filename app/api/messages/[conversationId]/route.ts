@@ -7,7 +7,7 @@ import {
   markMessagesAsRead,
 } from '@/lib/db/queries/messages'
 
-// GET /api/messages/[conversationId] — Get messages for a conversation
+// GET /api/messages/[conversationId]   Get messages for a conversation
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ conversationId: string }> }
@@ -54,7 +54,7 @@ export async function GET(
   }
 }
 
-// POST /api/messages/[conversationId] — Send a message
+// POST /api/messages/[conversationId]   Send a message
 export async function POST(
   request: Request,
   { params }: { params: Promise<{ conversationId: string }> }

@@ -96,12 +96,12 @@ const WhyMeetechh = () => {
 
                                    <h1 className="text-5xl md:text-7xl font-black uppercase leading-[0.95] tracking-tighter text-[var(--text-primary)]">
                                         Technical <br /> Authority
-                                        <span className="text-[var(--accent-primary)]">.</span>
+
                                    </h1>
 
                                    <div className="space-y-6">
                                         <p className="text-xl leading-relaxed max-w-md text-[var(--text-muted)]">
-                                             We don’t just build apps — we engineer scalable digital assets designed for a decade of performance.
+                                             We don’t just build apps   we engineer scalable digital assets designed for a decade of performance.
                                         </p>
 
                                         <div className="grid grid-cols-2 gap-4 pt-8">

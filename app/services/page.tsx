@@ -2,7 +2,7 @@
 
 import React from "react";
 import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
-import { ArrowRight, ChevronRight, Code2, Smartphone, ShoppingBag, Rocket } from "lucide-react";
+import { ArrowRight, ChevronRight, Code2, Smartphone, ShoppingBag, Rocket, MessageCircle, Bot, Blocks, ShieldCheck, Megaphone } from "lucide-react";
 import NeuralBackground from "@/components/background/NeuralBackground";
 import { WhatWeBuild } from "@/components/sections/WhatWeBuild";
 
@@ -50,12 +50,18 @@ export default function ServicesPage() {
         </motion.div>
 
         {/* Grid of icons (static, always visible) */}
-        <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+        <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {[
             { icon: <Code2 />, label: "Web Apps", val: "Next.js & React" },
             { icon: <Smartphone />, label: "Mobile", val: "iOS & Android" },
             { icon: <ShoppingBag />, label: "E-commerce", val: "Scalable Stores" },
             { icon: <Rocket />, label: "MVPs", val: "Launch Fast" },
+
+            { icon: <MessageCircle />, label: "WhatsApp", val: "Automation" },
+            { icon: <Bot />, label: "AI Tools", val: "Smart Systems" },
+            { icon: <Blocks />, label: "Blockchain", val: "Secure Apps" },
+            { icon: <ShieldCheck />, label: "Security", val: "Auditing" },
+            { icon: <Megaphone />, label: "Marketing", val: "Meta Ads" },
           ].map((item, idx) => (
             <div
               key={idx}

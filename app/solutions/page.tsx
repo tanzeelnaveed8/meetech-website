@@ -2,7 +2,8 @@
 
 import React from "react";
 import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
-import { ArrowRight, ChevronRight, Code2, Smartphone, ShoppingBag, Rocket, DollarSign, Store, Heart, GraduationCap, Briefcase, Users } from "lucide-react";
+
+import { ArrowRight, ChevronRight, Code2, Smartphone, ShoppingBag, Rocket, MessageCircle, Bot, Blocks, ShieldCheck, Megaphone, DollarSign, Store, Heart, GraduationCap, Briefcase, Users } from "lucide-react";
 import { SiNextdotjs, SiReact, SiTypescript, SiNodedotjs, SiPostgresql, SiAmazon, SiFlutter, SiPython, SiDocker, SiKubernetes, SiGraphql } from "react-icons/si";
 import NeuralBackground from "@/components/background/NeuralBackground";
 import { SolutionCard } from "@/components/sections/SolutionCard";
@@ -56,6 +57,12 @@ export default function SolutionsPage() {
             { icon: <Smartphone />, label: "Mobile", val: "iOS & Android" },
             { icon: <ShoppingBag />, label: "E-commerce", val: "Scalable Stores" },
             { icon: <Rocket />, label: "MVPs", val: "Launch Fast" },
+
+            { icon: <MessageCircle />, label: "WhatsApp", val: "Automation" },
+            { icon: <Bot />, label: "AI Tools", val: "Smart Systems" },
+            { icon: <Blocks />, label: "Blockchain", val: "Secure Apps" },
+            { icon: <ShieldCheck />, label: "Security", val: "Auditing" },
+            { icon: <Megaphone />, label: "Marketing", val: "Meta Ads" },
           ].map((item, idx) => (
             <div
               key={idx}

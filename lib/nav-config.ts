@@ -1,6 +1,6 @@
 /**
  * Global navigation configuration.
- * No page-specific logic — structure only.
+ * No page-specific logic   structure only.
  */
 
 export const NAV_LINKS = [

@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 /* ---------------------------------------------------------------------------
-   GLOBAL COLOR SYSTEM — Light & Dark Theme
+   GLOBAL COLOR SYSTEM   Light & Dark Theme
    Enterprise-grade, WCAG-aware. Authority Blue + Calm Teal (limited).
 
    Usage:
@@ -36,7 +36,7 @@
   --accent-hover: #1d4ed8;
   --accent-active: #1e40af;
   --accent-muted: #eff6ff;
-  /* Secondary accent (Calm Teal — limited use) */
+  /* Secondary accent (Calm Teal   limited use) */
   --accent-secondary: #14b8a6;
   /* Focus ring */
   --focus-ring: #2563eb;
@@ -115,7 +115,7 @@
 }
 
 /* ---------------------------------------------------------------------------
-   Spacing scale (4px base) — layout rhythm
+   Spacing scale (4px base)   layout rhythm
    --------------------------------------------------------------------------- */
 
 @theme inline {
@@ -138,7 +138,7 @@
 }
 
 /* ---------------------------------------------------------------------------
-   Typography — headline, subheading, body, UI
+   Typography   headline, subheading, body, UI
    --------------------------------------------------------------------------- */
 
 @theme inline {
@@ -227,7 +227,7 @@ h1, h2, h3, .logo, .hero-title {
 }
 
 /* ---------------------------------------------------------------------------
-   Header — nav link underline hover (use .nav-link-underline)
+   Header   nav link underline hover (use .nav-link-underline)
    --------------------------------------------------------------------------- */
 
 .nav-link-underline {

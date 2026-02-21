@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import { requireAuth } from '@/lib/auth/middleware'
 import { prisma } from '@/lib/db/client'
 
-// GET /api/messages/projects — List all projects (with client info) for starting conversations
+// GET /api/messages/projects   List all projects (with client info) for starting conversations
 // Admin/Editor only
 export async function GET() {
   const authCheck = await requireAuth()

@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import { requireAuth } from '@/lib/auth/middleware'
 import { markMessagesAsRead, checkConversationAccess } from '@/lib/db/queries/messages'
 
-// POST /api/messages/[conversationId]/read — Mark messages as read
+// POST /api/messages/[conversationId]/read   Mark messages as read
 export async function POST(
   _request: Request,
   { params }: { params: Promise<{ conversationId: string }> }

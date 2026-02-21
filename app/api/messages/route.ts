@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import { requireAuth } from '@/lib/auth/middleware'
 import { getConversationsByUser, getOrCreateConversation } from '@/lib/db/queries/messages'
 
-// GET /api/messages — List all conversations for the current user
+// GET /api/messages   List all conversations for the current user
 export async function GET() {
   const authCheck = await requireAuth()
   if (!authCheck.authorized) {
@@ -22,7 +22,7 @@ export async function GET() {
   }
 }
 
-// POST /api/messages — Create a conversation for a project (body: { projectId })
+// POST /api/messages   Create a conversation for a project (body: { projectId })
 export async function POST(request: Request) {
   const authCheck = await requireAuth()
   if (!authCheck.authorized) {

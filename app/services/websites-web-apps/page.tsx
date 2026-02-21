@@ -84,7 +84,7 @@ const WHY_FIRST_CHOICE_SERVICES: ServiceDetail[] = [
   {
     id: "pwa",
     title: "Progressive Web App (PWA)",
-    description: "We develop Progressive Web Apps that work offline, load instantly, and feel like native apps—reachable via the web without app store friction.",
+    description: "We develop Progressive Web Apps that work offline, load instantly, and feel like native apps reachable via the web without app store friction.",
     boldPhrase: "Progressive Web Apps",
     bullets: [
       "Offline-First & Service Workers",
@@ -97,7 +97,7 @@ const WHY_FIRST_CHOICE_SERVICES: ServiceDetail[] = [
   {
     id: "api",
     title: "API & Integration",
-    description: "We design and integrate APIs and third-party systems—CRMs, payment gateways, analytics—so your product is connected, automated, and future-ready.",
+    description: "We design and integrate APIs and third-party systems CRMs, payment gateways, analytics so your product is connected, automated, and future-ready.",
     boldPhrase: "APIs and third-party systems",
     bullets: [
       "REST, GraphQL & Webhook Design",
@@ -110,7 +110,7 @@ const WHY_FIRST_CHOICE_SERVICES: ServiceDetail[] = [
   {
     id: "maintenance",
     title: "Website Maintenance & Support",
-    description: "We provide ongoing website maintenance and support—updates, security, monitoring—so your digital presence stays secure, fast, and reliable.",
+    description: "We provide ongoing website maintenance and support updates, security, monitoring so your digital presence stays secure, fast, and reliable.",
     boldPhrase: "website maintenance and support",
     bullets: [
       "Security Updates & Patches",
@@ -125,7 +125,7 @@ const WHY_FIRST_CHOICE_SERVICES: ServiceDetail[] = [
 const HOW_WE_SERVE = [
   {
     title: "Custom Website Development",
-    desc: "We build websites from scratch that perfectly align with your brand, business goals, and customer needs—ensuring uniqueness, flexibility, and long-term scalability.",
+    desc: "We build websites from scratch that perfectly align with your brand, business goals, and customer needs ensuring uniqueness, flexibility, and long-term scalability.",
     icon: "custom",
   },
   {
@@ -145,7 +145,7 @@ const HOW_WE_SERVE = [
   },
   {
     title: "API Integration",
-    desc: "We integrate third-party tools and APIs—such as CRMs, payment gateways, and analytics—ensuring your website is powerful, connected, and future-ready.",
+    desc: "We integrate third-party tools and APIs such as CRMs, payment gateways, and analytics ensuring your website is powerful, connected, and future-ready.",
     icon: "api",
   },
   {
@@ -312,193 +312,191 @@ export default function WebsitesWebAppsPage() {
 
       {/* Content Sections */}
       <div className="relative z-10 mx-auto max-w-5xl px-4 md:px-8">
-    <div className="mx-auto max-w-5xl">
+        <div className="mx-auto max-w-5xl">
 
-      <motion.section
-        aria-labelledby="tech-heading"
-        className="border-t border-border-default py-14 md:py-20"
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-40px" }}
-        variants={reduce ? {} : { hidden: {}, visible: { transition: { staggerChildren: 0.04, delayChildren: 0.06 } } }}
-      >
-        <h2
-          id="tech-heading"
-          className="text-center text-2xl font-bold tracking-tight md:text-3xl"
-          style={{ fontFamily: "var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif" }}
-        >
-          <span className="text-text-primary">Web Development</span>
-          <span className="text-accent"> Technologies</span>
-        </h2>
-        <div className="mx-auto mt-12 grid max-w-5xl grid-cols-4 gap-x-6 gap-y-12 sm:grid-cols-6 md:grid-cols-8 md:gap-x-10 md:gap-y-14">
-          {TECH_ITEMS.map((tech, i) => (
-            <motion.div
-              key={tech.name}
-              className={`flex justify-center ${
-                i === 8 ? "md:col-start-2" : i === 9 ? "md:col-start-3" : i === 10 ? "md:col-start-4" : i === 11 ? "md:col-start-5" : i === 12 ? "md:col-start-6" : i === 13 ? "md:col-start-7" : ""
-              }`}
-              variants={reduce ? {} : { hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0 } }}
-              transition={{ duration, ease }}
+          <motion.section
+            aria-labelledby="tech-heading"
+            className="border-t border-border-default py-14 md:py-20"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-40px" }}
+            variants={reduce ? {} : { hidden: {}, visible: { transition: { staggerChildren: 0.04, delayChildren: 0.06 } } }}
+          >
+            <h2
+              id="tech-heading"
+              className="text-center text-2xl font-bold tracking-tight md:text-3xl"
+              style={{ fontFamily: "var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif" }}
             >
-              <IconBox {...tech} />
-            </motion.div>
-          ))}
-        </div>
-      </motion.section>
-
-      <motion.section
-        aria-labelledby="why-heading"
-        className="border-t border-border-default py-12 md:py-16"
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-40px" }}
-        variants={reduce ? {} : { hidden: {}, visible: { transition: { staggerChildren: 0.04, delayChildren: 0.06 } } }}
-      >
-        <h2 id="why-heading" className="text-xl font-bold tracking-tight text-text-primary md:text-2xl">
-          Why Are We a First-Choice For Premium Web Development Services?
-        </h2>
-        <motion.p
-          className="mt-4 max-w-3xl text-[0.9375rem] leading-relaxed text-text-body md:text-base"
-          variants={reduce ? {} : { hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } }}
-          transition={{ duration, ease }}
-        >
-          We specialize in delivering full-spectrum web development services, creating high-performance, visually appealing websites that drive business success. Whatever your web project needs, we apply industry best practices and modern technologies to build solutions that stand out.
-        </motion.p>
-
-        <div className="mt-10 grid gap-6 lg:grid-cols-[minmax(0,320px)_1fr] lg:gap-10">
-          <nav
-            aria-label="Service categories"
-            className="grid grid-cols-2 gap-3 sm:grid-cols-2 md:gap-4 lg:grid-cols-1 lg:grid-rows-8"
-          >
-            {WHY_FIRST_CHOICE_SERVICES.map((s) => {
-              const isActive = selectedServiceId === s.id;
-              return (
-                <motion.button
-                  key={s.id}
-                  type="button"
-                  onClick={() => setSelectedServiceId(s.id)}
-                  whileHover={reduce ? undefined : { scale: 1.02 }}
-                  whileTap={reduce ? undefined : { scale: 0.98 }}
-                  className={`flex items-center justify-center rounded-xl border-2 px-4 py-3.5 text-left text-sm font-semibold transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 focus-visible:ring-offset-bg-page md:py-4 md:text-base ${
-                    isActive
-                      ? "border-accent bg-accent text-text-inverse shadow-lg"
-                      : "border-border-default bg-bg-card text-text-primary hover:border-accent/40 hover:bg-bg-subtle hover:shadow-md"
-                  }`}
-                >
-                  {s.title}
-                </motion.button>
-              );
-            })}
-          </nav>
-
-          <motion.div
-            layout
-            className="relative overflow-hidden rounded-2xl border-2 border-border-default border-l-4 border-t-4 border-l-accent border-t-accent bg-bg-card"
-          >
-            <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-accent/5 to-accent-secondary/5" aria-hidden />
-            <div className="relative p-6 md:p-8">
-              <AnimatePresence mode="wait">
+              <span className="text-text-primary">Web Development</span>
+              <span className="text-accent"> Technologies</span>
+            </h2>
+            <div className="mx-auto mt-12 grid max-w-5xl grid-cols-4 gap-x-6 gap-y-12 sm:grid-cols-6 md:grid-cols-8 md:gap-x-10 md:gap-y-14">
+              {TECH_ITEMS.map((tech, i) => (
                 <motion.div
-                  key={selectedServiceId}
-                  initial={reduce ? undefined : { opacity: 0, x: 16 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={reduce ? { opacity: 0 } : { opacity: 0, x: -12 }}
-                  transition={{ duration: 0.3, ease }}
-                  className="space-y-6"
+                  key={tech.name}
+                  className={`flex justify-center ${i === 8 ? "md:col-start-2" : i === 9 ? "md:col-start-3" : i === 10 ? "md:col-start-4" : i === 11 ? "md:col-start-5" : i === 12 ? "md:col-start-6" : i === 13 ? "md:col-start-7" : ""
+                    }`}
+                  variants={reduce ? {} : { hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0 } }}
+                  transition={{ duration, ease }}
                 >
-                  <h3 className="text-xl font-bold tracking-tight text-text-primary md:text-2xl">
-                    {selected.title}
-                  </h3>
-                  <p className="text-[0.9375rem] leading-relaxed text-text-body md:text-base">
-                    {selected.boldPhrase ? (
-                      <>
-                        {selected.description.split(selected.boldPhrase)[0]}
-                        <strong className="font-semibold text-text-primary">{selected.boldPhrase}</strong>
-                        {selected.description.split(selected.boldPhrase)[1]}
-                      </>
-                    ) : (
-                      selected.description
-                    )}
-                  </p>
-                  <ul className="space-y-3" role="list">
-                    {selected.bullets.map((item, i) => (
-                      <motion.li
-                        key={item}
-                        initial={reduce ? undefined : { opacity: 0, x: -8 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.25, delay: i * 0.04, ease }}
-                        className="flex items-center gap-3 rounded-lg border border-border-default bg-bg-surface px-4 py-3"
-                      >
-                        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-accent text-text-inverse">
-                          <CheckIcon />
-                        </span>
-                        <span className="text-[0.9375rem] font-medium text-text-body md:text-base">{item}</span>
-                      </motion.li>
-                    ))}
-                  </ul>
+                  <IconBox {...tech} />
                 </motion.div>
-              </AnimatePresence>
+              ))}
             </div>
-          </motion.div>
-        </div>
-      </motion.section>
+          </motion.section>
 
-      <motion.section
-        aria-labelledby="serve-heading"
-        className="border-t border-border-default py-14 md:py-20"
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-40px" }}
-        variants={reduce ? {} : { hidden: {}, visible: { transition: { staggerChildren: 0.08, delayChildren: 0.06 } } }}
-      >
-        <div className="mx-auto max-w-3xl text-center">
-          <h2 id="serve-heading" className="text-2xl font-bold tracking-tight text-text-primary md:text-3xl">
-            How We Serve You?
-          </h2>
-          <motion.div
-            className="mx-auto mt-3 h-1 w-14 rounded-full bg-gradient-to-r from-accent to-accent-secondary"
-            initial={reduce ? undefined : { scaleX: 0 }}
-            whileInView={reduce ? undefined : { scaleX: 1 }}
+          <motion.section
+            aria-labelledby="why-heading"
+            className="border-t border-border-default py-12 md:py-16"
+            initial="hidden"
+            whileInView="visible"
             viewport={{ once: true, margin: "-40px" }}
-            transition={{ duration: 0.4, ease }}
-            style={{ transformOrigin: "center" }}
-          />
-          <motion.p
-            className="mt-6 text-[0.9375rem] leading-relaxed text-text-body md:text-base"
-            initial={reduce ? undefined : { opacity: 0, y: 10 }}
-            whileInView={reduce ? undefined : { opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-40px" }}
-            transition={{ duration, ease }}
+            variants={reduce ? {} : { hidden: {}, visible: { transition: { staggerChildren: 0.04, delayChildren: 0.06 } } }}
           >
-            We specialize in crafting modern, scalable, and high-performing websites tailored to your business needs. From simple landing pages to complex web applications, we deliver solutions that drive growth, enhance user experience, and strengthen your digital presence.
-          </motion.p>
-        </div>
-        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {HOW_WE_SERVE.map(({ title, desc, icon }) => (
-            <motion.article
-              key={title}
-              variants={reduce ? {} : { hidden: { opacity: 0, y: 24 }, visible: { opacity: 1, y: 0 } }}
+            <h2 id="why-heading" className="text-xl font-bold tracking-tight text-text-primary md:text-2xl">
+              Why Are We a First-Choice For Premium Web Development Services?
+            </h2>
+            <motion.p
+              className="mt-4 max-w-3xl text-[0.9375rem] leading-relaxed text-text-body md:text-base"
+              variants={reduce ? {} : { hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } }}
               transition={{ duration, ease }}
-              className="group relative flex flex-col rounded-2xl border-2 border-border-default bg-bg-card p-6 shadow-sm transition-all duration-300 ease-out hover:-translate-y-2 hover:border-accent/50 hover:shadow-xl md:p-8"
             >
-              <div
-                className="absolute inset-0 rounded-2xl bg-gradient-to-br from-accent/8 to-accent-secondary/8 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-                aria-hidden
+              We specialize in delivering full-spectrum web development services, creating high-performance, visually appealing websites that drive business success. Whatever your web project needs, we apply industry best practices and modern technologies to build solutions that stand out.
+            </motion.p>
+
+            <div className="mt-10 grid gap-6 lg:grid-cols-[minmax(0,320px)_1fr] lg:gap-10">
+              <nav
+                aria-label="Service categories"
+                className="grid grid-cols-2 gap-3 sm:grid-cols-2 md:gap-4 lg:grid-cols-1 lg:grid-rows-8"
+              >
+                {WHY_FIRST_CHOICE_SERVICES.map((s) => {
+                  const isActive = selectedServiceId === s.id;
+                  return (
+                    <motion.button
+                      key={s.id}
+                      type="button"
+                      onClick={() => setSelectedServiceId(s.id)}
+                      whileHover={reduce ? undefined : { scale: 1.02 }}
+                      whileTap={reduce ? undefined : { scale: 0.98 }}
+                      className={`flex items-center justify-center rounded-xl border-2 px-4 py-3.5 text-left text-sm font-semibold transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 focus-visible:ring-offset-bg-page md:py-4 md:text-base ${isActive
+                          ? "border-accent bg-accent text-text-inverse shadow-lg"
+                          : "border-border-default bg-bg-card text-text-primary hover:border-accent/40 hover:bg-bg-subtle hover:shadow-md"
+                        }`}
+                    >
+                      {s.title}
+                    </motion.button>
+                  );
+                })}
+              </nav>
+
+              <motion.div
+                layout
+                className="relative overflow-hidden rounded-2xl border-2 border-border-default border-l-4 border-t-4 border-l-accent border-t-accent bg-bg-card"
+              >
+                <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-accent/5 to-accent-secondary/5" aria-hidden />
+                <div className="relative p-6 md:p-8">
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key={selectedServiceId}
+                      initial={reduce ? undefined : { opacity: 0, x: 16 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={reduce ? { opacity: 0 } : { opacity: 0, x: -12 }}
+                      transition={{ duration: 0.3, ease }}
+                      className="space-y-6"
+                    >
+                      <h3 className="text-xl font-bold tracking-tight text-text-primary md:text-2xl">
+                        {selected.title}
+                      </h3>
+                      <p className="text-[0.9375rem] leading-relaxed text-text-body md:text-base">
+                        {selected.boldPhrase ? (
+                          <>
+                            {selected.description.split(selected.boldPhrase)[0]}
+                            <strong className="font-semibold text-text-primary">{selected.boldPhrase}</strong>
+                            {selected.description.split(selected.boldPhrase)[1]}
+                          </>
+                        ) : (
+                          selected.description
+                        )}
+                      </p>
+                      <ul className="space-y-3" role="list">
+                        {selected.bullets.map((item, i) => (
+                          <motion.li
+                            key={item}
+                            initial={reduce ? undefined : { opacity: 0, x: -8 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ duration: 0.25, delay: i * 0.04, ease }}
+                            className="flex items-center gap-3 rounded-lg border border-border-default bg-bg-surface px-4 py-3"
+                          >
+                            <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-accent text-text-inverse">
+                              <CheckIcon />
+                            </span>
+                            <span className="text-[0.9375rem] font-medium text-text-body md:text-base">{item}</span>
+                          </motion.li>
+                        ))}
+                      </ul>
+                    </motion.div>
+                  </AnimatePresence>
+                </div>
+              </motion.div>
+            </div>
+          </motion.section>
+
+          <motion.section
+            aria-labelledby="serve-heading"
+            className="border-t border-border-default py-14 md:py-20"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-40px" }}
+            variants={reduce ? {} : { hidden: {}, visible: { transition: { staggerChildren: 0.08, delayChildren: 0.06 } } }}
+          >
+            <div className="mx-auto max-w-3xl text-center">
+              <h2 id="serve-heading" className="text-2xl font-bold tracking-tight text-text-primary md:text-3xl">
+                How We Serve You?
+              </h2>
+              <motion.div
+                className="mx-auto mt-3 h-1 w-14 rounded-full bg-gradient-to-r from-accent to-accent-secondary"
+                initial={reduce ? undefined : { scaleX: 0 }}
+                whileInView={reduce ? undefined : { scaleX: 1 }}
+                viewport={{ once: true, margin: "-40px" }}
+                transition={{ duration: 0.4, ease }}
+                style={{ transformOrigin: "center" }}
               />
-              <div className="relative flex flex-col items-center text-center">
-                <span className="mb-5 flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-accent text-text-inverse transition-all duration-300 group-hover:scale-110 group-hover:shadow-lg">
-                  <ServeIcon type={icon} />
-                </span>
-                <h3 className="text-[1.0625rem] font-bold tracking-tight text-text-primary md:text-lg">{title}</h3>
-              </div>
-              <p className="relative mt-4 text-left text-[0.9375rem] leading-relaxed text-text-body md:text-base">
-                {desc}
-              </p>
-            </motion.article>
-          ))}
+              <motion.p
+                className="mt-6 text-[0.9375rem] leading-relaxed text-text-body md:text-base"
+                initial={reduce ? undefined : { opacity: 0, y: 10 }}
+                whileInView={reduce ? undefined : { opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-40px" }}
+                transition={{ duration, ease }}
+              >
+                We specialize in crafting modern, scalable, and high-performing websites tailored to your business needs. From simple landing pages to complex web applications, we deliver solutions that drive growth, enhance user experience, and strengthen your digital presence.
+              </motion.p>
+            </div>
+            <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {HOW_WE_SERVE.map(({ title, desc, icon }) => (
+                <motion.article
+                  key={title}
+                  variants={reduce ? {} : { hidden: { opacity: 0, y: 24 }, visible: { opacity: 1, y: 0 } }}
+                  transition={{ duration, ease }}
+                  className="group relative flex flex-col rounded-2xl border-2 border-border-default bg-bg-card p-6 shadow-sm transition-all duration-300 ease-out hover:-translate-y-2 hover:border-accent/50 hover:shadow-xl md:p-8"
+                >
+                  <div
+                    className="absolute inset-0 rounded-2xl bg-gradient-to-br from-accent/8 to-accent-secondary/8 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                    aria-hidden
+                  />
+                  <div className="relative flex flex-col items-center text-center">
+                    <span className="mb-5 flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-accent text-text-inverse transition-all duration-300 group-hover:scale-110 group-hover:shadow-lg">
+                      <ServeIcon type={icon} />
+                    </span>
+                    <h3 className="text-[1.0625rem] font-bold tracking-tight text-text-primary md:text-lg">{title}</h3>
+                  </div>
+                  <p className="relative mt-4 text-left text-[0.9375rem] leading-relaxed text-text-body md:text-base">
+                    {desc}
+                  </p>
+                </motion.article>
+              ))}
+            </div>
+          </motion.section>
         </div>
-      </motion.section>
-    </div>
       </div>
     </div>
   );
