@@ -58,11 +58,6 @@ export default function SolutionsPage() {
             { icon: <ShoppingBag />, label: "E-commerce", val: "Scalable Stores" },
             { icon: <Rocket />, label: "MVPs", val: "Launch Fast" },
 
-            { icon: <MessageCircle />, label: "WhatsApp", val: "Automation" },
-            { icon: <Bot />, label: "AI Tools", val: "Smart Systems" },
-            { icon: <Blocks />, label: "Blockchain", val: "Secure Apps" },
-            { icon: <ShieldCheck />, label: "Security", val: "Auditing" },
-            { icon: <Megaphone />, label: "Marketing", val: "Meta Ads" },
           ].map((item, idx) => (
             <div
               key={idx}

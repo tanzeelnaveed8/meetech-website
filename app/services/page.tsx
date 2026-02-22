@@ -55,13 +55,7 @@ export default function ServicesPage() {
             { icon: <Code2 />, label: "Web Apps", val: "Next.js & React" },
             { icon: <Smartphone />, label: "Mobile", val: "iOS & Android" },
             { icon: <ShoppingBag />, label: "E-commerce", val: "Scalable Stores" },
-            { icon: <Rocket />, label: "MVPs", val: "Launch Fast" },
-
-            { icon: <MessageCircle />, label: "WhatsApp", val: "Automation" },
-            { icon: <Bot />, label: "AI Tools", val: "Smart Systems" },
-            { icon: <Blocks />, label: "Blockchain", val: "Secure Apps" },
-            { icon: <ShieldCheck />, label: "Security", val: "Auditing" },
-            { icon: <Megaphone />, label: "Marketing", val: "Meta Ads" },
+            { icon: <Rocket />, label: "MVPs", val: "Launch Fast" }
           ].map((item, idx) => (
             <div
               key={idx}
