@@ -443,10 +443,6 @@
 
 import * as Icons from "lucide-react";
 import { useState, useEffect, useMemo } from 'react';
-import { FiCalendar, FiClock, FiFileText, FiMessageSquare, FiCheckCircle, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
-import Card from '@/components/ui/Card';
-import Button from '@/components/ui/Button';
-import Input from '@/components/ui/Input';
 import { useToast } from '@/components/ui/Toast';
 import Link from "next/link";
 
@@ -580,8 +576,15 @@ export default function BookMeetingPage() {
     fetch(`/api/meeting-requests/availability?date=${selectedDate}`)
       .then((res) => (res.ok ? res.json() : null))
       .then((data) => {
-        if (!cancelled && data?.slots) {
-          setSlotsAvailability(data.slots);
+        if (!cancelled) {
+          setSlotsAvailability(
+            data?.slots ?? { MORNING: true, AFTERNOON: true, EVENING: true }
+          );
+        }
+      })
+      .catch(() => {
+        if (!cancelled) {
+          setSlotsAvailability({ MORNING: true, AFTERNOON: true, EVENING: true });
         }
       })
       .finally(() => {
@@ -653,7 +656,7 @@ export default function BookMeetingPage() {
   /* ----------------------------- UI ----------------------------- */
 
   return (
-    <div className="min-h-screen bg-bg-page p-4 md:p-6 font-sans">
+    <div className="bg-bg-page p-3 sm:p-4 md:p-6 font-sans">
       <div className="w-full mx-auto space-y-8">
 
         <header className="flex flex-col md:flex-row md:items-end justify-between gap-4">
@@ -662,23 +665,23 @@ export default function BookMeetingPage() {
               <span className="p-1.5 bg-accent-muted rounded-lg flex items-center justify-center w-8 h-8">
                 <Icons.Calendar />
               </span>
-              <span className="text-sm font-bold tracking-wider uppercase">Meetech Portal</span>
+              <span className="text-xs font-bold tracking-wider uppercase">Meetech Portal</span>
             </div>
-            <h1 className="text-3xl font-extrabold text-text-primary tracking-tight">
+            <h1 className="text-xl sm:text-2xl font-extrabold text-text-primary tracking-tight">
               Book A Meeting
             </h1>
-            <p className="text-text-muted mt-1 max-w-md">
+            <p className="text-xs sm:text-sm text-text-muted mt-1 max-w-md">
               Schedule a session with your project manager to keep things moving.
             </p>
           </div>
           <div className="hidden md:flex flex-col items-end text-right">
-            <span className="text-xs text-text-muted uppercase font-bold">Current timezone</span>
-            <span className="text-sm text-text-body font-medium">UTC+00:00 GMT</span>
+            <span className="text-[10px] text-text-muted uppercase font-bold">Current timezone</span>
+            <span className="text-xs text-text-body font-medium">UTC+00:00 GMT</span>
           </div>
         </header>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-          <main className="lg:col-span-8 space-y-6">
+        <div className="grid grid-cols-1 2xl:grid-cols-12 gap-8">
+          <main className="2xl:col-span-8 space-y-6">
             <div className="bg-bg-surface rounded-3xl shadow-sm border border-border-default  overflow-hidden">
               <form onSubmit={handleSubmit}>
                 <div className="p-6 md:p-8 space-y-8">
@@ -774,20 +777,17 @@ export default function BookMeetingPage() {
                         </div>
                       ) : (
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                          {TIME_SLOTS.map((slot) => {
-                            const available = slotsAvailability?.[slot.value];
+                          {TIME_SLOTS.filter((slot) => slotsAvailability?.[slot.value]).map((slot) => {
                             const isSelected = preferredTimeSlot === slot.value;
                             return (
                               <button
                                 key={slot.value}
                                 type="button"
-                                disabled={!available || isSubmitting}
+                                disabled={isSubmitting}
                                 onClick={() => setPreferredTimeSlot(slot.value)}
                                 className={`
                     relative flex flex-col p-4 rounded-2xl border-2 text-left transition-all
-                    ${!available ? 'opacity-40 grayscale cursor-not-allowed border-border-subtle bg-bg-subtle' :
-                                    isSelected ? 'border-accent bg-accent-muted ring-4 ring-accent-muted' :
-                                      'border-border-subtle hover:border-border-strong'}
+                    ${isSelected ? 'border-accent bg-accent-muted ring-4 ring-accent-muted' : 'border-border-subtle hover:border-border-strong'}
                   `}
                               >
                                 <div className="flex justify-between items-start mb-2">
@@ -798,11 +798,14 @@ export default function BookMeetingPage() {
                                   {slot.label}
                                 </span>
                                 <span className="text-[11px] text-text-muted font-medium">
-                                  {available ? slot.sublabel : 'Unavailable'}
+                                  {slot.sublabel}
                                 </span>
                               </button>
                             );
                           })}
+                          {TIME_SLOTS.every((slot) => !slotsAvailability?.[slot.value]) && slotsAvailability !== null && (
+                            <p className="col-span-3 text-sm text-text-muted py-2">No slots available for this date.</p>
+                          )}
                         </div>
                       )}
                     </section>
@@ -866,8 +869,8 @@ export default function BookMeetingPage() {
             </div>
           </main>
 
-          <aside className="lg:col-span-4 space-y-6">
-            <div className="bg-bg-surface rounded-3xl p-6 lg:p-4 border border-border-default shadow-sm sticky top-8">
+          <aside className="2xl:col-span-4 space-y-6">
+            <div className="bg-bg-surface rounded-3xl p-6 lg:p-4 border border-border-default shadow-sm 2xl:sticky 2xl:top-8">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="font-bold text-text-primary flex items-center gap-2">
                   Recent Requests
@@ -934,7 +937,7 @@ export default function BookMeetingPage() {
                   If you have an urgent issue that needs immediate attention, contact support directly.
                 </p>
                 <Link
-                href="/client/messages"
+                href="/client/dashboard?modal=messages"
                  className="text-xs font-bold bg-bg-surface text-accent px-4 py-2 rounded-xl hover:bg-text-primary hover:cursor-pointer transition-colors">
                   Contact Support
                 </Link>

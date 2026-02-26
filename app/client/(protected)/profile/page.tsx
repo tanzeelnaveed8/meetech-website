@@ -2,11 +2,23 @@
 "use client"
 import React, { useState, useRef } from 'react';
 import { useSession } from 'next-auth/react';
-import { FiUser, FiMail, FiLock, FiShield, FiSettings } from 'react-icons/fi';
 import Card from '@/components/ui/Card';
 import Button from '@/components/ui/Button';
 import Input from '@/components/ui/Input';
 import { useToast } from '@/components/ui/Toast';
+
+type InfoTileProps = {
+  label: string;
+  value?: string | null;
+  icon: React.ReactNode;
+  color: 'blue' | 'purple' | 'green' | 'red';
+};
+
+type SecurityMetricProps = {
+  label: string;
+  value: string;
+  status: 'healthy' | 'warning';
+};
 
 
 // Optimized Inline SVG Icons for high-performance rendering without external deps
@@ -52,14 +64,14 @@ export default function ClientProfilePage() {
   const [isLoading, setIsLoading] = useState(false);
   const [formError, setFormError] = useState('');
 
-  const fileRef = useRef(null);
+  const fileRef = useRef<HTMLInputElement>(null);
 
   const handleClick = () => {
     fileRef.current?.click();
   };
 
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
     if (file) {
       console.log("Selected file:", file);
       // upload logic here
@@ -120,21 +132,21 @@ export default function ClientProfilePage() {
     .slice(0, 2) || '?';
 
   return (
-    <div className="max-w-6xl mx-auto space-y-8 p-6 lg:p-0 animate-in fade-in slide-in-from-bottom-6 duration-1000">
+    <div className="max-w-6xl mx-auto space-y-6 sm:space-y-8 p-2 sm:p-6 lg:p-0 animate-in fade-in slide-in-from-bottom-6 duration-1000">
 
       {/* 1. HERO HEADER SECTION */}
-      <div className="relative overflow-hidden rounded-[3rem] bg-accent p-8 md:p-14 text-text-inverse shadow-2xl shadow-accent/20">
+      <div className="relative overflow-hidden rounded-3xl sm:rounded-[3rem] bg-accent p-5 sm:p-8 md:p-12 text-text-inverse shadow-2xl shadow-accent/20">
         {/* Background Decorative Elements */}
         <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full -mr-32 -mt-32 blur-3xl animate-pulse" />
         <div className="absolute bottom-0 left-0 w-64 h-64 bg-accent-secondary/15 rounded-full -ml-20 -mb-20 blur-2xl" />
 
-        <div className="relative flex flex-col md:flex-row items-center md:items-end gap-10">
+        <div className="relative flex flex-col md:flex-row items-center md:items-end gap-5 sm:gap-8">
           <div className="relative group">
-            <div className="w-40 h-40 rounded-[3rem] bg-white/15 backdrop-blur-xl flex items-center justify-center text-6xl font-black border-2 border-white/30 shadow-2xl transition-all duration-700 group-hover:scale-105 group-hover:rotate-2">
+            <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-[2.5rem] bg-white/15 backdrop-blur-xl flex items-center justify-center text-3xl sm:text-4xl font-black border-2 border-white/30 shadow-2xl transition-all duration-700 group-hover:scale-105 group-hover:rotate-2">
               {initials} {/* Camera Button */}
               <button
                 onClick={handleClick}
-                className="absolute -bottom-2 -right-2 p-3.5 bg-white text-accent rounded-2xl shadow-xl hover:bg-bg-subtle transition-all transform hover:rotate-12 active:scale-90">
+                className="absolute -bottom-2 -right-2 p-2.5 sm:p-3 bg-white text-accent rounded-xl sm:rounded-2xl shadow-xl hover:bg-bg-subtle transition-all transform hover:rotate-12 active:scale-90">
 
                 <Icons.Camera />
               </button>
@@ -156,29 +168,38 @@ export default function ClientProfilePage() {
             <div className="inline-flex items-center px-4 py-1.5 rounded-full bg-white/15 backdrop-blur-md text-[10px] font-black uppercase tracking-[0.25em] border border-white/10 mb-2">
               Account Overview
             </div>
-            <h1 className="text-4xl md:text-6xl font-black tracking-tighter leading-none">{session?.user.name}</h1>
-            <p className="text-white/70 text-lg font-medium tracking-tight">{session?.user.email}</p>
+            <h1 className="text-xl sm:text-2xl lg:text-3xl font-black tracking-tighter leading-none">{session?.user.name}</h1>
+            <p className="text-white/70 text-sm sm:text-base font-medium tracking-tight">{session?.user.email}</p>
           </div>
 
           <div className="flex gap-3">
-            <div className="p-4 bg-white/10 hover:bg-white/20 rounded-2xl transition-all border border-white/10 cursor-pointer group">
+            <button
+              onClick={() => {
+                setIsChangingPassword(true);
+                setTimeout(() => {
+                  document.getElementById('security-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 50);
+              }}
+              className="p-3 sm:p-4 bg-white/10 hover:bg-white/20 rounded-xl sm:rounded-2xl transition-all border border-white/10 cursor-pointer group"
+              title="Security Settings"
+            >
               <div className="group-hover:rotate-45 transition-transform duration-500">
                 <Icons.Settings />
               </div>
-            </div>
+            </button>
           </div>
         </div>
       </div>
 
       {/* 2. BENTO GRID LAYOUT */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <div className="grid grid-cols-1 2xl:grid-cols-12 gap-6">
 
         {/* Profile Details (Bento Piece 1) */}
-        <div className="lg:col-span-5 flex flex-col gap-6">
+        <div className="2xl:col-span-5 flex flex-col gap-6">
           <Card className="h-full border-accent/5">
             <div className="flex items-center justify-between mb-10">
               <div>
-                <h3 className="text-2xl font-black text-text-primary tracking-tight">Identity</h3>
+                <h3 className="text-lg sm:text-xl font-black text-text-primary tracking-tight">Identity</h3>
                 <p className="text-sm text-text-muted font-medium">Verified workspace member</p>
               </div>
               <div className="w-12 h-12 bg-accent/5 rounded-2xl flex items-center justify-center text-accent">
@@ -201,16 +222,16 @@ export default function ClientProfilePage() {
         </div>
 
         {/* Security & Password (Bento Piece 2) */}
-        <div className="lg:col-span-7">
+        <div className="2xl:col-span-7" id="security-section">
           <Card className="h-full border-border-default" >
-            <div className=" p-6 lg:p-2">
-              <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
+            <div className="p-4 sm:p-6">
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 sm:gap-6 mb-8 sm:mb-12">
                 <div className="space-y-1">
-                  <h3 className="text-2xl font-black text-text-primary tracking-tight">Access Control</h3>
+                  <h3 className="text-lg sm:text-xl font-black text-text-primary tracking-tight">Access Control</h3>
                   <p className="text-sm text-text-muted font-medium italic">Last updated: 2 days ago</p>
                 </div>
                 {!isChangingPassword && (
-                  <Button variant="primary" onClick={() => setIsChangingPassword(true)} className="px-8 py-4">
+                  <Button variant="primary" onClick={() => setIsChangingPassword(true)} className="w-full sm:w-auto px-5 sm:px-8 py-3 sm:py-4">
                     <Icons.Key />
                     Rotate Password
                   </Button>
@@ -271,19 +292,19 @@ export default function ClientProfilePage() {
                 </form>
               ) : (
                 <div className="space-y-6">
-                  <div className="flex items-center gap-6 p-6 bg-accent/5 border border-accent/10 rounded-3xl">
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6 p-4 sm:p-6 bg-accent/5 border border-accent/10 rounded-2xl sm:rounded-3xl">
                     <div className="w-14 h-14 bg-accent text-white rounded-2xl flex items-center justify-center flex-shrink-0 shadow-lg shadow-accent/20">
                       <Icons.Lock />
                     </div>
                     <div>
-                      <h4 className="font-bold text-text-primary text-lg">Multi-Layer Encryption</h4>
+                      <h4 className="font-bold text-text-primary text-base sm:text-lg">Multi-Layer Encryption</h4>
                       <p className="text-sm text-text-muted mt-1 leading-relaxed">
                         Your account is protected with enterprise-grade encryption. Change your password frequently to maximize defense.
                       </p>
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                     <SecurityMetric label="Login Health" value="Strong" status="healthy" />
                     <SecurityMetric label="2FA Status" value="Inactive" status="warning" />
                   </div>
@@ -300,7 +321,7 @@ export default function ClientProfilePage() {
 }
 
 // Sub-components for better modularity and UX
-function InfoTile({ label, value, icon, color }) {
+function InfoTile({ label, value, icon, color }: InfoTileProps) {
   const colorMap = {
     blue: 'bg-blue-500/10 text-blue-600',
     purple: 'bg-purple-500/10 text-purple-600',
@@ -309,19 +330,19 @@ function InfoTile({ label, value, icon, color }) {
   };
 
   return (
-    <div className="group flex items-center gap-5 space-y-2 bg-bg-subtle rounded-3xl border border-transparent hover:border-border-default hover:bg-accent-muted hover:shadow-xl hover:shadow-black/[0.02] transition-all duration-500">
-      <div className={`w-12 h-12 mt-2 ml-2 rounded-2xl flex items-center justify-center transition-transform group-hover:scale-110 ${colorMap[color]}`}>
+    <div className="group flex items-center gap-3 sm:gap-5 p-2 sm:p-2.5 bg-bg-subtle rounded-2xl sm:rounded-3xl border border-transparent hover:border-border-default hover:bg-accent-muted hover:shadow-xl hover:shadow-black/[0.02] transition-all duration-500">
+      <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl flex items-center justify-center transition-transform group-hover:scale-110 ${colorMap[color]}`}>
         {icon}
       </div>
       <div className="flex-1 min-w-0">
         <p className="text-[10px] font-black uppercase tracking-widest text-text-muted mb-0.5 opacity-60">{label}</p>
-        <p className="text-base font-bold text-text-primary truncate">{value}</p>
+        <p className="text-sm sm:text-base font-bold text-text-primary truncate">{value}</p>
       </div>
     </div>
   );
 }
 
-function SecurityMetric({ label, value, status }) {
+function SecurityMetric({ label, value, status }: SecurityMetricProps) {
   return (
     <div className="p-5 bg-bg-subtle rounded-2xl border border-border-default flex flex-col gap-1">
       <span className="text-[10px] font-bold text-text-muted uppercase tracking-wider">{label}</span>

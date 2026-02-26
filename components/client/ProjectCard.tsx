@@ -35,8 +35,8 @@ export default function ProjectCard({ project }: ProjectCardProps) {
   return (
     <Link href={`/client/projects/${project.id}`}>
       <Card hoverable className="group relative overflow-hidden">
-        <div className="flex items-start justify-between mb-4">
-          <h3 className="text-xl font-bold text-text-primary flex-1 pr-4 group-hover:text-accent transition-colors duration-200">
+        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-4">
+          <h3 className="text-lg sm:text-xl font-bold text-text-primary flex-1 pr-0 sm:pr-4 group-hover:text-accent transition-colors duration-200 break-words">
             {project.name}
           </h3>
           <StatusBadge status={project.status} type="project" />
@@ -55,7 +55,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
         </div>
 
         <div className="space-y-3 pt-4 border-t border-border-default">
-          <div className="flex items-center justify-between text-sm">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 text-sm">
             <div className="flex items-center text-text-muted">
               <FiUser className="w-4 h-4 mr-2 text-text-disabled" />
               <span className="font-medium">{project.manager.name}</span>
@@ -67,7 +67,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
           </div>
 
           <div className="flex items-center justify-between pt-3 border-t border-border-subtle">
-            <div className="flex items-center space-x-4 text-xs text-text-muted">
+            <div className="flex items-center gap-2 sm:gap-4 text-xs text-text-muted flex-wrap">
               <span className="font-medium">{project._count.milestones} Milestones</span>
               <span className="text-text-disabled">•</span>
               <span className="font-medium">{project._count.files} Files</span>

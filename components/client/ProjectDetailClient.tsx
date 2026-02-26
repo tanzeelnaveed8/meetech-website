@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { format } from 'date-fns';
-import { FiCalendar, FiUser, FiCheckCircle, FiClock, FiAlertCircle, FiDollarSign, FiMessageSquare } from 'react-icons/fi';
+import { FiCalendar, FiUser, FiCheckCircle, FiClock, FiAlertCircle, FiMessageSquare } from 'react-icons/fi';
 import StatusBadge from '@/components/ui/StatusBadge';
 import ProgressBar from '@/components/ui/ProgressBar';
 import FileList from '@/components/ui/FileList';
@@ -120,8 +120,9 @@ export default function ProjectDetailClient({ projectId }: ProjectDetailClientPr
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ projectId }),
       });
-      if (res.ok) {
-        router.push('/client/messages');
+      const data = await res.json();
+      if (res.ok && data.conversation?.id) {
+        router.push(`/client/dashboard?modal=messages&conversationId=${data.conversation.id}`);
       } else {
         toastError('Failed to start conversation');
       }
@@ -166,9 +167,9 @@ export default function ProjectDetailClient({ projectId }: ProjectDetailClientPr
     <div className="space-y-6">
       {/* Header */}
       <Card>
-        <div className="flex items-start justify-between mb-4">
+        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 mb-4">
           <div className="flex-1">
-            <h1 className="text-2xl font-semibold text-text-primary mb-2">
+            <h1 className="text-xl sm:text-2xl font-semibold text-text-primary mb-2">
               {project.name}
             </h1>
             <p className="text-text-muted">{project.description}</p>
@@ -184,6 +185,7 @@ export default function ProjectDetailClient({ projectId }: ProjectDetailClientPr
             onClick={handleMessageManager}
             isLoading={isStartingChat}
             leftIcon={<FiMessageSquare className="w-4 h-4" />}
+            className="w-full sm:w-auto"
           >
             Message Manager
           </Button>
@@ -193,7 +195,7 @@ export default function ProjectDetailClient({ projectId }: ProjectDetailClientPr
           <ProgressBar progress={project.progress} showLabel={true} />
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4 border-t border-border-default">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 pt-4 border-t border-border-default">
           <div className="flex items-center text-sm">
             <FiUser className="w-4 h-4 text-text-disabled mr-2" />
             <span className="text-text-muted">Manager:</span>
@@ -242,7 +244,7 @@ export default function ProjectDetailClient({ projectId }: ProjectDetailClientPr
             {project.milestones.map((milestone) => (
               <div
                 key={milestone.id}
-                className="flex items-start space-x-3 p-4 border border-border-default rounded-lg"
+                className="flex items-start space-x-3 p-3 sm:p-4 border border-border-default rounded-lg"
               >
                 <div className="flex-shrink-0 mt-0.5">
                   {milestone.status === 'COMPLETED' ? (
@@ -252,7 +254,7 @@ export default function ProjectDetailClient({ projectId }: ProjectDetailClientPr
                   )}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-start justify-between mb-1">
+                  <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-1">
                     <h3 className="text-sm font-medium text-text-primary">{milestone.title}</h3>
                     <StatusBadge status={milestone.status} type="milestone" />
                   </div>
@@ -325,7 +327,7 @@ export default function ProjectDetailClient({ projectId }: ProjectDetailClientPr
       </Card>
 
       {/* Change Requests */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
         <ChangeRequestForm projectId={projectId} onSuccess={fetchProject} />
 
         <Card>
@@ -336,8 +338,8 @@ export default function ProjectDetailClient({ projectId }: ProjectDetailClientPr
           ) : (
             <div className="space-y-3 max-h-96 overflow-y-auto">
               {project.changeRequests.map((request) => (
-                <div key={request.id} className="p-4 border border-border-default rounded-lg">
-                  <div className="flex items-start justify-between mb-2">
+                <div key={request.id} className="p-3 sm:p-4 border border-border-default rounded-lg">
+                  <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-2">
                     <h4 className="text-sm font-medium text-text-primary">{request.title}</h4>
                     <StatusBadge status={request.status} type="changeRequest" />
                   </div>

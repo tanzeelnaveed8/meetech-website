@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { requireRole } from '@/lib/auth/middleware'
-import { getUserById, updateUser, deleteUser, updateUserPassword } from '@/lib/db/queries/users'
+import { getUserById, updateUser, deleteUser, hardDeleteUser, updateUserPassword } from '@/lib/db/queries/users'
 import { z } from 'zod'
 
 const updateUserSchema = z.object({
@@ -97,10 +97,18 @@ export async function DELETE(
   }
 
   const { userId } = await params
+  const permanent = new URL(request.url).searchParams.get('permanent') === 'true'
 
   try {
-    const user = await deleteUser(userId)
+    if (permanent) {
+      await hardDeleteUser(userId)
+      return NextResponse.json(
+        { message: 'User permanently deleted' },
+        { status: 200 }
+      )
+    }
 
+    const user = await deleteUser(userId)
     return NextResponse.json(
       { message: 'User deactivated successfully', user },
       { status: 200 }

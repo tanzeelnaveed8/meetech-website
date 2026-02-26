@@ -34,11 +34,11 @@ export default async function ClientDashboardPage() {
             Welcome back, {firstName}
           </h1>
           <p className="text-text-inverse/80 mt-1.5 text-sm sm:text-base max-w-lg">
-            Track your projects, upload requirements, and schedule meetings — all from one place.
+            Track your projects, upload requirements, and schedule meetings all from one place.
           </p>
           <div className="flex flex-wrap gap-3 mt-5">
             <Link
-              href="/client/book-meeting"
+              href="/client/dashboard?modal=booking"
               className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-white/15 text-text-inverse text-sm font-medium hover:bg-white/25 transition-colors"
             >
               Book a Meeting <FiArrowRight className="w-4 h-4" />

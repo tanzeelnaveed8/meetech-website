@@ -1,5 +1,16 @@
 import { prisma } from '@/lib/db/client'
 import { hashPassword } from '@/lib/auth/password'
+import { randomBytes } from 'crypto'
+
+function generateAccessCode(): string {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'
+  const bytes = randomBytes(8)
+  let code = ''
+  for (let i = 0; i < 8; i++) {
+    code += chars[bytes[i] % chars.length]
+  }
+  return code
+}
 
 export async function getUsers(filters?: {
   role?: string
@@ -132,6 +143,62 @@ export async function deleteUser(userId: string) {
     select: {
       id: true,
       email: true,
+      isActive: true,
+    },
+  })
+}
+
+export async function hardDeleteUser(userId: string) {
+  return prisma.user.delete({
+    where: { id: userId },
+  })
+}
+
+export async function createClientWithCode(data: {
+  email: string
+  name: string
+}) {
+  // Random internal password - client never uses it
+  const internalPassword = randomBytes(32).toString('hex')
+  const passwordHash = await hashPassword(internalPassword)
+  const plainCode = generateAccessCode()
+
+  const user = await prisma.user.create({
+    data: {
+      email: data.email,
+      passwordHash,
+      name: data.name,
+      role: 'CLIENT',
+      isActive: true,
+      accessCode: plainCode,
+    },
+    select: {
+      id: true,
+      email: true,
+      name: true,
+      role: true,
+      isActive: true,
+      createdAt: true,
+    },
+  })
+
+  return { user, plainCode }
+}
+
+export async function regenerateAccessCode(userId: string) {
+  const plainCode = generateAccessCode()
+  await prisma.user.update({
+    where: { id: userId },
+    data: { accessCode: plainCode },
+  })
+  return plainCode
+}
+
+export async function findUserByAccessCode(code: string) {
+  return prisma.user.findFirst({
+    where: {
+      accessCode: code,
+      role: 'CLIENT',
       isActive: true,
     },
   })

@@ -114,6 +114,7 @@ model User {
   // Authentication
   email         String    @unique
   passwordHash  String
+  accessCode    String?   // Plaintext code for CLIENT magic-code login
 
   // Profile
   name          String
@@ -135,6 +136,7 @@ model User {
   uploadedFiles       ProjectFile[]
   changeRequests      ChangeRequest[]
   messages            Message[]
+  meetingRequests     MeetingRequest[]
 }
 
 model Project {
@@ -298,6 +300,35 @@ model Conversation {
   messages      Message[]
 
   @@index([lastMessageAt])
+}
+
+model MeetingRequest {
+  id                String    @id @default(auto()) @map("_id") @db.ObjectId
+
+  // Client who requested
+  clientId          String    @db.ObjectId
+  client            User      @relation(fields: [clientId], references: [id], onDelete: Cascade)
+
+  // Meeting Preferences
+  preferredDate     DateTime
+  preferredTimeSlot String    // MORNING | AFTERNOON | EVENING
+  topic             String
+  notes             String?
+
+  // Status
+  status            String    @default("PENDING") // PENDING, CONFIRMED, CANCELLED
+
+  // Admin Response
+  adminNote         String?
+  reviewedAt        DateTime?
+
+  // Timestamps
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  @@index([clientId])
+  @@index([status])
+  @@index([preferredDate])
 }
 
 model Message {

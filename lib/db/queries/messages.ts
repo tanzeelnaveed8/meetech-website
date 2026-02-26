@@ -19,6 +19,55 @@ export async function getOrCreateConversation(projectId: string) {
 export async function getConversationsByUser(userId: string, role: string) {
   const isAdmin = ["ADMIN", "EDITOR", "VIEWER"].includes(role);
 
+  if (!isAdmin) {
+    // Ensure client can always start chatting, even without an assigned project yet.
+    let clientProjects = await prisma.project.findMany({
+      where: { clientId: userId },
+      select: { id: true },
+    });
+
+    if (clientProjects.length === 0) {
+      const manager =
+        (await prisma.user.findFirst({
+          where: { role: "ADMIN", isActive: true },
+          select: { id: true },
+        })) ??
+        (await prisma.user.findFirst({
+          where: { role: "EDITOR", isActive: true },
+          select: { id: true },
+        }));
+
+      if (manager) {
+        const supportProject = await prisma.project.create({
+          data: {
+            name: "General Support",
+            description:
+              "Auto-created support channel so the client can message their manager.",
+            scope: "General support and communication",
+            status: "IN_PROGRESS",
+            progress: 0,
+            clientId: userId,
+            managerId: manager.id,
+          },
+          select: { id: true },
+        });
+
+        clientProjects = [supportProject];
+      }
+    }
+
+    // Ensure each client project has an associated conversation.
+    await Promise.all(
+      clientProjects.map((project) =>
+        prisma.conversation.upsert({
+          where: { projectId: project.id },
+          update: {},
+          create: { projectId: project.id },
+        })
+      )
+    );
+  }
+
   const conversations = await prisma.conversation.findMany({
     where: isAdmin
       ? {} // Admin sees all conversations

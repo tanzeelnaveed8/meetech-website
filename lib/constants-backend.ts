@@ -172,4 +172,5 @@ export const ADMIN_NAV_ITEMS = [
   { href: '/admin/projects', label: 'Projects' },
   { href: '/admin/messages', label: 'Messages' },
   { href: '/admin/change-requests', label: 'Change Requests' },
+  { href: '/admin/meetings', label: 'Meetings' },
 ] as const;

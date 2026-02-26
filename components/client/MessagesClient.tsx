@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { format, isToday, isYesterday } from 'date-fns';
 import {
   FiSend,
@@ -98,6 +99,9 @@ export default function MessagesClient({
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const pollIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
+  const searchParams = useSearchParams();
+  const targetConversationId = searchParams.get('conversationId');
+
   const isAdmin = ['ADMIN', 'EDITOR', 'VIEWER'].includes(userRole);
 
   // Fetch conversations
@@ -134,10 +138,35 @@ export default function MessagesClient({
     []
   );
 
-  // Initial load
+  // Initial load — for CLIENT: auto-open target or first conversation
   useEffect(() => {
-    fetchConversations();
-  }, [fetchConversations]);
+    const load = async () => {
+      try {
+        const res = await fetch('/api/messages');
+        const data = await res.json();
+        if (res.ok) {
+          setConversations(data.conversations);
+          if (!isAdmin && data.conversations.length > 0) {
+            // If coming from a project page, open that specific conversation
+            const target: Conversation = targetConversationId
+              ? data.conversations.find((c: Conversation) => c.id === targetConversationId) ?? data.conversations[0]
+              : data.conversations[0];
+            setActiveConversation(target);
+            setShowMobileThread(true);
+            fetchMessages(target.id);
+            if (target.unreadCount > 0) {
+              await fetch(`/api/messages/${target.id}/read`, { method: 'POST' });
+            }
+          }
+        }
+      } catch (err) {
+        console.error('Failed to fetch conversations:', err);
+      } finally {
+        setIsLoadingConvos(false);
+      }
+    };
+    load();
+  }, [fetchConversations, fetchMessages, isAdmin, targetConversationId]);
 
   // Poll for updates
   useEffect(() => {
@@ -305,7 +334,7 @@ export default function MessagesClient({
         <p className="text-xs text-text-muted mt-1">
           {isAdmin
             ? 'Client conversations'
-            : 'Messages with your project manager'}
+            : 'Messages with your manager'}
         </p>
       </div>
 
@@ -393,12 +422,14 @@ export default function MessagesClient({
     <div className="flex flex-col h-full">
       {/* Thread Header */}
       <div className="flex items-center gap-3 p-4 border-b border-border-default bg-bg-surface">
-        <button
-          onClick={() => setShowMobileThread(false)}
-          className="lg:hidden p-1.5 text-text-muted hover:text-text-primary rounded-lg hover:bg-bg-subtle transition-colors"
-        >
-          <FiChevronLeft className="w-5 h-5" />
-        </button>
+        {isAdmin && (
+          <button
+            onClick={() => setShowMobileThread(false)}
+            className="lg:hidden p-1.5 text-text-muted hover:text-text-primary rounded-lg hover:bg-bg-subtle transition-colors"
+          >
+            <FiChevronLeft className="w-5 h-5" />
+          </button>
+        )}
         <div className="w-9 h-9 rounded-full bg-accent flex items-center justify-center text-text-inverse text-sm font-semibold flex-shrink-0">
           {getOtherPartyName(activeConversation).charAt(0).toUpperCase()}
         </div>
@@ -407,9 +438,15 @@ export default function MessagesClient({
             {getOtherPartyName(activeConversation)}
           </h3>
           <p className="text-xs text-text-muted truncate">
-            {activeConversation.project.name}
+            {isAdmin
+              ? activeConversation.project.name
+              : `${getOtherPartyName(activeConversation)} · Manager`}
           </p>
         </div>
+        <span className="flex items-center gap-1.5 text-[10px] text-green-600 dark:text-green-400 font-semibold bg-green-50 dark:bg-green-500/10 px-2 py-1 rounded-full">
+          <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" />
+          Online
+        </span>
       </div>
 
       {/* Messages Area */}
@@ -527,6 +564,59 @@ export default function MessagesClient({
     </div>
   );
 
+  // ── CLIENT: direct full-screen chat (no conversation list) ──────────
+  if (!isAdmin) {
+    return (
+      <div className="rounded-xl border border-border-default bg-bg-card shadow-sm overflow-hidden" style={{ height: 'calc(100vh - 200px)', minHeight: '500px' }}>
+        {isLoadingConvos ? (
+          <div className="flex items-center justify-center h-full">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-accent" />
+          </div>
+        ) : conversations.length === 0 ? (
+          <div className="flex flex-col items-center justify-center h-full text-center px-6">
+            <div className="w-20 h-20 bg-bg-subtle rounded-full flex items-center justify-center mb-4">
+              <FiMessageSquare className="w-10 h-10 text-text-disabled" />
+            </div>
+            <h3 className="text-lg font-semibold text-text-primary mb-2">No conversation available</h3>
+            <p className="text-sm text-text-muted max-w-sm">
+              Your manager conversation will appear here shortly. Please contact support if it does not show up.
+            </p>
+          </div>
+        ) : (
+          <div className="flex flex-col h-full">
+            {/* Project tabs — if multiple conversations */}
+            {conversations.length > 1 && (
+              <div className="flex gap-2 px-4 py-2 border-b border-border-default bg-bg-subtle overflow-x-auto">
+                {conversations.map((conv) => (
+                  <button
+                    key={conv.id}
+                    onClick={() => openConversation(conv)}
+                    className={`shrink-0 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
+                      activeConversation?.id === conv.id
+                        ? 'bg-accent text-text-inverse'
+                        : 'bg-bg-card text-text-muted border border-border-default hover:border-accent hover:text-accent'
+                    }`}
+                  >
+                    {conv.project.name}
+                    {conv.unreadCount > 0 && (
+                      <span className="ml-1.5 bg-red-500 text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full">
+                        {conv.unreadCount}
+                      </span>
+                    )}
+                  </button>
+                ))}
+              </div>
+            )}
+            <div className="flex-1 overflow-hidden">
+              {messageThreadJSX}
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  // ── ADMIN: original side-by-side layout ──────────────────────────────
   return (
     <div className="rounded-xl border border-border-default bg-bg-card shadow-sm overflow-hidden" style={{ height: 'calc(100vh - 200px)', minHeight: '500px' }}>
       {/* Desktop: side-by-side */}

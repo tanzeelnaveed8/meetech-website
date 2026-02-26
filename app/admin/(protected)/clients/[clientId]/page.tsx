@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { FiArrowLeft, FiUser, FiMail, FiTrash2, FiCheckCircle, FiXCircle } from 'react-icons/fi';
+import { FiArrowLeft, FiUser, FiMail, FiTrash2, FiCheckCircle, FiXCircle, FiKey, FiCopy, FiCheck, FiRefreshCw } from 'react-icons/fi';
 import Link from 'next/link';
 import { use } from 'react';
 import Card from '@/components/ui/Card';
@@ -36,6 +36,9 @@ export default function ClientDetailPage({ params }: { params: Promise<{ clientI
   const [isEditing, setIsEditing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [editData, setEditData] = useState({ name: '', email: '', isActive: true });
+  const [newCode, setNewCode] = useState('');
+  const [isGeneratingCode, setIsGeneratingCode] = useState(false);
+  const [codeCopied, setCodeCopied] = useState(false);
 
   useEffect(() => {
     fetchClient();
@@ -101,19 +104,58 @@ export default function ClientDetailPage({ params }: { params: Promise<{ clientI
     }
   };
 
-  const handleDelete = async () => {
+  const handleGenerateCode = async () => {
+    if (isGeneratingCode) return;
+    setIsGeneratingCode(true);
+    try {
+      const response = await fetch(`/api/users/${clientId}/generate-code`, { method: 'POST' });
+      const data = await response.json();
+      if (response.ok) {
+        setNewCode(data.plainCode);
+        toastSuccess('New code generated and emailed to client');
+      } else {
+        toastError(data.error || 'Failed to generate code');
+      }
+    } catch {
+      toastError('An error occurred');
+    } finally {
+      setIsGeneratingCode(false);
+    }
+  };
+
+  const handleCopyCode = () => {
+    navigator.clipboard.writeText(newCode);
+    setCodeCopied(true);
+    setTimeout(() => setCodeCopied(false), 2000);
+  };
+
+  const handleDeactivate = async () => {
     if (!confirm('Are you sure you want to deactivate this client? They will no longer be able to log in.')) return;
 
     try {
-      const response = await fetch(`/api/users/${clientId}`, {
-        method: 'DELETE',
-      });
-
+      const response = await fetch(`/api/users/${clientId}`, { method: 'DELETE' });
       if (response.ok) {
         toastSuccess('Client deactivated successfully');
-        router.push('/admin/clients');
+        await fetchClient();
       } else {
         toastError('Failed to deactivate client');
+      }
+    } catch {
+      toastError('An error occurred');
+    }
+  };
+
+  const handlePermanentDelete = async () => {
+    if (!confirm('PERMANENTLY DELETE this client? This cannot be undone and will remove all their data.')) return;
+    if (!confirm('Are you absolutely sure? Type OK to confirm.')) return;
+
+    try {
+      const response = await fetch(`/api/users/${clientId}?permanent=true`, { method: 'DELETE' });
+      if (response.ok) {
+        toastSuccess('Client permanently deleted');
+        router.push('/admin/clients');
+      } else {
+        toastError('Failed to delete client');
       }
     } catch {
       toastError('An error occurred');
@@ -250,22 +292,72 @@ export default function ClientDetailPage({ params }: { params: Promise<{ clientI
               </div>
             </div>
 
-            <div className="flex space-x-3 pt-4">
+            <div className="flex flex-wrap gap-3 pt-4">
               <Button
                 variant="outline"
                 onClick={() => setIsEditing(true)}
               >
                 Edit Information
               </Button>
+              {client.isActive && (
+                <Button
+                  variant="danger"
+                  onClick={handleDeactivate}
+                  leftIcon={<FiXCircle className="w-4 h-4" />}
+                >
+                  Deactivate
+                </Button>
+              )}
               <Button
                 variant="danger"
-                onClick={handleDelete}
+                onClick={handlePermanentDelete}
                 leftIcon={<FiTrash2 className="w-4 h-4" />}
+                className="!bg-red-700 hover:!bg-red-800"
               >
-                Deactivate
+                Delete Permanently
               </Button>
             </div>
           </div>
+        )}
+      </Card>
+
+      {/* Access Code */}
+      <Card className="mb-6">
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-2">
+            <FiKey className="w-5 h-5 text-accent" />
+            <h2 className="text-lg font-semibold text-text-primary">Access Code</h2>
+          </div>
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={handleGenerateCode}
+            isLoading={isGeneratingCode}
+            leftIcon={<FiRefreshCw className="w-3.5 h-3.5" />}
+          >
+            {isGeneratingCode ? 'Generating...' : 'Generate New Code'}
+          </Button>
+        </div>
+
+        {newCode ? (
+          <div className="rounded-xl border-2 border-dashed border-accent/40 bg-accent-muted p-5 text-center">
+            <p className="text-xs text-text-muted uppercase tracking-widest mb-2">New Access Code</p>
+            <p className="text-3xl font-extrabold tracking-[0.3em] text-accent font-mono mb-4">{newCode}</p>
+            <div className="flex items-center justify-center gap-3 text-sm text-text-muted mb-3">
+              <button
+                onClick={handleCopyCode}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-accent text-text-inverse rounded-lg font-semibold text-xs hover:opacity-90 transition-opacity"
+              >
+                {codeCopied ? <FiCheck className="w-3.5 h-3.5" /> : <FiCopy className="w-3.5 h-3.5" />}
+                {codeCopied ? 'Copied!' : 'Copy Code'}
+              </button>
+            </div>
+            <p className="text-xs text-text-muted">Code has been emailed to <strong>{client.email}</strong></p>
+          </div>
+        ) : (
+          <p className="text-sm text-text-muted">
+            Generate a new access code to send to this client. The old code will be replaced and emailed automatically.
+          </p>
         )}
       </Card>
 

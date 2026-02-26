@@ -1,8 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { FiArrowLeft, FiUser, FiMail, FiLock } from 'react-icons/fi';
+import { FiArrowLeft, FiUser, FiMail, FiCopy, FiCheck, FiKey } from 'react-icons/fi';
 import Link from 'next/link';
 import Card from '@/components/ui/Card';
 import Input from '@/components/ui/Input';
@@ -10,15 +9,12 @@ import Button from '@/components/ui/Button';
 import { useToast } from '@/components/ui/Toast';
 
 export default function NewClientPage() {
-  const router = useRouter();
   const { success: toastSuccess, error: toastError } = useToast();
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    password: '',
-  });
+  const [formData, setFormData] = useState({ name: '', email: '' });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+  const [generatedCode, setGeneratedCode] = useState('');
+  const [copied, setCopied] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -33,7 +29,6 @@ export default function NewClientPage() {
         body: JSON.stringify({
           name: formData.name,
           email: formData.email,
-          password: formData.password,
           role: 'CLIENT',
           isActive: true,
         }),
@@ -42,8 +37,8 @@ export default function NewClientPage() {
       const data = await response.json();
 
       if (response.ok) {
-        toastSuccess('Client created successfully');
-        router.push('/admin/clients');
+        setGeneratedCode(data.plainCode);
+        toastSuccess('Client created! Code sent to email.');
       } else {
         setError(data.error || 'Failed to create client');
         toastError(data.error || 'Failed to create client');
@@ -56,18 +51,86 @@ export default function NewClientPage() {
     }
   };
 
+  const handleCopy = () => {
+    navigator.clipboard.writeText(generatedCode);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  // After code is generated — show success screen
+  if (generatedCode) {
+    return (
+      <div className="max-w-2xl">
+        <div className="mb-6">
+          <Link
+            href="/admin/clients"
+            className="inline-flex items-center text-sm text-text-muted hover:text-text-primary transition-colors mb-4"
+          >
+            <FiArrowLeft className="w-4 h-4 mr-2" />
+            Back to Clients
+          </Link>
+          <h1 className="text-2xl font-semibold text-text-primary mb-1">Client Created!</h1>
+          <p className="text-sm text-text-muted">Access code has been sent to the client&apos;s email.</p>
+        </div>
+
+        <Card>
+          <div className="space-y-6">
+            {/* Code display */}
+            <div className="rounded-2xl border-2 border-dashed border-accent/40 bg-accent-muted p-6 text-center">
+              <div className="flex items-center justify-center gap-2 mb-3">
+                <FiKey className="w-5 h-5 text-accent" />
+                <span className="text-xs font-bold text-text-muted uppercase tracking-widest">Access Code</span>
+              </div>
+              <p className="text-4xl font-extrabold tracking-[0.3em] text-accent font-mono mb-4">
+                {generatedCode}
+              </p>
+              <button
+                onClick={handleCopy}
+                className="inline-flex items-center gap-2 px-4 py-2 bg-accent text-text-inverse text-sm font-semibold rounded-xl hover:opacity-90 transition-opacity"
+              >
+                {copied ? <FiCheck className="w-4 h-4" /> : <FiCopy className="w-4 h-4" />}
+                {copied ? 'Copied!' : 'Copy Code'}
+              </button>
+            </div>
+
+            <div className="p-4 rounded-xl border border-border-default bg-bg-subtle text-sm text-text-muted space-y-1">
+              <p>✅ Client account created for <strong className="text-text-primary">{formData.email}</strong></p>
+              <p>✅ Access code emailed to client</p>
+              <p>📋 Client should enter this code at the login page — no password needed</p>
+            </div>
+
+            <div className="flex gap-3">
+              <Link href="/admin/clients" className="flex-1">
+                <Button fullWidth variant="outline">Back to Clients</Button>
+              </Link>
+              <Button
+                fullWidth
+                onClick={() => {
+                  setGeneratedCode('');
+                  setFormData({ name: '', email: '' });
+                }}
+              >
+                Create Another
+              </Button>
+            </div>
+          </div>
+        </Card>
+      </div>
+    );
+  }
+
   return (
     <div className="max-w-2xl">
       <div className="mb-6">
         <Link
           href="/admin/clients"
-          className="inline-flex items-center text-sm text-text-muted hover:text-text-primary transition-colors duration-200 mb-4"
+          className="inline-flex items-center text-sm text-text-muted hover:text-text-primary transition-colors mb-4"
         >
           <FiArrowLeft className="w-4 h-4 mr-2" />
           Back to Clients
         </Link>
         <h1 className="text-2xl font-semibold text-text-primary mb-1">Create New Client</h1>
-        <p className="text-sm text-text-muted">Add a new client account</p>
+        <p className="text-sm text-text-muted">An access code will be generated and emailed to the client — no password needed.</p>
       </div>
 
       <Card>
@@ -100,45 +163,21 @@ export default function NewClientPage() {
             placeholder="john@example.com"
             disabled={isLoading}
             leftIcon={<FiMail className="h-4 w-4" />}
-          />
-
-          <Input
-            id="password"
-            type="password"
-            label="Password"
-            isRequired
-            value={formData.password}
-            onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-            placeholder="Enter password (min 8 characters)"
-            disabled={isLoading}
-            leftIcon={<FiLock className="h-4 w-4" />}
-            hint="Password must be at least 8 characters"
+            hint="Access code will be sent to this email"
           />
 
           <div className="pt-4 border-t border-border-default">
             <div className="flex space-x-3">
-              <Button
-                type="submit"
-                isLoading={isLoading}
-                className="flex-1"
-              >
-                {isLoading ? 'Creating...' : 'Create Client'}
+              <Button type="submit" isLoading={isLoading} className="flex-1" leftIcon={<FiKey className="w-4 h-4" />}>
+                {isLoading ? 'Creating...' : 'Create Client & Generate Code'}
               </Button>
               <Link href="/admin/clients">
-                <Button type="button" variant="outline">
-                  Cancel
-                </Button>
+                <Button type="button" variant="outline">Cancel</Button>
               </Link>
             </div>
           </div>
         </form>
       </Card>
-
-      <div className="mt-4 p-4 rounded-xl border border-accent/20 bg-accent-muted">
-        <p className="text-sm text-text-body">
-          <strong>Note:</strong> A welcome email with login credentials will be sent to the client&apos;s email address.
-        </p>
-      </div>
     </div>
   );
 }
