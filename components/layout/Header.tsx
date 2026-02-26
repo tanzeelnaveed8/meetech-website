@@ -168,6 +168,12 @@ export function Header() {
 
         {/* Right: Social Icons, CTA, Theme Toggle & Hamburger */}
         <div className="flex items-center gap-3">
+          <Link
+            href="/client/login"
+            className="hidden lg:inline-flex min-h-[44px] items-center justify-center rounded-xl border-2 border-accent bg-transparent px-4 py-2 text-[0.9375rem] font-bold text-accent shadow-sm transition-all duration-200 ease-out hover:bg-accent-muted hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 focus-visible:ring-offset-bg-surface whitespace-nowrap"
+          >
+            Client Portal
+          </Link>
           <div className="hidden lg:block">
             <CtaButton reduceMotion={reduceMotion} />
           </div>
