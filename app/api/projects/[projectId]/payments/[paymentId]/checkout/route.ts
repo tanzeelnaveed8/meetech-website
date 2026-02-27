@@ -39,10 +39,6 @@ export async function POST(
     return NextResponse.json({ error: 'Payment not found' }, { status: 404 })
   }
 
-  if (!payment.isUnlocked) {
-    return NextResponse.json({ error: 'Payment is still locked' }, { status: 400 })
-  }
-
   if (payment.status === 'PAID') {
     return NextResponse.json({ error: 'Payment is already completed' }, { status: 400 })
   }

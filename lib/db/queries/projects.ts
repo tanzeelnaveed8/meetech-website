@@ -341,11 +341,15 @@ export async function createPayment(data: {
   stripeCheckoutUrl?: string
   stripePaymentIntentId?: string
 }) {
+  const isPaid = data.status?.toUpperCase() === 'PAID'
+  const isUnlocked = true
+
   return prisma.payment.create({
     data: {
       ...data,
-      isUnlocked: !data.milestoneId,
-      unlockedAt: data.milestoneId ? undefined : new Date(),
+      isUnlocked,
+      unlockedAt: isUnlocked ? new Date() : undefined,
+      paidDate: isPaid ? (data.paidDate ?? new Date()) : data.paidDate,
     },
   })
 }

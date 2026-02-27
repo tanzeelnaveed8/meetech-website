@@ -17,8 +17,6 @@ interface Milestone {
   description: string;
   status: string;
   expectedDate?: string;
-  approvalStatus?: string;
-  approvalComment?: string;
 }
 
 interface Payment {
@@ -45,16 +43,6 @@ interface ChangeRequest {
   estimatedCostImpact?: number;
   timelineImpactDays?: number;
   impactSummary?: string;
-}
-
-interface Approval {
-  id: string;
-  type: string;
-  title: string;
-  description?: string;
-  status: string;
-  decisionComment?: string;
-  createdAt: string;
 }
 
 interface LaunchChecklist {
@@ -88,7 +76,6 @@ interface Project {
   payments: Payment[];
   changeRequests: ChangeRequest[];
   files: FileItem[];
-  approvals: Approval[];
   launchChecklist?: LaunchChecklist | null;
   startDate?: string;
   expectedEndDate?: string;
@@ -106,12 +93,6 @@ export default function AdminProjectDetail({ projectId }: AdminProjectDetailProp
   const [error, setError] = useState('');
   const [isEditing, setIsEditing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
-  const [approvalForm, setApprovalForm] = useState({
-    type: 'FEATURE',
-    title: '',
-    description: '',
-    milestoneId: '',
-  });
   const [editData, setEditData] = useState({
     name: '',
     description: '',
@@ -281,49 +262,6 @@ export default function AdminProjectDetail({ projectId }: AdminProjectDetailProp
     }
   };
 
-  const handleCreateApproval = async () => {
-    try {
-      const response = await fetch(`/api/projects/${projectId}/approvals`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          type: approvalForm.type,
-          title: approvalForm.title,
-          description: approvalForm.description || undefined,
-          milestoneId: approvalForm.milestoneId || undefined,
-        }),
-      });
-
-      if (response.ok) {
-        setApprovalForm({ type: 'FEATURE', title: '', description: '', milestoneId: '' });
-        await fetchProject();
-        toastSuccess('Approval request created');
-      } else {
-        toastError('Failed to create approval');
-      }
-    } catch {
-      toastError('Failed to create approval');
-    }
-  };
-
-  const handleReviewApproval = async (approvalId: string, status: 'APPROVED' | 'CHANGES_REQUESTED') => {
-    try {
-      const response = await fetch(`/api/projects/${projectId}/approvals`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ approvalId, status }),
-      });
-      if (response.ok) {
-        await fetchProject();
-        toastSuccess(`Approval ${status === 'APPROVED' ? 'approved' : 'sent for changes'}`);
-      } else {
-        toastError('Failed to update approval');
-      }
-    } catch {
-      toastError('Failed to update approval');
-    }
-  };
-
   const handleSaveLaunchChecklist = async () => {
     try {
       const response = await fetch(`/api/projects/${projectId}/launch-checklist`, {
@@ -455,7 +393,6 @@ export default function AdminProjectDetail({ projectId }: AdminProjectDetailProp
     { id: 'milestones', label: 'Milestones' },
     { id: 'files', label: 'Files' },
     { id: 'payments', label: 'Payments' },
-    { id: 'approvals', label: 'Approvals' },
     { id: 'launch-readiness', label: 'Launch Readiness' },
     { id: 'change-requests', label: 'Change Requests' },
   ];
@@ -675,7 +612,6 @@ export default function AdminProjectDetail({ projectId }: AdminProjectDetailProp
                       </div>
                       <div className="flex items-center gap-2">
                         <StatusBadge status={milestone.status} type="milestone" />
-                        {milestone.approvalStatus && <StatusBadge status={milestone.approvalStatus} type="approval" />}
                       </div>
                     </div>
                   </div>
@@ -818,7 +754,7 @@ export default function AdminProjectDetail({ projectId }: AdminProjectDetailProp
                           {format(new Date(payment.dueDate), 'MMM d, yyyy')}
                         </td>
                         <td className="py-3 px-4">
-                          <StatusBadge status={payment.isUnlocked ? payment.status : 'LOCKED'} type="payment" />
+                          <StatusBadge status={payment.status} type="payment" />
                         </td>
                         <td className="py-3 px-4 text-text-muted">
                           {payment.milestoneId ? 'Linked milestone' : 'General'}
@@ -830,92 +766,6 @@ export default function AdminProjectDetail({ projectId }: AdminProjectDetailProp
               </div>
             )}
           </Card>
-        )}
-
-        {activeTab === 'approvals' && (
-          <div className="space-y-6">
-            <Card>
-              <h2 className="text-lg font-semibold text-text-primary mb-4">Create Approval Request</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                <div>
-                  <label className="block text-sm font-medium text-text-primary mb-1">Type</label>
-                  <select
-                    value={approvalForm.type}
-                    onChange={(e) => setApprovalForm({ ...approvalForm, type: e.target.value })}
-                    className="w-full px-4 py-3 text-sm border border-border-default rounded-lg bg-bg-surface text-text-primary"
-                  >
-                    <option value="DESIGN">Design</option>
-                    <option value="FEATURE">Feature</option>
-                    <option value="BUDGET">Budget</option>
-                    <option value="SCOPE_CHANGE">Scope Change</option>
-                    <option value="MILESTONE">Milestone</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-text-primary mb-1">Milestone (optional)</label>
-                  <select
-                    value={approvalForm.milestoneId}
-                    onChange={(e) => setApprovalForm({ ...approvalForm, milestoneId: e.target.value })}
-                    className="w-full px-4 py-3 text-sm border border-border-default rounded-lg bg-bg-surface text-text-primary"
-                  >
-                    <option value="">Not linked</option>
-                    {project.milestones.map((m) => (
-                      <option key={m.id} value={m.id}>{m.title}</option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-              <input
-                type="text"
-                placeholder="Approval title"
-                value={approvalForm.title}
-                onChange={(e) => setApprovalForm({ ...approvalForm, title: e.target.value })}
-                className="w-full mb-3 px-4 py-3 text-sm border border-border-default rounded-lg bg-bg-surface text-text-primary"
-              />
-              <textarea
-                placeholder="Description"
-                value={approvalForm.description}
-                onChange={(e) => setApprovalForm({ ...approvalForm, description: e.target.value })}
-                rows={3}
-                className="w-full mb-3 px-4 py-3 text-sm border border-border-default rounded-lg bg-bg-surface text-text-primary"
-              />
-              <Button onClick={handleCreateApproval}>Create Approval</Button>
-            </Card>
-
-            <Card>
-              <h2 className="text-lg font-semibold text-text-primary mb-4">Approval Center</h2>
-              {project.approvals.length === 0 ? (
-                <p className="text-sm text-text-muted text-center py-8">No approvals yet</p>
-              ) : (
-                <div className="space-y-3">
-                  {project.approvals.map((approval) => (
-                    <div key={approval.id} className="p-4 border border-border-default rounded-lg">
-                      <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
-                        <div>
-                          <h3 className="text-sm font-medium text-text-primary">{approval.title}</h3>
-                          <p className="text-xs text-text-muted">{approval.type.replaceAll('_', ' ')}</p>
-                        </div>
-                        <StatusBadge status={approval.status} type="approval" />
-                      </div>
-                      {approval.description && (
-                        <p className="text-sm text-text-muted mb-2">{approval.description}</p>
-                      )}
-                      {approval.status === 'PENDING' && (
-                        <div className="flex gap-2">
-                          <Button size="sm" onClick={() => handleReviewApproval(approval.id, 'APPROVED')}>
-                            Approve
-                          </Button>
-                          <Button size="sm" variant="outline" onClick={() => handleReviewApproval(approval.id, 'CHANGES_REQUESTED')}>
-                            Request Changes
-                          </Button>
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              )}
-            </Card>
-          </div>
         )}
 
         {activeTab === 'launch-readiness' && (

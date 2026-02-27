@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { format } from 'date-fns';
-import { FiCalendar, FiUser, FiCheckCircle, FiClock, FiAlertCircle, FiMessageSquare, FiExternalLink, FiLock } from 'react-icons/fi';
+import { FiCalendar, FiUser, FiCheckCircle, FiClock, FiAlertCircle, FiMessageSquare, FiExternalLink } from 'react-icons/fi';
 import StatusBadge from '@/components/ui/StatusBadge';
 import ProgressBar from '@/components/ui/ProgressBar';
 import FileList from '@/components/ui/FileList';
@@ -18,8 +18,6 @@ interface Milestone {
   description: string;
   status: string;
   expectedDate?: string;
-  approvalStatus?: string;
-  approvalComment?: string;
 }
 
 interface Payment {
@@ -29,12 +27,10 @@ interface Payment {
   currency: string;
   dueDate: string;
   status: string;
-  isUnlocked?: boolean;
   stripeCheckoutUrl?: string;
   milestone?: {
     id: string;
     title: string;
-    approvalStatus?: string;
   };
 }
 
@@ -50,16 +46,6 @@ interface ChangeRequest {
   timelineImpactDays?: number;
   recommendedPriority?: string;
   impactSummary?: string;
-}
-
-interface Approval {
-  id: string;
-  type: string;
-  title: string;
-  status: string;
-  description?: string;
-  decisionComment?: string;
-  createdAt: string;
 }
 
 interface LaunchChecklist {
@@ -91,7 +77,6 @@ interface Project {
   milestones: Milestone[];
   payments: Payment[];
   changeRequests: ChangeRequest[];
-  approvals: Approval[];
   launchChecklist?: LaunchChecklist | null;
   files: FileItem[];
   startDate?: string;
@@ -110,8 +95,6 @@ export default function ProjectDetailClient({ projectId }: ProjectDetailClientPr
   const [error, setError] = useState('');
   const [isStartingChat, setIsStartingChat] = useState(false);
   const [payingPaymentId, setPayingPaymentId] = useState<string | null>(null);
-  const [approvalSearch, setApprovalSearch] = useState('');
-  const [approvalFilter, setApprovalFilter] = useState<'ALL' | 'PENDING' | 'APPROVED' | 'CHANGES_REQUESTED'>('ALL');
   const [requestSearch, setRequestSearch] = useState('');
   const [requestFilter, setRequestFilter] = useState<'ALL' | 'PENDING' | 'APPROVED' | 'REJECTED' | 'IN_REVIEW'>('ALL');
 
@@ -175,10 +158,6 @@ export default function ProjectDetailClient({ projectId }: ProjectDetailClientPr
 
   const handlePayNow = async (payment: Payment) => {
     if (payment.status === 'PAID') return;
-    if (!payment.isUnlocked) {
-      toastError('This payment is locked until approval');
-      return;
-    }
 
     if (payment.stripeCheckoutUrl) {
       window.open(payment.stripeCheckoutUrl, '_blank');
@@ -231,7 +210,6 @@ export default function ProjectDetailClient({ projectId }: ProjectDetailClientPr
   }
 
   const completedMilestones = project.milestones.filter((m) => m.status === 'COMPLETED').length;
-  const approvedMilestones = project.milestones.filter((m) => m.approvalStatus === 'APPROVED').length;
   const totalPayments = project.payments.reduce((sum, p) => sum + p.amount, 0);
   const paidPayments = project.payments
     .filter((p) => p.status === 'PAID')
@@ -247,12 +225,6 @@ export default function ProjectDetailClient({ projectId }: ProjectDetailClientPr
     : [];
   const checklistDone = checklistItems.filter(Boolean).length;
   const checklistProgress = checklistItems.length > 0 ? Math.round((checklistDone / checklistItems.length) * 100) : 0;
-  const filteredApprovals = project.approvals.filter((approval) => {
-    const matchStatus = approvalFilter === 'ALL' || approval.status === approvalFilter;
-    const q = approvalSearch.trim().toLowerCase();
-    const matchSearch = !q || approval.title.toLowerCase().includes(q) || approval.type.toLowerCase().includes(q);
-    return matchStatus && matchSearch;
-  });
   const filteredRequests = project.changeRequests.filter((request) => {
     const matchStatus = requestFilter === 'ALL' || request.status === requestFilter;
     const q = requestSearch.trim().toLowerCase();
@@ -268,7 +240,6 @@ export default function ProjectDetailClient({ projectId }: ProjectDetailClientPr
           <a href="#milestones" className="px-3 py-1.5 text-xs rounded-lg bg-blue-500/15 text-blue-200 hover:bg-blue-500/25 transition-colors">Milestones</a>
           <a href="#vault" className="px-3 py-1.5 text-xs rounded-lg bg-blue-500/15 text-blue-200 hover:bg-blue-500/25 transition-colors">Vault</a>
           <a href="#payments" className="px-3 py-1.5 text-xs rounded-lg bg-blue-500/15 text-blue-200 hover:bg-blue-500/25 transition-colors">Payments</a>
-          <a href="#approvals" className="px-3 py-1.5 text-xs rounded-lg bg-blue-500/15 text-blue-200 hover:bg-blue-500/25 transition-colors">Approvals</a>
           <a href="#launch" className="px-3 py-1.5 text-xs rounded-lg bg-blue-500/15 text-blue-200 hover:bg-blue-500/25 transition-colors">Launch</a>
           <a href="#requests" className="px-3 py-1.5 text-xs rounded-lg bg-blue-500/15 text-blue-200 hover:bg-blue-500/25 transition-colors">Requests</a>
         </div>
@@ -354,10 +325,10 @@ export default function ProjectDetailClient({ projectId }: ProjectDetailClientPr
         <div className="flex items-center justify-between mb-1">
           <h2 className="text-lg font-semibold text-text-primary">Milestones</h2>
           <span className="text-sm text-text-muted">
-            {completedMilestones} completed / {approvedMilestones} approved
+            {completedMilestones} completed
           </span>
         </div>
-        <p className="text-xs text-text-muted mb-4">Track delivery phases and review approvals.</p>
+        <p className="text-xs text-text-muted mb-4">Track delivery phases and milestone progress.</p>
 
         {project.milestones.length === 0 ? (
           <p className="text-sm text-text-muted text-center py-8">No milestones yet</p>
@@ -380,13 +351,9 @@ export default function ProjectDetailClient({ projectId }: ProjectDetailClientPr
                     <h3 className="text-sm font-medium text-text-primary">{milestone.title}</h3>
                     <div className="flex items-center gap-2">
                       <StatusBadge status={milestone.status} type="milestone" />
-                      {milestone.approvalStatus && <StatusBadge status={milestone.approvalStatus} type="approval" />}
                     </div>
                   </div>
                   <p className="text-sm text-text-muted mb-2">{milestone.description}</p>
-                  {milestone.approvalComment && (
-                    <p className="text-xs text-text-muted mb-2">Approval note: {milestone.approvalComment}</p>
-                  )}
                   {milestone.expectedDate && (
                     <p className="text-xs text-text-disabled">
                       Expected: {format(new Date(milestone.expectedDate), 'MMM d, yyyy')}
@@ -426,7 +393,7 @@ export default function ProjectDetailClient({ projectId }: ProjectDetailClientPr
             <span>${totalPayments.toLocaleString()}</span>
           </div>
         </div>
-        <p className="text-xs text-text-muted mb-4">Payments unlock after required approvals.</p>
+        <p className="text-xs text-text-muted mb-4">Track invoices and make payments securely.</p>
 
         {project.payments.length === 0 ? (
           <p className="text-sm text-text-muted text-center py-8">No payment records yet</p>
@@ -454,27 +421,20 @@ export default function ProjectDetailClient({ projectId }: ProjectDetailClientPr
                       {format(new Date(payment.dueDate), 'MMM d, yyyy')}
                     </td>
                     <td className="py-3 px-4">
-                      <StatusBadge status={payment.isUnlocked ? payment.status : 'LOCKED'} type="payment" />
+                      <StatusBadge status={payment.status} type="payment" />
                     </td>
                     <td className="py-3 px-4">
-                      {payment.isUnlocked ? (
-                        payment.status === 'PAID' ? (
-                          <span className="text-xs text-green-600">Paid</span>
-                        ) : (
-                          <button
-                            onClick={() => handlePayNow(payment)}
-                            disabled={payingPaymentId === payment.id}
-                            className="inline-flex items-center gap-1 text-accent hover:text-accent-hover disabled:opacity-60"
-                          >
-                            {payingPaymentId === payment.id ? 'Opening...' : 'Pay now'}
-                            <FiExternalLink className="w-3.5 h-3.5" />
-                          </button>
-                        )
+                      {payment.status === 'PAID' ? (
+                        <span className="text-xs text-green-600">Paid</span>
                       ) : (
-                        <span className="inline-flex items-center gap-1 text-xs text-text-muted">
-                          <FiLock className="w-3.5 h-3.5" />
-                          Waiting approval
-                        </span>
+                        <button
+                          onClick={() => handlePayNow(payment)}
+                          disabled={payingPaymentId === payment.id}
+                          className="inline-flex items-center gap-1 text-accent hover:text-accent-hover disabled:opacity-60"
+                        >
+                          {payingPaymentId === payment.id ? 'Opening...' : 'Pay now'}
+                          <FiExternalLink className="w-3.5 h-3.5" />
+                        </button>
                       )}
                     </td>
                   </tr>
@@ -491,80 +451,26 @@ export default function ProjectDetailClient({ projectId }: ProjectDetailClientPr
                 </p>
                 <div className="mt-2 flex items-center justify-between">
                   <span className="text-sm text-text-primary">${payment.amount.toLocaleString()} {payment.currency}</span>
-                  <StatusBadge status={payment.isUnlocked ? payment.status : 'LOCKED'} type="payment" />
+                  <StatusBadge status={payment.status} type="payment" />
                 </div>
                 <div className="mt-2">
-                  {payment.isUnlocked ? (
-                    payment.status === 'PAID' ? (
-                      <span className="text-xs text-green-500">Paid</span>
-                    ) : (
-                      <button
-                        onClick={() => handlePayNow(payment)}
-                        disabled={payingPaymentId === payment.id}
-                        className="inline-flex items-center gap-1 text-accent hover:text-accent-hover disabled:opacity-60 text-xs"
-                      >
-                        {payingPaymentId === payment.id ? 'Opening...' : 'Pay now'}
-                        <FiExternalLink className="w-3.5 h-3.5" />
-                      </button>
-                    )
+                  {payment.status === 'PAID' ? (
+                    <span className="text-xs text-green-500">Paid</span>
                   ) : (
-                    <span className="inline-flex items-center gap-1 text-xs text-text-muted">
-                      <FiLock className="w-3.5 h-3.5" />
-                      Waiting approval
-                    </span>
+                    <button
+                      onClick={() => handlePayNow(payment)}
+                      disabled={payingPaymentId === payment.id}
+                      className="inline-flex items-center gap-1 text-accent hover:text-accent-hover disabled:opacity-60 text-xs"
+                    >
+                      {payingPaymentId === payment.id ? 'Opening...' : 'Pay now'}
+                      <FiExternalLink className="w-3.5 h-3.5" />
+                    </button>
                   )}
                 </div>
               </div>
             ))}
           </div>
           </>
-        )}
-      </Card>
-      </section>
-
-      {/* Approval Center */}
-      <section id="approvals" className="scroll-mt-24">
-      <Card className="border-white/15 bg-slate-900/60 backdrop-blur-xl shadow-[0_24px_60px_rgba(2,6,23,0.55)]">
-        <div className="flex flex-col sm:flex-row sm:items-center gap-2 mb-4">
-          <h2 className="text-lg font-semibold text-text-primary sm:mr-auto">Approval Center</h2>
-          <input
-            value={approvalSearch}
-            onChange={(e) => setApprovalSearch(e.target.value)}
-            placeholder="Search approvals..."
-            className="px-3 py-2 text-xs rounded-lg border border-white/15 bg-slate-950/70 text-text-primary"
-          />
-          <select
-            value={approvalFilter}
-            onChange={(e) => setApprovalFilter(e.target.value as typeof approvalFilter)}
-            className="px-3 py-2 text-xs rounded-lg border border-white/15 bg-slate-950/70 text-text-primary"
-          >
-            <option value="ALL">All</option>
-            <option value="PENDING">Pending</option>
-            <option value="APPROVED">Approved</option>
-            <option value="CHANGES_REQUESTED">Changes Requested</option>
-          </select>
-        </div>
-        <p className="text-xs text-text-muted mb-4">Review design, scope, and milestone decisions.</p>
-        {filteredApprovals.length ? (
-          <div className="space-y-3">
-            {filteredApprovals.map((approval) => (
-              <div key={approval.id} className="rounded-lg border border-border-default p-3 sm:p-4">
-                <div className="flex items-center justify-between gap-2 mb-2">
-                  <h3 className="text-sm font-medium text-text-primary">{approval.title}</h3>
-                  <StatusBadge status={approval.status} type="approval" />
-                </div>
-                <p className="text-xs text-text-muted mb-1">{approval.type.replaceAll('_', ' ')}</p>
-                {approval.description && (
-                  <p className="text-sm text-text-muted mb-2">{approval.description}</p>
-                )}
-                {approval.decisionComment && (
-                  <p className="text-sm text-text-body">Decision note: {approval.decisionComment}</p>
-                )}
-              </div>
-            ))}
-          </div>
-        ) : (
-          <p className="text-sm text-text-muted text-center py-6">No approvals for selected filters</p>
         )}
       </Card>
       </section>
