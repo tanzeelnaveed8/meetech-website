@@ -181,7 +181,7 @@ export default function ClientLoginPage() {
                   onPaste={i === 0 ? handlePaste : undefined}
                   onFocus={e => e.target.select()}
                   disabled={isLoading}
-                  className=" w-6  md:w-10  h-8  md:h-12 text-center text-lg font-black rounded-lg md:rounded-xl border-2 outline-none transition-all duration-200 disabled:opacity-50"
+                  className=" w-7 md:w-10  h-8 md:h-12 text-center text-lg font-black rounded-lg md:rounded-xl border-2 outline-none transition-all duration-200 disabled:opacity-50"
                   style={{
                     background: chars[i] ? 'rgba(37,99,235,0.15)' : 'rgba(255,255,255,0.04)',
                     borderColor: chars[i] ? 'rgba(37,99,235,0.8)' : 'rgba(255,255,255,0.1)',
