@@ -34,7 +34,8 @@ export default function ProjectCard({ project }: ProjectCardProps) {
 
   return (
     <Link href={`/client/projects/${project.id}`}>
-      <Card hoverable className="group relative overflow-hidden">
+      <Card hoverable className="group relative overflow-hidden border-white/15 bg-gradient-to-br from-slate-900/80 to-slate-900/55 backdrop-blur-xl shadow-[0_24px_60px_rgba(2,6,23,0.55)]">
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(59,130,246,0.18),transparent_40%)]" />
         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-4">
           <h3 className="text-lg sm:text-xl font-bold text-text-primary flex-1 pr-0 sm:pr-4 group-hover:text-accent transition-colors duration-200 break-words">
             {project.name}
@@ -67,10 +68,16 @@ export default function ProjectCard({ project }: ProjectCardProps) {
           </div>
 
           <div className="flex items-center justify-between pt-3 border-t border-border-subtle">
-            <div className="flex items-center gap-2 sm:gap-4 text-xs text-text-muted flex-wrap">
-              <span className="font-medium">{project._count.milestones} Milestones</span>
-              <span className="text-text-disabled">•</span>
-              <span className="font-medium">{project._count.files} Files</span>
+            <div className="flex items-center gap-2 text-[11px] text-text-muted flex-wrap">
+              <span className="rounded-full border border-white/10 bg-slate-800/70 px-2 py-1 font-medium">
+                {project._count.milestones} Milestones
+              </span>
+              <span className="rounded-full border border-white/10 bg-slate-800/70 px-2 py-1 font-medium">
+                {project._count.files} Files
+              </span>
+              <span className="rounded-full border border-white/10 bg-slate-800/70 px-2 py-1 font-medium">
+                {project._count.changeRequests} Requests
+              </span>
             </div>
             <FiArrowRight className="w-5 h-5 text-text-disabled group-hover:text-accent group-hover:translate-x-1 transition-all duration-200" />
           </div>

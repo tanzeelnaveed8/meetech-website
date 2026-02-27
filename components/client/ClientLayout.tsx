@@ -12,8 +12,6 @@ import {
   CheckCircle2,
   ChevronRight,
   ChevronDown,
-  Sun,
-  Moon,
   LogOut
 } from 'lucide-react';
 import { useSession, signOut } from 'next-auth/react';
@@ -192,10 +190,10 @@ const GlobalNavItem = ({ icon: Icon, active, label, onClick }: GlobalNavItemProp
   return (
     <button onClick={onClick} type="button" title={label}>
       <div
-        className={`relative group p-3 rounded-xl transition-all duration-200 ${
+        className={`relative group p-3 rounded-2xl transition-all duration-300 ${
           active
-            ? "bg-accent text-text-inverse shadow-lg shadow-accent/20"
-            : "text-text-disabled hover:text-text-primary hover:bg-border-subtle"
+            ? "text-blue-300 border border-blue-400/20 bg-transparent"
+            : "text-text-disabled hover:text-text-primary hover:bg-white/10 border border-transparent hover:border-white/10"
         }`}
       >
         <Icon size={22} />
@@ -230,7 +228,6 @@ const ActionMenuItem = ({ icon: Icon, title, description }: ActionMenuItemProps)
 export default function App({ children }: { children: React.ReactNode; user?: { name: string; email: string } }) {
   const [showSplash, setShowSplash] = useState(true);
   const [isActionMenuOpen, setIsActionMenuOpen] = useState(false);
-  const [theme, setTheme] = useState('light');
   const [isSigningOut, setIsSigningOut] = useState(false);
   const { data: session } = useSession();
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -260,20 +257,20 @@ export default function App({ children }: { children: React.ReactNode; user?: { 
     }
   };
 
-  // Apply theme to HTML tag
+  // Enforce dark theme in client portal.
   useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme);
-  }, [theme]);
-
-  const toggleTheme = () => setTheme(prev => prev === 'light' ? 'dark' : 'light');
+    document.documentElement.setAttribute('data-theme', 'dark');
+  }, []);
 
   return (
     <>
       {showSplash && <SplashScreen onDone={() => setShowSplash(false)} />}
 
-      <div className="flex h-screen bg-bg-page text-text-body font-sans overflow-hidden">
+      <div className="relative flex h-screen overflow-hidden bg-[#020617] text-text-body font-sans">
+        <div className="pointer-events-none absolute -top-40 -left-32 h-96 w-96 rounded-full bg-blue-500/25 blur-[120px]" />
+        <div className="pointer-events-none absolute -bottom-40 -right-28 h-96 w-96 rounded-full bg-indigo-500/20 blur-[130px]" />
         {/* Mobile top bar */}
-        <header className="lg:hidden fixed top-0 inset-x-0 z-40 h-14 bg-text-primary border-b border-border-strong flex items-center justify-between px-4">
+        <header className="lg:hidden fixed top-0 inset-x-0 z-40 h-14 border-b border-white/10 bg-slate-950/75 backdrop-blur-2xl flex items-center justify-between px-4 shadow-[0_8px_24px_rgba(2,6,23,0.55)]">
           <button
             type="button"
             className="flex items-center"
@@ -283,31 +280,25 @@ export default function App({ children }: { children: React.ReactNode; user?: { 
             <Image src="/icon.png" alt="Meetech" width={96} height={28} className="h-7 w-auto light-logo" />
             <Image src="/iconlight.png" alt="Meetech" width={96} height={28} className="h-7 w-auto dark-logo" />
           </button>
-          <button
-            onClick={toggleTheme}
-            className="p-2 rounded-lg text-text-disabled hover:text-text-inverse hover:bg-border-strong transition-all"
-            title={theme === 'light' ? 'Dark Mode' : 'Light Mode'}
-          >
-            {theme === 'light' ? <Moon size={18} /> : <Sun size={18} />}
-          </button>
+          <span className="text-[11px] uppercase tracking-[0.2em] text-blue-300/90">Always Dark</span>
         </header>
 
         {/* 1. GLOBAL NAVIGATION (DARK SIDEBAR) */}
-        <aside className="hidden lg:flex w-20 bg-text-primary flex-col items-center py-6 border-r border-border-strong shrink-0 z-20">
-          <div className="w-10 h-10 rounded-2xl flex items-center justify-center mb-10 shadow-lg shadow-accent/40">
+        <aside className="hidden lg:flex w-20 bg-slate-950/65 backdrop-blur-2xl flex-col items-center py-6 border-r border-white/10 shrink-0 z-20 shadow-[16px_0_40px_rgba(2,6,23,0.45)]">
+          <div className="relative mb-10">
             <Image
               src="/icon.png"
               alt="Meetech"
-              width={140}
-              height={40}
-              className="h-8 w-auto light-logo"
+              width={180}
+              height={56}
+              className="h-11 w-auto light-logo"
             />
             <Image
-              src="/iconlight.png"
+              src="/icon.png"
               alt="Meetech"
-              width={140}
-              height={40}
-              className="h-8 w-auto dark-logo"
+              width={180}
+              height={56}
+              className="h-11 w-auto dark-logo"
             />
           </div>
 
@@ -340,11 +331,10 @@ export default function App({ children }: { children: React.ReactNode; user?: { 
 
           <div className="flex flex-col gap-4 mt-auto">
             <button
-              onClick={toggleTheme}
-              className="p-3 rounded-xl text-text-disabled hover:text-text-inverse hover:bg-border-strong transition-all"
-              title={theme === 'light' ? 'Dark Mode' : 'Light Mode'}
+              className="p-3 rounded-xl text-blue-300/90 bg-blue-500/10 border border-blue-400/20"
+              title="Dark mode is locked"
             >
-              {theme === 'light' ? <Moon size={22} /> : <Sun size={22} />}
+              <div className="h-[22px] w-[22px] rounded-full bg-blue-400/80 shadow-[0_0_20px_rgba(59,130,246,0.7)]" />
             </button>
             <button
               onClick={handleSignOut}
@@ -373,7 +363,7 @@ export default function App({ children }: { children: React.ReactNode; user?: { 
 
         {/* 2. CONTEXTUAL SIDEBAR (VISIBLE ONLY ON DASHBOARD) */}
         <aside
-          className={`w-80 bg-bg-surface border-r border-border-default overflow-y-auto hidden xl:block transition-all duration-300 ${
+          className={`w-80 bg-slate-950/45 backdrop-blur-xl border-r border-white/10 overflow-y-auto hidden xl:block transition-all duration-300 ${
             pathname !== "/client/dashboard" ? "opacity-50 pointer-events-none grayscale" : ""
           }`}
         >
@@ -384,7 +374,7 @@ export default function App({ children }: { children: React.ReactNode; user?: { 
             </button>
 
             <div className="mb-8">
-              <div className="relative w-20 h-20 rounded-3xl overflow-hidden mb-4 ring-4 ring-bg-subtle bg-accent flex items-center justify-center text-text-inverse text-3xl font-bold">
+              <div className="relative w-20 h-20 rounded-3xl overflow-hidden mb-4 ring-4 ring-blue-500/20 bg-gradient-to-br from-blue-600 to-indigo-700 flex items-center justify-center text-text-inverse text-3xl font-bold shadow-[0_18px_40px_rgba(37,99,235,0.45)]">
                 {session?.user.name
                   ?.split(" ")
                   .filter(Boolean)
@@ -448,7 +438,7 @@ export default function App({ children }: { children: React.ReactNode; user?: { 
         </aside>
 
         {/* 3. MAIN WORKSPACE */}
-        <main className="flex-1 flex flex-col overflow-hidden relative pt-14 lg:pt-0">
+        <main className="flex-1 flex flex-col overflow-hidden relative pt-14 lg:pt-0 z-10">
           {/* Content */}
           <div className="flex-1 p-4 sm:p-6 md:pb-40 lg:p-8 pb-24 lg:pb-8 overflow-y-auto">
             {children}
@@ -462,8 +452,8 @@ export default function App({ children }: { children: React.ReactNode; user?: { 
                   className="fixed inset-0 bg-black/30 backdrop-blur-sm z-40"
                   onClick={() => setIsActionMenuOpen(false)}
                 />
-                <div className="w-[calc(100vw-2rem)] max-w-64 rounded-2xl shadow-2xl overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-300 bg-accent-muted text-text-primary border-0 z-50">
-                  <div className="p-4 border-b flex justify-between items-center">
+                <div className="w-[calc(100vw-2rem)] max-w-64 rounded-2xl shadow-2xl overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-300 bg-slate-900/95 text-text-primary border border-white/10 z-50 backdrop-blur-xl">
+                  <div className="p-4 border-b border-white/10 flex justify-between items-center">
                     <p className="text-xs font-bold uppercase tracking-widest">Quick Actions</p>
                     <X
                       size={14}
@@ -497,12 +487,12 @@ export default function App({ children }: { children: React.ReactNode; user?: { 
       </div>
 
       {/* Mobile bottom navigation */}
-      <nav className="lg:hidden fixed bottom-0 inset-x-0 z-40 h-16 bg-text-primary border-t border-border-strong grid grid-cols-4 px-1">
+      <nav className="lg:hidden fixed bottom-0 inset-x-0 z-40 h-16 bg-slate-950/80 backdrop-blur-2xl border-t border-white/10 grid grid-cols-4 px-1 shadow-[0_-10px_30px_rgba(2,6,23,0.65)]">
         <button
           type="button"
           onClick={() => router.push('/client/dashboard')}
-          className={`flex flex-col items-center justify-center gap-1 text-bg-page rounded-lg text-[10px] ${
-            isDashboard && !modal ? ' text-bg-page/70 ' : 'text-text-disabled'
+          className={`flex flex-col items-center justify-center gap-1 rounded-xl text-[10px] transition-all ${
+            isDashboard && !modal ? 'bg-blue-600/20 text-blue-200 border border-blue-400/30' : 'text-text-disabled'
           }`}
         >
           <LayoutDashboard size={18} />
@@ -511,8 +501,8 @@ export default function App({ children }: { children: React.ReactNode; user?: { 
         <button
           type="button"
           onClick={() => openDashboardModal('booking')}
-          className={`flex flex-col items-center justify-center gap-1 rounded-lg text-[10px] ${
-            isDashboard && modal === 'booking' ? 'text-text-inverse' : 'text-text-disabled'
+          className={`flex flex-col items-center justify-center gap-1 rounded-xl text-[10px] transition-all ${
+            isDashboard && modal === 'booking' ? 'bg-blue-600/20 text-blue-200 border border-blue-400/30' : 'text-text-disabled'
           }`}
         >
           <CalendarPlus size={18} />
@@ -521,8 +511,8 @@ export default function App({ children }: { children: React.ReactNode; user?: { 
         <button
           type="button"
           onClick={() => openDashboardModal('messages')}
-          className={`flex flex-col items-center justify-center gap-1 rounded-lg text-[10px] ${
-            isDashboard && modal === 'messages' ? 'text-text-inverse' : 'text-text-disabled'
+          className={`flex flex-col items-center justify-center gap-1 rounded-xl text-[10px] transition-all ${
+            isDashboard && modal === 'messages' ? 'bg-blue-600/20 text-blue-200 border border-blue-400/30' : 'text-text-disabled'
           }`}
         >
           <MessageSquare size={18} />
@@ -531,8 +521,8 @@ export default function App({ children }: { children: React.ReactNode; user?: { 
         <button
           type="button"
           onClick={() => openDashboardModal('profile')}
-          className={`flex flex-col items-center justify-center gap-1 rounded-lg text-[10px] ${
-            isDashboard && modal === 'profile' ? 'text-text-inverse' : 'text-text-disabled'
+          className={`flex flex-col items-center justify-center gap-1 rounded-xl text-[10px] transition-all ${
+            isDashboard && modal === 'profile' ? 'bg-blue-600/20 text-blue-200 border border-blue-400/30' : 'text-text-disabled'
           }`}
         >
           <UserCircle size={18} />
@@ -542,13 +532,18 @@ export default function App({ children }: { children: React.ReactNode; user?: { 
 
       {/* Dashboard Popups */}
       {isDashboard && modal && (
-        <div className="fixed inset-0 z-[120] flex items-center justify-center p-2 sm:p-6">
+        <div className="fixed inset-0 z-[140]">
           <div
-            className="absolute inset-0 bg-black/55 backdrop-blur-sm"
+            className="absolute inset-0 bg-black/70 backdrop-blur-md"
             onClick={closeDashboardModal}
           />
-          <div className="relative z-10 w-full lg:w-1/2 max-h-[94vh] sm:max-h-[90vh] rounded-2xl border border-border-default bg-bg-card shadow-2xl overflow-hidden">
-            <div className="flex items-center justify-between px-5 py-3 border-b border-border-default bg-bg-surface">
+          <div className="relative z-10 flex h-full w-full items-center justify-center p-2 sm:p-5">
+            <div className={`w-full rounded-2xl border border-white/15 bg-slate-950/95 shadow-[0_30px_90px_rgba(0,0,0,0.6)] overflow-hidden backdrop-blur-xl ${
+              modal === 'messages'
+                ? 'h-[96vh] sm:h-[94vh] max-w-[1200px]'
+                : 'h-[94vh] sm:h-[90vh] max-w-[960px]'
+            }`}>
+            <div className="sticky top-0 z-20 flex items-center justify-between px-5 py-3 border-b border-white/10 bg-slate-900/85 backdrop-blur-xl">
               <h2 className="text-sm sm:text-base font-semibold text-text-primary">
                 {modal === 'booking' && 'Book Your Meeting'}
                 {modal === 'messages' && 'Messages'}
@@ -562,22 +557,23 @@ export default function App({ children }: { children: React.ReactNode; user?: { 
                 <X size={18} />
               </button>
             </div>
-            <div className="overflow-y-auto max-h-[calc(94vh-56px)] sm:max-h-[calc(90vh-56px)] p-3 sm:p-6">
+            <div className={`h-[calc(100%-56px)] overflow-y-auto ${modal === 'messages' ? 'p-0' : 'p-3 sm:p-6'}`}>
               {modal === 'booking' && (
                 <div className="mx-auto w-full max-w-4xl">
                   <BookMeetingPage />
                 </div>
               )}
               {modal === 'messages' && session?.user?.id && session?.user?.role && (
-                <div className="h-[70vh]">
+                <div className="h-full">
                   <MessagesClient userId={session.user.id} userRole={session.user.role} />
                 </div>
               )}
               {modal === 'profile' && (
-                <div className="mx-auto w-full max-w-4xl">
+                <div className="mx-auto w-full max-w-5xl">
                   <ClientProfilePage />
                 </div>
               )}
+            </div>
             </div>
           </div>
         </div>

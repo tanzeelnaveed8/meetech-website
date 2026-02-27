@@ -1,11 +1,9 @@
 import { auth } from '@/lib/auth/auth';
 import { getProjectsByClient } from '@/lib/db/queries/projects';
 import ProjectCard from '@/components/client/ProjectCard';
-import { FiFolder, FiClock, FiCheckCircle, FiArrowRight } from 'react-icons/fi';
+import { FiFolder, FiArrowRight } from 'react-icons/fi';
 import { redirect } from 'next/navigation';
-import Card from '@/components/ui/Card';
 import Link from 'next/link';
-import type { IconType } from 'react-icons';
 
 export default async function ClientDashboardPage() {
   const session = await auth();
@@ -24,7 +22,7 @@ export default async function ClientDashboardPage() {
   return (
     <div className="space-y-8">
       {/* Welcome banner */}
-      <div className="relative overflow-hidden rounded-2xl bg-accent p-7 sm:p-8 shadow-lg">
+      <div className="relative overflow-hidden rounded-3xl border border-white/15 bg-gradient-to-br from-slate-900/95 via-blue-950/70 to-indigo-950/70 p-7 sm:p-8 shadow-[0_30px_80px_rgba(30,64,175,0.45)]">
         <div className="absolute inset-0 opacity-[0.07]" style={{ backgroundImage: 'radial-gradient(circle at 20% 50%, white 1px, transparent 1px), radial-gradient(circle at 80% 20%, white 1px, transparent 1px)', backgroundSize: '60px 60px, 40px 40px' }} />
         <div className="relative z-10">
           <p className="text-text-inverse/70 text-sm font-medium mb-1">
@@ -44,14 +42,32 @@ export default async function ClientDashboardPage() {
               Book a Meeting <FiArrowRight className="w-4 h-4" />
             </Link>
           </div>
+          <div className="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-2">
+            <HeroStat label="Projects" value={String(projects.length)} />
+            <HeroStat label="Active" value={String(activeProjects.length)} />
+            <HeroStat label="Completed" value={String(completedProjects.length)} />
+            <HeroStat label="Response" value="< 24h" />
+          </div>
         </div>
       </div>
 
-      {/* Stats */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-5">
-        <StatCard icon={FiFolder} label="Total Projects" value={projects.length} color="blue" />
-        <StatCard icon={FiClock} label="In Progress" value={activeProjects.length} color="orange" />
-        <StatCard icon={FiCheckCircle} label="Completed" value={completedProjects.length} color="green" />
+      {/* Quick actions */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <QuickAction
+          title="Book a Meeting"
+          description="Pick a slot and discuss progress."
+          href="/client/dashboard?modal=booking"
+        />
+        <QuickAction
+          title="Open Messages"
+          description="Chat directly with your manager."
+          href="/client/dashboard?modal=messages"
+        />
+        <QuickAction
+          title="Update Profile"
+          description="Keep contact details up to date."
+          href="/client/dashboard?modal=profile"
+        />
       </div>
 
       {/* Projects */}
@@ -68,7 +84,7 @@ export default async function ClientDashboardPage() {
         </div>
 
         {projects.length === 0 ? (
-          <div className="text-center py-16 rounded-2xl border-2 border-dashed border-border-default bg-bg-card">
+          <div className="text-center py-16 rounded-2xl border border-white/15 bg-slate-900/55 backdrop-blur-xl">
             <div className="w-16 h-16 bg-accent-muted rounded-2xl flex items-center justify-center mx-auto mb-4">
               <FiFolder className="w-8 h-8 text-accent" />
             </div>
@@ -91,43 +107,27 @@ export default async function ClientDashboardPage() {
   );
 }
 
-function StatCard({
-  icon: Icon,
-  label,
-  value,
-  color,
-}: {
-  icon: IconType;
-  label: string;
-  value: number;
-  color: 'blue' | 'orange' | 'green';
-}) {
-  const styles = {
-    blue: {
-      icon: 'bg-blue-100 text-blue-600 dark:bg-blue-500/15 dark:text-blue-400',
-      value: 'text-blue-600 dark:text-blue-400',
-    },
-    orange: {
-      icon: 'bg-orange-100 text-orange-600 dark:bg-orange-500/15 dark:text-orange-400',
-      value: 'text-orange-600 dark:text-orange-400',
-    },
-    green: {
-      icon: 'bg-green-100 text-green-600 dark:bg-green-500/15 dark:text-green-400',
-      value: 'text-green-600 dark:text-green-400',
-    },
-  };
-
+function QuickAction({ title, description, href }: { title: string; description: string; href: string }) {
   return (
-    <Card hoverable className="group">
-      <div className="flex items-center gap-4">
-        <div className={`p-3 rounded-xl ${styles[color].icon} transition-transform group-hover:scale-105`}>
-          <Icon className="w-5 h-5" />
-        </div>
-        <div>
-          <p className={`text-2xl font-bold ${styles[color].value}`}>{value}</p>
-          <p className="text-xs font-medium text-text-muted mt-0.5">{label}</p>
-        </div>
+    <Link
+      href={href}
+      className="rounded-2xl border border-white/15 bg-slate-900/60 backdrop-blur-xl p-4 hover:border-blue-400/40 hover:shadow-[0_16px_40px_rgba(37,99,235,0.2)] transition-all"
+    >
+      <div className="flex items-center justify-between gap-2">
+        <p className="text-sm font-semibold text-text-primary">{title}</p>
+        <FiArrowRight className="w-4 h-4 text-blue-300" />
       </div>
-    </Card>
+      <p className="text-xs text-text-muted mt-1">{description}</p>
+    </Link>
   );
 }
+
+function HeroStat({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="rounded-xl border border-white/15 bg-white/5 px-3 py-2 backdrop-blur">
+      <p className="text-[10px] uppercase tracking-wide text-blue-100/75">{label}</p>
+      <p className="text-sm font-semibold text-white">{value}</p>
+    </div>
+  );
+}
+

@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 import { format } from 'date-fns';
 import { FiArrowLeft, FiEdit2, FiUpload, FiPlus, FiSave, FiX } from 'react-icons/fi';
 import Link from 'next/link';
@@ -18,6 +17,8 @@ interface Milestone {
   description: string;
   status: string;
   expectedDate?: string;
+  approvalStatus?: string;
+  approvalComment?: string;
 }
 
 interface Payment {
@@ -27,6 +28,9 @@ interface Payment {
   currency: string;
   dueDate: string;
   status: string;
+  isUnlocked?: boolean;
+  milestoneId?: string | null;
+  stripeCheckoutUrl?: string;
 }
 
 interface ChangeRequest {
@@ -37,6 +41,29 @@ interface ChangeRequest {
   adminResponse?: string;
   createdAt: string;
   client: { name: string };
+  priority?: string;
+  estimatedCostImpact?: number;
+  timelineImpactDays?: number;
+  impactSummary?: string;
+}
+
+interface Approval {
+  id: string;
+  type: string;
+  title: string;
+  description?: string;
+  status: string;
+  decisionComment?: string;
+  createdAt: string;
+}
+
+interface LaunchChecklist {
+  appStoreAssetsReady: boolean;
+  privacyPolicyVerified: boolean;
+  paymentGatewayTested: boolean;
+  analyticsIntegrated: boolean;
+  securityAuditCompleted: boolean;
+  notes?: string;
 }
 
 interface FileItem {
@@ -61,6 +88,8 @@ interface Project {
   payments: Payment[];
   changeRequests: ChangeRequest[];
   files: FileItem[];
+  approvals: Approval[];
+  launchChecklist?: LaunchChecklist | null;
   startDate?: string;
   expectedEndDate?: string;
 }
@@ -70,7 +99,6 @@ interface AdminProjectDetailProps {
 }
 
 export default function AdminProjectDetail({ projectId }: AdminProjectDetailProps) {
-  const router = useRouter();
   const { success: toastSuccess, error: toastError } = useToast();
   const [project, setProject] = useState<Project | null>(null);
   const [activeTab, setActiveTab] = useState('overview');
@@ -78,12 +106,45 @@ export default function AdminProjectDetail({ projectId }: AdminProjectDetailProp
   const [error, setError] = useState('');
   const [isEditing, setIsEditing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [approvalForm, setApprovalForm] = useState({
+    type: 'FEATURE',
+    title: '',
+    description: '',
+    milestoneId: '',
+  });
   const [editData, setEditData] = useState({
     name: '',
     description: '',
     scope: '',
     status: '',
     progress: 0,
+  });
+
+  const [launchChecklist, setLaunchChecklist] = useState<LaunchChecklist>({
+    appStoreAssetsReady: false,
+    privacyPolicyVerified: false,
+    paymentGatewayTested: false,
+    analyticsIntegrated: false,
+    securityAuditCompleted: false,
+    notes: '',
+  });
+  const [showMilestoneForm, setShowMilestoneForm] = useState(false);
+  const [isCreatingMilestone, setIsCreatingMilestone] = useState(false);
+  const [milestoneForm, setMilestoneForm] = useState({
+    title: '',
+    description: '',
+    status: 'PENDING',
+    expectedDate: '',
+  });
+  const [showPaymentForm, setShowPaymentForm] = useState(false);
+  const [isCreatingPayment, setIsCreatingPayment] = useState(false);
+  const [paymentForm, setPaymentForm] = useState({
+    description: '',
+    amount: '',
+    currency: 'USD',
+    dueDate: '',
+    status: 'PENDING',
+    milestoneId: '',
   });
 
   useEffect(() => {
@@ -98,6 +159,14 @@ export default function AdminProjectDetail({ projectId }: AdminProjectDetailProp
 
       if (response.ok) {
         setProject(data.project);
+        setLaunchChecklist({
+          appStoreAssetsReady: data.project.launchChecklist?.appStoreAssetsReady ?? false,
+          privacyPolicyVerified: data.project.launchChecklist?.privacyPolicyVerified ?? false,
+          paymentGatewayTested: data.project.launchChecklist?.paymentGatewayTested ?? false,
+          analyticsIntegrated: data.project.launchChecklist?.analyticsIntegrated ?? false,
+          securityAuditCompleted: data.project.launchChecklist?.securityAuditCompleted ?? false,
+          notes: data.project.launchChecklist?.notes ?? '',
+        });
         setEditData({
           name: data.project.name,
           description: data.project.description,
@@ -212,6 +281,153 @@ export default function AdminProjectDetail({ projectId }: AdminProjectDetailProp
     }
   };
 
+  const handleCreateApproval = async () => {
+    try {
+      const response = await fetch(`/api/projects/${projectId}/approvals`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          type: approvalForm.type,
+          title: approvalForm.title,
+          description: approvalForm.description || undefined,
+          milestoneId: approvalForm.milestoneId || undefined,
+        }),
+      });
+
+      if (response.ok) {
+        setApprovalForm({ type: 'FEATURE', title: '', description: '', milestoneId: '' });
+        await fetchProject();
+        toastSuccess('Approval request created');
+      } else {
+        toastError('Failed to create approval');
+      }
+    } catch {
+      toastError('Failed to create approval');
+    }
+  };
+
+  const handleReviewApproval = async (approvalId: string, status: 'APPROVED' | 'CHANGES_REQUESTED') => {
+    try {
+      const response = await fetch(`/api/projects/${projectId}/approvals`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ approvalId, status }),
+      });
+      if (response.ok) {
+        await fetchProject();
+        toastSuccess(`Approval ${status === 'APPROVED' ? 'approved' : 'sent for changes'}`);
+      } else {
+        toastError('Failed to update approval');
+      }
+    } catch {
+      toastError('Failed to update approval');
+    }
+  };
+
+  const handleSaveLaunchChecklist = async () => {
+    try {
+      const response = await fetch(`/api/projects/${projectId}/launch-checklist`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(launchChecklist),
+      });
+      if (response.ok) {
+        await fetchProject();
+        toastSuccess('Launch checklist updated');
+      } else {
+        toastError('Failed to update launch checklist');
+      }
+    } catch {
+      toastError('Failed to update launch checklist');
+    }
+  };
+
+  const handleCreateMilestone = async () => {
+    if (!milestoneForm.title.trim() || !milestoneForm.description.trim()) {
+      toastError('Milestone title and description are required');
+      return;
+    }
+
+    setIsCreatingMilestone(true);
+    try {
+      const response = await fetch(`/api/projects/${projectId}/milestones`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          title: milestoneForm.title.trim(),
+          description: milestoneForm.description.trim(),
+          status: milestoneForm.status,
+          order: (project?.milestones.length ?? 0) + 1,
+          expectedDate: milestoneForm.expectedDate || undefined,
+        }),
+      });
+      const data = await response.json();
+
+      if (response.ok) {
+        setMilestoneForm({ title: '', description: '', status: 'PENDING', expectedDate: '' });
+        setShowMilestoneForm(false);
+        await fetchProject();
+        toastSuccess('Milestone added successfully');
+      } else {
+        toastError(data.error || 'Failed to add milestone');
+      }
+    } catch {
+      toastError('Failed to add milestone');
+    } finally {
+      setIsCreatingMilestone(false);
+    }
+  };
+
+  const handleCreatePayment = async () => {
+    if (!paymentForm.description.trim() || !paymentForm.amount || !paymentForm.dueDate) {
+      toastError('Description, amount, and due date are required');
+      return;
+    }
+
+    const amount = Number(paymentForm.amount);
+    if (!Number.isFinite(amount) || amount <= 0) {
+      toastError('Enter a valid payment amount');
+      return;
+    }
+
+    setIsCreatingPayment(true);
+    try {
+      const response = await fetch(`/api/projects/${projectId}/payments`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          description: paymentForm.description.trim(),
+          amount,
+          currency: paymentForm.currency,
+          dueDate: paymentForm.dueDate,
+          status: paymentForm.status,
+          milestoneId: paymentForm.milestoneId || undefined,
+        }),
+      });
+      const data = await response.json();
+
+      if (response.ok) {
+        setPaymentForm({
+          description: '',
+          amount: '',
+          currency: 'USD',
+          dueDate: '',
+          status: 'PENDING',
+          milestoneId: '',
+        });
+        setShowPaymentForm(false);
+        await fetchProject();
+        toastSuccess('Payment added successfully');
+      } else {
+        toastError(data.error || 'Failed to add payment');
+      }
+    } catch {
+      toastError('Failed to add payment');
+    } finally {
+      setIsCreatingPayment(false);
+    }
+  };
+
   if (isLoading) {
     return (
       <div className="flex items-center justify-center py-12">
@@ -239,6 +455,8 @@ export default function AdminProjectDetail({ projectId }: AdminProjectDetailProp
     { id: 'milestones', label: 'Milestones' },
     { id: 'files', label: 'Files' },
     { id: 'payments', label: 'Payments' },
+    { id: 'approvals', label: 'Approvals' },
+    { id: 'launch-readiness', label: 'Launch Readiness' },
     { id: 'change-requests', label: 'Change Requests' },
   ];
 
@@ -381,10 +599,64 @@ export default function AdminProjectDetail({ projectId }: AdminProjectDetailProp
           <Card>
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-semibold text-text-primary">Milestones</h2>
-              <Button variant="outline" size="sm" leftIcon={<FiPlus className="w-4 h-4" />}>
+              <Button
+                variant="outline"
+                size="sm"
+                leftIcon={<FiPlus className="w-4 h-4" />}
+                onClick={() => setShowMilestoneForm((prev) => !prev)}
+              >
                 Add Milestone
               </Button>
             </div>
+            {showMilestoneForm && (
+              <div className="mb-4 p-4 border border-border-default rounded-lg bg-bg-subtle space-y-3">
+                <input
+                  type="text"
+                  placeholder="Milestone title"
+                  value={milestoneForm.title}
+                  onChange={(e) => setMilestoneForm((prev) => ({ ...prev, title: e.target.value }))}
+                  className="w-full px-4 py-2 text-sm border border-border-default rounded-lg bg-bg-surface text-text-primary"
+                />
+                <textarea
+                  placeholder="Milestone description"
+                  value={milestoneForm.description}
+                  onChange={(e) => setMilestoneForm((prev) => ({ ...prev, description: e.target.value }))}
+                  rows={3}
+                  className="w-full px-4 py-2 text-sm border border-border-default rounded-lg bg-bg-surface text-text-primary"
+                />
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <select
+                    value={milestoneForm.status}
+                    onChange={(e) => setMilestoneForm((prev) => ({ ...prev, status: e.target.value }))}
+                    className="w-full px-4 py-2 text-sm border border-border-default rounded-lg bg-bg-surface text-text-primary"
+                  >
+                    <option value="PENDING">Pending</option>
+                    <option value="IN_PROGRESS">In Progress</option>
+                    <option value="COMPLETED">Completed</option>
+                    <option value="BLOCKED">Blocked</option>
+                  </select>
+                  <input
+                    type="date"
+                    value={milestoneForm.expectedDate}
+                    onChange={(e) => setMilestoneForm((prev) => ({ ...prev, expectedDate: e.target.value }))}
+                    className="w-full px-4 py-2 text-sm border border-border-default rounded-lg bg-bg-surface text-text-primary"
+                  />
+                </div>
+                <div className="flex gap-2">
+                  <Button size="sm" onClick={handleCreateMilestone} isLoading={isCreatingMilestone}>
+                    Save Milestone
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => setShowMilestoneForm(false)}
+                    disabled={isCreatingMilestone}
+                  >
+                    Cancel
+                  </Button>
+                </div>
+              </div>
+            )}
             {project.milestones.length === 0 ? (
               <p className="text-sm text-text-muted text-center py-8">No milestones yet</p>
             ) : (
@@ -401,7 +673,10 @@ export default function AdminProjectDetail({ projectId }: AdminProjectDetailProp
                           </p>
                         )}
                       </div>
-                      <StatusBadge status={milestone.status} type="milestone" />
+                      <div className="flex items-center gap-2">
+                        <StatusBadge status={milestone.status} type="milestone" />
+                        {milestone.approvalStatus && <StatusBadge status={milestone.approvalStatus} type="approval" />}
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -437,10 +712,87 @@ export default function AdminProjectDetail({ projectId }: AdminProjectDetailProp
           <Card>
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-semibold text-text-primary">Payments</h2>
-              <Button variant="outline" size="sm" leftIcon={<FiPlus className="w-4 h-4" />}>
+              <Button
+                variant="outline"
+                size="sm"
+                leftIcon={<FiPlus className="w-4 h-4" />}
+                onClick={() => setShowPaymentForm((prev) => !prev)}
+              >
                 Add Payment
               </Button>
             </div>
+            {showPaymentForm && (
+              <div className="mb-4 p-4 border border-border-default rounded-lg bg-bg-subtle space-y-3">
+                <input
+                  type="text"
+                  placeholder="Payment description"
+                  value={paymentForm.description}
+                  onChange={(e) => setPaymentForm((prev) => ({ ...prev, description: e.target.value }))}
+                  className="w-full px-4 py-2 text-sm border border-border-default rounded-lg bg-bg-surface text-text-primary"
+                />
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <input
+                    type="number"
+                    min="1"
+                    step="0.01"
+                    placeholder="Amount"
+                    value={paymentForm.amount}
+                    onChange={(e) => setPaymentForm((prev) => ({ ...prev, amount: e.target.value }))}
+                    className="w-full px-4 py-2 text-sm border border-border-default rounded-lg bg-bg-surface text-text-primary"
+                  />
+                  <input
+                    type="text"
+                    placeholder="Currency (USD)"
+                    value={paymentForm.currency}
+                    onChange={(e) => setPaymentForm((prev) => ({ ...prev, currency: e.target.value.toUpperCase() }))}
+                    className="w-full px-4 py-2 text-sm border border-border-default rounded-lg bg-bg-surface text-text-primary"
+                  />
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <input
+                    type="date"
+                    value={paymentForm.dueDate}
+                    onChange={(e) => setPaymentForm((prev) => ({ ...prev, dueDate: e.target.value }))}
+                    className="w-full px-4 py-2 text-sm border border-border-default rounded-lg bg-bg-surface text-text-primary"
+                  />
+                  <select
+                    value={paymentForm.status}
+                    onChange={(e) => setPaymentForm((prev) => ({ ...prev, status: e.target.value }))}
+                    className="w-full px-4 py-2 text-sm border border-border-default rounded-lg bg-bg-surface text-text-primary"
+                  >
+                    <option value="PENDING">Pending</option>
+                    <option value="PAID">Paid</option>
+                    <option value="OVERDUE">Overdue</option>
+                    <option value="CANCELLED">Cancelled</option>
+                  </select>
+                </div>
+                <select
+                  value={paymentForm.milestoneId}
+                  onChange={(e) => setPaymentForm((prev) => ({ ...prev, milestoneId: e.target.value }))}
+                  className="w-full px-4 py-2 text-sm border border-border-default rounded-lg bg-bg-surface text-text-primary"
+                >
+                  <option value="">General payment (no milestone)</option>
+                  {project.milestones.map((m) => (
+                    <option key={m.id} value={m.id}>
+                      Link to: {m.title}
+                    </option>
+                  ))}
+                </select>
+                <div className="flex gap-2">
+                  <Button size="sm" onClick={handleCreatePayment} isLoading={isCreatingPayment}>
+                    Save Payment
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => setShowPaymentForm(false)}
+                    disabled={isCreatingPayment}
+                  >
+                    Cancel
+                  </Button>
+                </div>
+              </div>
+            )}
             {project.payments.length === 0 ? (
               <p className="text-sm text-text-muted text-center py-8">No payments yet</p>
             ) : (
@@ -452,6 +804,7 @@ export default function AdminProjectDetail({ projectId }: AdminProjectDetailProp
                       <th className="text-left py-3 px-4 font-medium text-text-muted">Amount</th>
                       <th className="text-left py-3 px-4 font-medium text-text-muted">Due Date</th>
                       <th className="text-left py-3 px-4 font-medium text-text-muted">Status</th>
+                      <th className="text-left py-3 px-4 font-medium text-text-muted">Milestone</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -465,7 +818,10 @@ export default function AdminProjectDetail({ projectId }: AdminProjectDetailProp
                           {format(new Date(payment.dueDate), 'MMM d, yyyy')}
                         </td>
                         <td className="py-3 px-4">
-                          <StatusBadge status={payment.status} type="payment" />
+                          <StatusBadge status={payment.isUnlocked ? payment.status : 'LOCKED'} type="payment" />
+                        </td>
+                        <td className="py-3 px-4 text-text-muted">
+                          {payment.milestoneId ? 'Linked milestone' : 'General'}
                         </td>
                       </tr>
                     ))}
@@ -473,6 +829,124 @@ export default function AdminProjectDetail({ projectId }: AdminProjectDetailProp
                 </table>
               </div>
             )}
+          </Card>
+        )}
+
+        {activeTab === 'approvals' && (
+          <div className="space-y-6">
+            <Card>
+              <h2 className="text-lg font-semibold text-text-primary mb-4">Create Approval Request</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                <div>
+                  <label className="block text-sm font-medium text-text-primary mb-1">Type</label>
+                  <select
+                    value={approvalForm.type}
+                    onChange={(e) => setApprovalForm({ ...approvalForm, type: e.target.value })}
+                    className="w-full px-4 py-3 text-sm border border-border-default rounded-lg bg-bg-surface text-text-primary"
+                  >
+                    <option value="DESIGN">Design</option>
+                    <option value="FEATURE">Feature</option>
+                    <option value="BUDGET">Budget</option>
+                    <option value="SCOPE_CHANGE">Scope Change</option>
+                    <option value="MILESTONE">Milestone</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-text-primary mb-1">Milestone (optional)</label>
+                  <select
+                    value={approvalForm.milestoneId}
+                    onChange={(e) => setApprovalForm({ ...approvalForm, milestoneId: e.target.value })}
+                    className="w-full px-4 py-3 text-sm border border-border-default rounded-lg bg-bg-surface text-text-primary"
+                  >
+                    <option value="">Not linked</option>
+                    {project.milestones.map((m) => (
+                      <option key={m.id} value={m.id}>{m.title}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+              <input
+                type="text"
+                placeholder="Approval title"
+                value={approvalForm.title}
+                onChange={(e) => setApprovalForm({ ...approvalForm, title: e.target.value })}
+                className="w-full mb-3 px-4 py-3 text-sm border border-border-default rounded-lg bg-bg-surface text-text-primary"
+              />
+              <textarea
+                placeholder="Description"
+                value={approvalForm.description}
+                onChange={(e) => setApprovalForm({ ...approvalForm, description: e.target.value })}
+                rows={3}
+                className="w-full mb-3 px-4 py-3 text-sm border border-border-default rounded-lg bg-bg-surface text-text-primary"
+              />
+              <Button onClick={handleCreateApproval}>Create Approval</Button>
+            </Card>
+
+            <Card>
+              <h2 className="text-lg font-semibold text-text-primary mb-4">Approval Center</h2>
+              {project.approvals.length === 0 ? (
+                <p className="text-sm text-text-muted text-center py-8">No approvals yet</p>
+              ) : (
+                <div className="space-y-3">
+                  {project.approvals.map((approval) => (
+                    <div key={approval.id} className="p-4 border border-border-default rounded-lg">
+                      <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
+                        <div>
+                          <h3 className="text-sm font-medium text-text-primary">{approval.title}</h3>
+                          <p className="text-xs text-text-muted">{approval.type.replaceAll('_', ' ')}</p>
+                        </div>
+                        <StatusBadge status={approval.status} type="approval" />
+                      </div>
+                      {approval.description && (
+                        <p className="text-sm text-text-muted mb-2">{approval.description}</p>
+                      )}
+                      {approval.status === 'PENDING' && (
+                        <div className="flex gap-2">
+                          <Button size="sm" onClick={() => handleReviewApproval(approval.id, 'APPROVED')}>
+                            Approve
+                          </Button>
+                          <Button size="sm" variant="outline" onClick={() => handleReviewApproval(approval.id, 'CHANGES_REQUESTED')}>
+                            Request Changes
+                          </Button>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </Card>
+          </div>
+        )}
+
+        {activeTab === 'launch-readiness' && (
+          <Card>
+            <h2 className="text-lg font-semibold text-text-primary mb-4">Launch Readiness Checklist</h2>
+            <div className="space-y-3 mb-4">
+              {[
+                ['appStoreAssetsReady', 'App store assets ready'],
+                ['privacyPolicyVerified', 'Privacy policy verified'],
+                ['paymentGatewayTested', 'Payment gateway tested'],
+                ['analyticsIntegrated', 'Analytics integrated'],
+                ['securityAuditCompleted', 'Security audit completed'],
+              ].map(([key, label]) => (
+                <label key={key} className="flex items-center gap-2 text-sm text-text-primary">
+                  <input
+                    type="checkbox"
+                    checked={Boolean(launchChecklist[key as keyof LaunchChecklist])}
+                    onChange={(e) => setLaunchChecklist((prev) => ({ ...prev, [key]: e.target.checked }))}
+                  />
+                  {label}
+                </label>
+              ))}
+            </div>
+            <textarea
+              placeholder="Checklist notes..."
+              rows={4}
+              value={launchChecklist.notes ?? ''}
+              onChange={(e) => setLaunchChecklist((prev) => ({ ...prev, notes: e.target.value }))}
+              className="w-full mb-4 px-4 py-3 text-sm border border-border-default rounded-lg bg-bg-surface text-text-primary"
+            />
+            <Button onClick={handleSaveLaunchChecklist}>Save Checklist</Button>
           </Card>
         )}
 
@@ -490,6 +964,14 @@ export default function AdminProjectDetail({ projectId }: AdminProjectDetailProp
                       <StatusBadge status={request.status} type="changeRequest" />
                     </div>
                     <p className="text-sm text-text-muted mb-2">{request.message}</p>
+                    {request.impactSummary && (
+                      <p className="text-xs text-text-muted mb-1">{request.impactSummary}</p>
+                    )}
+                    {(request.estimatedCostImpact || request.timelineImpactDays) && (
+                      <p className="text-xs text-text-muted mb-2">
+                        Impact: +${request.estimatedCostImpact ?? 0} / +{request.timelineImpactDays ?? 0} day(s)
+                      </p>
+                    )}
                     <p className="text-xs text-text-disabled">
                       From: {request.client.name} | {format(new Date(request.createdAt), 'MMM d, yyyy h:mm a')}
                     </p>

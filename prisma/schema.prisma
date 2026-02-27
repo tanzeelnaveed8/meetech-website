@@ -137,6 +137,10 @@ model User {
   changeRequests      ChangeRequest[]
   messages            Message[]
   meetingRequests     MeetingRequest[]
+  approvalsRequested  Approval[]      @relation("ApprovalRequestedBy")
+  approvalsReviewed   Approval[]      @relation("ApprovalReviewedBy")
+  approvalComments    ApprovalComment[]
+  launchChecklistUpdates LaunchChecklist[] @relation("LaunchChecklistUpdatedBy")
 }
 
 model Project {
@@ -173,6 +177,8 @@ model Project {
   changeRequests  ChangeRequest[]
   payments        Payment[]
   conversation    Conversation?
+  approvals       Approval[]
+  launchChecklist LaunchChecklist?
 
   @@index([clientId])
   @@index([managerId])
@@ -191,10 +197,15 @@ model Milestone {
   // Timeline
   expectedDate    DateTime?
   completedDate   DateTime?
+  approvalStatus  String    @default("PENDING") // PENDING, APPROVED, CHANGES_REQUESTED
+  approvedAt      DateTime?
+  approvalComment String?
 
   // Relations
   projectId       String    @db.ObjectId
   project         Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  payments        Payment[]
+  approvals       Approval[]
 
   // Timestamps
   createdAt       DateTime  @default(now())
@@ -211,7 +222,8 @@ model ProjectFile {
   fileUrl         String
   fileSize        Int
   fileType        String
-  category        String    @default("GENERAL") // GENERAL, DESIGN, DOCUMENT, CODE, OTHER
+  category        String    @default("GENERAL") // GENERAL, CONTRACT, INVOICE, WIREFRAME, UI_DESIGN, BUILD, DEPLOYMENT_CREDENTIAL, DESIGN, DOCUMENT, CODE, OTHER
+  accessLevel     String    @default("CLIENT_ADMIN") // CLIENT_ADMIN, ADMIN_ONLY
 
   // Metadata
   description     String?
@@ -236,6 +248,11 @@ model ChangeRequest {
   title           String
   message         String
   status          String    @default("PENDING") // PENDING, APPROVED, REJECTED, IN_REVIEW
+  priority        String    @default("MEDIUM") // LOW, MEDIUM, HIGH, CRITICAL
+  estimatedCostImpact Float?
+  timelineImpactDays Int?
+  recommendedPriority String?
+  impactSummary   String?
 
   // Admin Response
   adminResponse   String?
@@ -265,6 +282,10 @@ model Payment {
   currency        String    @default("USD")
   description     String
   status          String    @default("PENDING") // PENDING, PAID, OVERDUE, CANCELLED
+  isUnlocked      Boolean   @default(false)
+  unlockedAt      DateTime?
+  stripeCheckoutUrl String?
+  stripePaymentIntentId String?
 
   // Timeline
   dueDate         DateTime
@@ -273,6 +294,8 @@ model Payment {
   // Relations
   projectId       String    @db.ObjectId
   project         Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  milestoneId     String?   @db.ObjectId
+  milestone       Milestone? @relation(fields: [milestoneId], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
   // Timestamps
   createdAt       DateTime  @default(now())
@@ -280,6 +303,76 @@ model Payment {
 
   @@index([projectId])
   @@index([status])
+  @@index([milestoneId])
+}
+
+model Approval {
+  id              String    @id @default(auto()) @map("_id") @db.ObjectId
+
+  // Approval Request
+  type            String    // DESIGN, FEATURE, BUDGET, SCOPE_CHANGE, MILESTONE
+  title           String
+  description     String?
+  status          String    @default("PENDING") // PENDING, APPROVED, CHANGES_REQUESTED
+  decisionComment String?
+
+  // Relations
+  projectId       String    @db.ObjectId
+  project         Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  requestedById   String    @db.ObjectId
+  requestedBy     User      @relation("ApprovalRequestedBy", fields: [requestedById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  reviewedById    String?   @db.ObjectId
+  reviewedBy      User?     @relation("ApprovalReviewedBy", fields: [reviewedById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  milestoneId     String?   @db.ObjectId
+  milestone       Milestone? @relation(fields: [milestoneId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  // Timestamps
+  reviewedAt      DateTime?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  comments        ApprovalComment[]
+
+  @@index([projectId])
+  @@index([status])
+  @@index([type])
+}
+
+model ApprovalComment {
+  id              String    @id @default(auto()) @map("_id") @db.ObjectId
+  approvalId      String    @db.ObjectId
+  approval        Approval  @relation(fields: [approvalId], references: [id], onDelete: Cascade)
+
+  authorId        String    @db.ObjectId
+  author          User      @relation(fields: [authorId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  message         String
+  createdAt       DateTime  @default(now())
+
+  @@index([approvalId])
+  @@index([authorId])
+}
+
+model LaunchChecklist {
+  id                      String    @id @default(auto()) @map("_id") @db.ObjectId
+  projectId               String    @unique @db.ObjectId
+  project                 Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  appStoreAssetsReady     Boolean   @default(false)
+  privacyPolicyVerified   Boolean   @default(false)
+  paymentGatewayTested    Boolean   @default(false)
+  analyticsIntegrated     Boolean   @default(false)
+  securityAuditCompleted  Boolean   @default(false)
+  notes                   String?
+
+  updatedById             String?   @db.ObjectId
+  updatedBy               User?     @relation("LaunchChecklistUpdatedBy", fields: [updatedById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  createdAt               DateTime  @default(now())
+  updatedAt               DateTime  @updatedAt
 }
 
 model Conversation {

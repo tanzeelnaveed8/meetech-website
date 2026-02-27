@@ -88,6 +88,11 @@ export async function createChangeRequest(data: {
   clientId: string
   title: string
   message: string
+  priority?: string
+  estimatedCostImpact?: number
+  timelineImpactDays?: number
+  recommendedPriority?: string
+  impactSummary?: string
 }) {
   return prisma.changeRequest.create({
     data,

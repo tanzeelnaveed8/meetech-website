@@ -84,6 +84,16 @@ export async function getProjectById(
       },
       payments: {
         orderBy: { dueDate: 'asc' },
+        include: {
+          milestone: {
+            select: {
+              id: true,
+              title: true,
+              status: true,
+              approvalStatus: true,
+            },
+          },
+        },
       },
       changeRequests: {
         include: {
@@ -96,6 +106,35 @@ export async function getProjectById(
         },
         orderBy: { createdAt: 'desc' },
       },
+      approvals: {
+        include: {
+          requestedBy: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
+          reviewedBy: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
+          comments: {
+            include: {
+              author: {
+                select: {
+                  id: true,
+                  name: true,
+                },
+              },
+            },
+            orderBy: { createdAt: 'asc' },
+          },
+        },
+        orderBy: { createdAt: 'desc' },
+      },
+      launchChecklist: true,
       _count: {
         select: {
           milestones: true,
@@ -182,6 +221,9 @@ export async function createProject(data: {
       managerId: data.managerId,
       startDate: data.startDate,
       expectedEndDate: data.expectedEndDate,
+      launchChecklist: {
+        create: {},
+      },
     },
     include: {
       client: {
@@ -252,6 +294,8 @@ export async function createMilestone(data: {
   status?: string
   order?: number
   expectedDate?: Date
+  approvalStatus?: string
+  approvalComment?: string
 }) {
   return prisma.milestone.create({
     data,
@@ -267,6 +311,9 @@ export async function updateMilestone(
     order?: number
     expectedDate?: Date
     completedDate?: Date
+    approvalStatus?: string
+    approvedAt?: Date
+    approvalComment?: string
   }
 ) {
   return prisma.milestone.update({
@@ -290,9 +337,16 @@ export async function createPayment(data: {
   status?: string
   dueDate: Date
   paidDate?: Date
+  milestoneId?: string
+  stripeCheckoutUrl?: string
+  stripePaymentIntentId?: string
 }) {
   return prisma.payment.create({
-    data,
+    data: {
+      ...data,
+      isUnlocked: !data.milestoneId,
+      unlockedAt: data.milestoneId ? undefined : new Date(),
+    },
   })
 }
 
@@ -305,6 +359,11 @@ export async function updatePayment(
     status?: string
     dueDate?: Date
     paidDate?: Date
+    isUnlocked?: boolean
+    unlockedAt?: Date
+    stripeCheckoutUrl?: string
+    stripePaymentIntentId?: string
+    milestoneId?: string | null
   }
 ) {
   return prisma.payment.update({
@@ -316,5 +375,204 @@ export async function updatePayment(
 export async function deletePayment(paymentId: string) {
   return prisma.payment.delete({
     where: { id: paymentId },
+  })
+}
+
+export async function unlockPaymentsForMilestoneApproval(projectId: string, milestoneId: string) {
+  return prisma.payment.updateMany({
+    where: {
+      projectId,
+      milestoneId,
+      isUnlocked: false,
+    },
+    data: {
+      isUnlocked: true,
+      unlockedAt: new Date(),
+      status: 'PENDING',
+    },
+  })
+}
+
+export async function getApprovalsByProject(projectId: string) {
+  return prisma.approval.findMany({
+    where: { projectId },
+    include: {
+      requestedBy: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
+      reviewedBy: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
+      comments: {
+        include: {
+          author: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
+        },
+        orderBy: { createdAt: 'asc' },
+      },
+      milestone: {
+        select: {
+          id: true,
+          title: true,
+          status: true,
+          approvalStatus: true,
+        },
+      },
+    },
+    orderBy: { createdAt: 'desc' },
+  })
+}
+
+export async function createApproval(data: {
+  projectId: string
+  requestedById: string
+  type: string
+  title: string
+  description?: string
+  milestoneId?: string
+}) {
+  return prisma.approval.create({
+    data,
+    include: {
+      requestedBy: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
+      reviewedBy: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
+      comments: {
+        include: {
+          author: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
+        },
+      },
+    },
+  })
+}
+
+export async function reviewApproval(data: {
+  approvalId: string
+  status: 'APPROVED' | 'CHANGES_REQUESTED'
+  reviewedById: string
+  decisionComment?: string
+}) {
+  return prisma.approval.update({
+    where: { id: data.approvalId },
+    data: {
+      status: data.status,
+      reviewedById: data.reviewedById,
+      reviewedAt: new Date(),
+      decisionComment: data.decisionComment,
+    },
+    include: {
+      requestedBy: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
+      reviewedBy: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
+      comments: {
+        include: {
+          author: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
+        },
+      },
+      milestone: {
+        select: {
+          id: true,
+          title: true,
+        },
+      },
+    },
+  })
+}
+
+export async function addApprovalComment(data: {
+  approvalId: string
+  authorId: string
+  message: string
+}) {
+  return prisma.approvalComment.create({
+    data,
+    include: {
+      author: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
+    },
+  })
+}
+
+export async function getOrCreateLaunchChecklist(projectId: string) {
+  return prisma.launchChecklist.upsert({
+    where: { projectId },
+    update: {},
+    create: { projectId },
+  })
+}
+
+export async function updateLaunchChecklist(data: {
+  projectId: string
+  updatedById: string
+  appStoreAssetsReady?: boolean
+  privacyPolicyVerified?: boolean
+  paymentGatewayTested?: boolean
+  analyticsIntegrated?: boolean
+  securityAuditCompleted?: boolean
+  notes?: string
+}) {
+  return prisma.launchChecklist.upsert({
+    where: { projectId: data.projectId },
+    update: {
+      appStoreAssetsReady: data.appStoreAssetsReady,
+      privacyPolicyVerified: data.privacyPolicyVerified,
+      paymentGatewayTested: data.paymentGatewayTested,
+      analyticsIntegrated: data.analyticsIntegrated,
+      securityAuditCompleted: data.securityAuditCompleted,
+      notes: data.notes,
+      updatedById: data.updatedById,
+    },
+    create: {
+      projectId: data.projectId,
+      appStoreAssetsReady: data.appStoreAssetsReady ?? false,
+      privacyPolicyVerified: data.privacyPolicyVerified ?? false,
+      paymentGatewayTested: data.paymentGatewayTested ?? false,
+      analyticsIntegrated: data.analyticsIntegrated ?? false,
+      securityAuditCompleted: data.securityAuditCompleted ?? false,
+      notes: data.notes,
+      updatedById: data.updatedById,
+    },
   })
 }

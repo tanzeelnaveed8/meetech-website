@@ -10,6 +10,8 @@ const createMilestoneSchema = z.object({
   status: z.string().optional(),
   order: z.number().optional(),
   expectedDate: z.string().optional(),
+  approvalStatus: z.string().optional(),
+  approvalComment: z.string().optional(),
 })
 
 const updateMilestoneSchema = z.object({
@@ -20,6 +22,9 @@ const updateMilestoneSchema = z.object({
   order: z.number().optional(),
   expectedDate: z.string().optional(),
   completedDate: z.string().optional(),
+  approvalStatus: z.string().optional(),
+  approvedAt: z.string().optional(),
+  approvalComment: z.string().optional(),
 })
 
 export async function GET(
@@ -80,6 +85,8 @@ export async function POST(
       status: data.status,
       order: data.order,
       expectedDate: data.expectedDate ? new Date(data.expectedDate) : undefined,
+      approvalStatus: data.approvalStatus,
+      approvalComment: data.approvalComment,
     })
 
     return NextResponse.json({ milestone }, { status: 201 })
@@ -100,8 +107,7 @@ export async function POST(
 }
 
 export async function PATCH(
-  request: NextRequest,
-  { params }: { params: Promise<{ projectId: string }> }
+  request: NextRequest
 ) {
   const authCheck = await requireRole(['ADMIN', 'EDITOR'])
   if (!authCheck.authorized) {
@@ -112,15 +118,28 @@ export async function PATCH(
     const body = await request.json()
     const data = updateMilestoneSchema.parse(body)
 
-    const updateData: any = {
+    const updateData: {
+      title?: string
+      description?: string
+      status?: string
+      order?: number
+      approvalStatus?: string
+      approvalComment?: string
+      expectedDate?: Date
+      completedDate?: Date
+      approvedAt?: Date
+    } = {
       title: data.title,
       description: data.description,
       status: data.status,
       order: data.order,
+      approvalStatus: data.approvalStatus,
+      approvalComment: data.approvalComment,
     }
 
     if (data.expectedDate) updateData.expectedDate = new Date(data.expectedDate)
     if (data.completedDate) updateData.completedDate = new Date(data.completedDate)
+    if (data.approvedAt) updateData.approvedAt = new Date(data.approvedAt)
 
     const milestone = await updateMilestone(data.milestoneId, updateData)
 
@@ -142,8 +161,7 @@ export async function PATCH(
 }
 
 export async function DELETE(
-  request: NextRequest,
-  { params }: { params: Promise<{ projectId: string }> }
+  request: NextRequest
 ) {
   const authCheck = await requireRole(['ADMIN', 'EDITOR'])
   if (!authCheck.authorized) {

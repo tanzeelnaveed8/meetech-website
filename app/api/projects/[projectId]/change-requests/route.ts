@@ -7,6 +7,9 @@ import { z } from 'zod'
 const createChangeRequestSchema = z.object({
   title: z.string().min(1, 'Title is required'),
   message: z.string().min(1, 'Message is required'),
+  priority: z.enum(['LOW', 'MEDIUM', 'HIGH', 'CRITICAL']).optional(),
+  estimatedHours: z.number().min(1).max(500).optional(),
+  complexity: z.enum(['LOW', 'MEDIUM', 'HIGH']).optional(),
 })
 
 const updateChangeRequestSchema = z.object({
@@ -84,11 +87,32 @@ export async function POST(
     const body = await request.json()
     const data = createChangeRequestSchema.parse(body)
 
+    // Controlled scope formulas
+    const estimatedHours = data.estimatedHours ?? 8
+    const complexityMultiplier =
+      data.complexity === 'HIGH' ? 1.8 : data.complexity === 'MEDIUM' ? 1.35 : 1
+    const blendedHourlyRate = 35
+    const estimatedCostImpact = Math.round(estimatedHours * blendedHourlyRate * complexityMultiplier)
+    const timelineImpactDays = Math.max(1, Math.ceil((estimatedHours * complexityMultiplier) / 6))
+    const recommendedPriority =
+      timelineImpactDays >= 14
+        ? 'HIGH'
+        : timelineImpactDays >= 7
+          ? 'MEDIUM'
+          : 'LOW'
+    const impactSummary =
+      `Estimated +$${estimatedCostImpact} and +${timelineImpactDays} day(s) based on ${estimatedHours}h and ${data.complexity ?? 'LOW'} complexity.`
+
     const changeRequest = await createChangeRequest({
       projectId,
       clientId: session.user.id,
       title: data.title,
       message: data.message,
+      priority: data.priority ?? 'MEDIUM',
+      estimatedCostImpact,
+      timelineImpactDays,
+      recommendedPriority,
+      impactSummary,
     })
 
     return NextResponse.json({ changeRequest }, { status: 201 })
@@ -109,8 +133,7 @@ export async function POST(
 }
 
 export async function PATCH(
-  request: NextRequest,
-  { params }: { params: Promise<{ projectId: string }> }
+  request: NextRequest
 ) {
   const authCheck = await requireRole(['ADMIN', 'EDITOR'])
   if (!authCheck.authorized) {

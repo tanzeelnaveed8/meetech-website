@@ -55,7 +55,6 @@ const Icons = {
 export default function ClientProfilePage() {
   // Mock session data as requested
   const { data: session } = useSession()
-  console.log("Session:", session)
   const { success: toastSuccess, error: toastError } = useToast();
   const [isChangingPassword, setIsChangingPassword] = useState(false);
   const [currentPassword, setCurrentPassword] = useState('');
@@ -135,7 +134,7 @@ export default function ClientProfilePage() {
     <div className="max-w-6xl mx-auto space-y-6 sm:space-y-8 p-2 sm:p-6 lg:p-0 animate-in fade-in slide-in-from-bottom-6 duration-1000">
 
       {/* 1. HERO HEADER SECTION */}
-      <div className="relative overflow-hidden rounded-3xl sm:rounded-[3rem] bg-accent p-5 sm:p-8 md:p-12 text-text-inverse shadow-2xl shadow-accent/20">
+      <div className="relative overflow-hidden rounded-3xl sm:rounded-[3rem] bg-gradient-to-br from-slate-900 via-blue-900/70 to-indigo-900/80 p-5 sm:p-8 md:p-12 text-text-inverse shadow-2xl shadow-blue-900/30 border border-white/15">
         {/* Background Decorative Elements */}
         <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full -mr-32 -mt-32 blur-3xl animate-pulse" />
         <div className="absolute bottom-0 left-0 w-64 h-64 bg-accent-secondary/15 rounded-full -ml-20 -mb-20 blur-2xl" />
@@ -196,7 +195,7 @@ export default function ClientProfilePage() {
 
         {/* Profile Details (Bento Piece 1) */}
         <div className="2xl:col-span-5 flex flex-col gap-6">
-          <Card className="h-full border-accent/5">
+          <Card className="h-full border-white/15 bg-slate-900/60 backdrop-blur-xl">
             <div className="flex items-center justify-between mb-10">
               <div>
                 <h3 className="text-lg sm:text-xl font-black text-text-primary tracking-tight">Identity</h3>
@@ -223,7 +222,7 @@ export default function ClientProfilePage() {
 
         {/* Security & Password (Bento Piece 2) */}
         <div className="2xl:col-span-7" id="security-section">
-          <Card className="h-full border-border-default" >
+          <Card className="h-full border-white/15 bg-slate-900/60 backdrop-blur-xl">
             <div className="p-4 sm:p-6">
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 sm:gap-6 mb-8 sm:mb-12">
                 <div className="space-y-1">
@@ -241,7 +240,7 @@ export default function ClientProfilePage() {
               {isChangingPassword ? (
                 <form onSubmit={handleChangePassword} className="space-y-6 animate-in fade-in zoom-in-95 duration-500">
                   {formError && (
-                    <div className="p-4 rounded-2xl bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/20 text-red-600 flex items-center gap-3">
+                    <div className="p-4 rounded-2xl bg-red-500/10 border border-red-500/20 text-red-300 flex items-center gap-3">
                       <Icons.Alert />
                       <p className="text-sm font-bold tracking-tight">{formError}</p>
                     </div>

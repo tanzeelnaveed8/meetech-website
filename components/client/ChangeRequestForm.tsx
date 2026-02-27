@@ -6,6 +6,7 @@ import Card from '@/components/ui/Card';
 import Input from '@/components/ui/Input';
 import Textarea from '@/components/ui/Textarea';
 import Button from '@/components/ui/Button';
+import Select from '@/components/ui/Select';
 import { useToast } from '@/components/ui/Toast';
 
 interface ChangeRequestFormProps {
@@ -18,6 +19,13 @@ export default function ChangeRequestForm({ projectId, onSuccess }: ChangeReques
   const [title, setTitle] = useState('');
   const [message, setMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [priority, setPriority] = useState('MEDIUM');
+  const [estimatedHours, setEstimatedHours] = useState(8);
+  const [complexity, setComplexity] = useState('LOW');
+
+  const complexityMultiplier = complexity === 'HIGH' ? 1.8 : complexity === 'MEDIUM' ? 1.35 : 1;
+  const estimatedCost = Math.round(estimatedHours * 35 * complexityMultiplier);
+  const timelineDays = Math.max(1, Math.ceil((estimatedHours * complexityMultiplier) / 6));
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -28,7 +36,7 @@ export default function ChangeRequestForm({ projectId, onSuccess }: ChangeReques
       const response = await fetch(`/api/projects/${projectId}/change-requests`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title, message }),
+        body: JSON.stringify({ title, message, priority, estimatedHours, complexity }),
       });
 
       const data = await response.json();
@@ -37,6 +45,9 @@ export default function ChangeRequestForm({ projectId, onSuccess }: ChangeReques
         toastSuccess('Change request submitted successfully');
         setTitle('');
         setMessage('');
+        setPriority('MEDIUM');
+        setEstimatedHours(8);
+        setComplexity('LOW');
         onSuccess();
       } else {
         toastError(data.error || 'Failed to submit change request');
@@ -75,6 +86,51 @@ export default function ChangeRequestForm({ projectId, onSuccess }: ChangeReques
           placeholder="Detailed description of what you'd like to change..."
           disabled={isLoading}
         />
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <Select
+            id="change-priority"
+            label="Priority"
+            value={priority}
+            onChange={(e) => setPriority(e.target.value)}
+            options={[
+              { value: 'LOW', label: 'Low' },
+              { value: 'MEDIUM', label: 'Medium' },
+              { value: 'HIGH', label: 'High' },
+              { value: 'CRITICAL', label: 'Critical' },
+            ]}
+            disabled={isLoading}
+          />
+          <Select
+            id="change-complexity"
+            label="Complexity"
+            value={complexity}
+            onChange={(e) => setComplexity(e.target.value)}
+            options={[
+              { value: 'LOW', label: 'Low' },
+              { value: 'MEDIUM', label: 'Medium' },
+              { value: 'HIGH', label: 'High' },
+            ]}
+            disabled={isLoading}
+          />
+        </div>
+
+        <Input
+          id="change-estimated-hours"
+          label="Estimated Effort (hours)"
+          type="number"
+          min={1}
+          max={500}
+          value={estimatedHours}
+          onChange={(e) => setEstimatedHours(Number(e.target.value || 1))}
+          disabled={isLoading}
+        />
+
+        <div className="rounded-lg border border-border-default bg-bg-subtle p-3 text-sm text-text-muted">
+          <p className="font-medium text-text-primary mb-1">Impact Preview</p>
+          <p>Estimated cost impact: <span className="font-semibold text-text-primary">${estimatedCost}</span></p>
+          <p>Estimated timeline impact: <span className="font-semibold text-text-primary">+{timelineDays} day(s)</span></p>
+        </div>
 
         <Button
           type="submit"

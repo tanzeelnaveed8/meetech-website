@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { requireRole } from '@/lib/auth/middleware'
 import { getProjectById } from '@/lib/db/queries/projects'
 import { createPayment, updatePayment, deletePayment } from '@/lib/db/queries/projects'
+import { prisma } from '@/lib/db/client'
 import { z } from 'zod'
 
 const createPaymentSchema = z.object({
@@ -11,6 +12,9 @@ const createPaymentSchema = z.object({
   status: z.string().optional(),
   dueDate: z.string().min(1, 'Due date is required'),
   paidDate: z.string().optional(),
+  milestoneId: z.string().optional(),
+  stripeCheckoutUrl: z.string().url().optional(),
+  stripePaymentIntentId: z.string().optional(),
 })
 
 const updatePaymentSchema = z.object({
@@ -21,6 +25,10 @@ const updatePaymentSchema = z.object({
   status: z.string().optional(),
   dueDate: z.string().optional(),
   paidDate: z.string().optional(),
+  isUnlocked: z.boolean().optional(),
+  milestoneId: z.string().nullable().optional(),
+  stripeCheckoutUrl: z.string().url().optional(),
+  stripePaymentIntentId: z.string().optional(),
 })
 
 export async function GET(
@@ -74,6 +82,19 @@ export async function POST(
     const body = await request.json()
     const data = createPaymentSchema.parse(body)
 
+    if (data.milestoneId) {
+      const existing = await prisma.payment.findFirst({
+        where: { milestoneId: data.milestoneId },
+        select: { id: true },
+      })
+      if (existing) {
+        return NextResponse.json(
+          { error: 'This milestone already has a linked payment' },
+          { status: 400 }
+        )
+      }
+    }
+
     const payment = await createPayment({
       projectId,
       amount: data.amount,
@@ -82,6 +103,9 @@ export async function POST(
       status: data.status,
       dueDate: new Date(data.dueDate),
       paidDate: data.paidDate ? new Date(data.paidDate) : undefined,
+      milestoneId: data.milestoneId,
+      stripeCheckoutUrl: data.stripeCheckoutUrl,
+      stripePaymentIntentId: data.stripePaymentIntentId,
     })
 
     return NextResponse.json({ payment }, { status: 201 })
@@ -102,8 +126,7 @@ export async function POST(
 }
 
 export async function PATCH(
-  request: NextRequest,
-  { params }: { params: Promise<{ projectId: string }> }
+  request: NextRequest
 ) {
   const authCheck = await requireRole(['ADMIN', 'EDITOR'])
   if (!authCheck.authorized) {
@@ -114,11 +137,42 @@ export async function PATCH(
     const body = await request.json()
     const data = updatePaymentSchema.parse(body)
 
-    const updateData: any = {
+    if (data.milestoneId) {
+      const existing = await prisma.payment.findFirst({
+        where: {
+          milestoneId: data.milestoneId,
+          NOT: { id: data.paymentId },
+        },
+        select: { id: true },
+      })
+      if (existing) {
+        return NextResponse.json(
+          { error: 'This milestone already has a linked payment' },
+          { status: 400 }
+        )
+      }
+    }
+
+    const updateData: {
+      amount?: number
+      currency?: string
+      description?: string
+      status?: string
+      isUnlocked?: boolean
+      milestoneId?: string | null
+      stripeCheckoutUrl?: string
+      stripePaymentIntentId?: string
+      dueDate?: Date
+      paidDate?: Date
+    } = {
       amount: data.amount,
       currency: data.currency,
       description: data.description,
       status: data.status,
+      isUnlocked: data.isUnlocked,
+      milestoneId: data.milestoneId,
+      stripeCheckoutUrl: data.stripeCheckoutUrl,
+      stripePaymentIntentId: data.stripePaymentIntentId,
     }
 
     if (data.dueDate) updateData.dueDate = new Date(data.dueDate)
@@ -144,8 +198,7 @@ export async function PATCH(
 }
 
 export async function DELETE(
-  request: NextRequest,
-  { params }: { params: Promise<{ projectId: string }> }
+  request: NextRequest
 ) {
   const authCheck = await requireRole(['ADMIN'])
   if (!authCheck.authorized) {
