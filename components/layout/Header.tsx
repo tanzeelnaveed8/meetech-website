@@ -152,25 +152,25 @@ export function Header() {
       data-scrolled={scrolled}
       className="sticky top-0 z-50 w-full border-b border-border-default/30 bg-gradient-to-b from-bg-surface/95 via-bg-surface/90 to-bg-surface/80 dark:bg-bg-surface/80 backdrop-blur-2xl transition-all duration-300 ease-out data-[scrolled=true]:border-border-default/60 data-[scrolled=true]:bg-bg-surface/95 data-[scrolled=true]:shadow-[0_8px_32px_-8px_rgba(0,0,0,0.12)] dark:data-[scrolled=true]:shadow-[0_8px_32px_-8px_rgba(0,0,0,0.4)]"
     >
-      <div className="relative flex h-[80px] w-full items-center justify-between px-5 md:px-10 lg:px-12">
+      <div className="relative flex h-[80px] w-full items-center justify-between px-5 lg:px-12">
         {/* Left: Logo */}
         <div className="flex items-center">
           <Link href="/" className="flex items-center group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 focus-visible:ring-offset-bg-surface rounded-lg">
-            <Image src="/icon.png" alt="Logo" width={64} height={64} className="h-16 w-auto transition-all duration-300 group-hover:scale-105 group-hover:drop-shadow-lg dark-logo" priority />
-            <Image src="/iconlight.png" alt="Logo" width={64} height={64} className="h-16 w-auto transition-all duration-300 group-hover:scale-105 group-hover:drop-shadow-lg light-logo" priority />
+            <Image src="/icon.png" alt="Logo" width={64} height={64} className=" h-10 lg:h-16 w-auto transition-all duration-300 group-hover:scale-105 group-hover:drop-shadow-lg dark-logo" priority />
+            <Image src="/iconlight.png" alt="Logo" width={64} height={64} className=" h-10  lg:h-16 w-auto transition-all duration-300 group-hover:scale-105 group-hover:drop-shadow-lg light-logo" priority />
           </Link>
         </div>
 
         {/* Right: Navigation */}
-        <nav aria-label="Primary" className="hidden md:flex items-center gap-6 lg:gap-8 mx-auto">
+        <nav aria-label="Primary" className="hidden md:flex items-center gap-3 lg:gap-6 mx-auto">
           {NAV_LINKS.map(({ href, label }) => <NavLink key={href} href={href} label={label} />)}
         </nav>
 
         {/* Right: Social Icons, CTA, Theme Toggle & Hamburger */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2">
           <Link
             href="/client/login"
-            className="hidden lg:inline-flex min-h-[44px] items-center justify-center rounded-xl border-2 border-accent bg-transparent px-4 py-2 text-[0.9375rem] font-bold text-accent shadow-sm transition-all duration-200 ease-out hover:bg-accent-muted hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 focus-visible:ring-offset-bg-surface whitespace-nowrap"
+            className="hidden md:inline-flex min-h-[44px] items-center justify-center rounded-xl border-2 border-accent bg-transparent px-4 py-2 text-[0.9375rem] font-bold text-accent shadow-sm transition-all duration-200 ease-out hover:bg-accent-muted hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 focus-visible:ring-offset-bg-surface whitespace-nowrap"
           >
             Client Portal
           </Link>
@@ -199,10 +199,16 @@ export function Header() {
                   <NavLink href={href} label={label} onClick={closeMobile} variant="mobile" />
                 </li>
               ))}
-
+              <Link
+                href="/client/login"
+                className=" md:hidden min-h-[44px] items-center justify-center rounded-xl border-2 border-accent bg-transparent px-4 py-2 text-center text-[0.9375rem] font-bold text-accent shadow-sm transition-all duration-200 ease-out hover:bg-accent-muted hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 focus-visible:ring-offset-bg-surface whitespace-nowrap"
+              >
+                Client Portal
+              </Link>
               <li className="pt-2">
                 <CtaButton fullWidth reduceMotion={reduceMotion} />
               </li>
+             
             </ul>
           </nav>
         </div>
