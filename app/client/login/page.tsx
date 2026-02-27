@@ -167,7 +167,7 @@ export default function ClientLoginPage() {
             <label className="block text-xs font-bold text-white/80 uppercase tracking-widest mb-4">
               Access Code
             </label>
-            <div className="flex gap-2 justify-between">
+            <div className="flex gap-1 md:gap-2 justify-between">
               {Array(CODE_LENGTH).fill(null).map((_, i) => (
                 <input
                   key={i}
@@ -181,7 +181,7 @@ export default function ClientLoginPage() {
                   onPaste={i === 0 ? handlePaste : undefined}
                   onFocus={e => e.target.select()}
                   disabled={isLoading}
-                  className="w-10 h-12 text-center text-lg font-black rounded-xl border-2 outline-none transition-all duration-200 disabled:opacity-50"
+                  className=" w-6  md:w-10  h-8  md:h-12 text-center text-lg font-black rounded-lg md:rounded-xl border-2 outline-none transition-all duration-200 disabled:opacity-50"
                   style={{
                     background: chars[i] ? 'rgba(37,99,235,0.15)' : 'rgba(255,255,255,0.04)',
                     borderColor: chars[i] ? 'rgba(37,99,235,0.8)' : 'rgba(255,255,255,0.1)',
