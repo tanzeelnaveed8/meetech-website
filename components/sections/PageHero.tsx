@@ -72,7 +72,7 @@ export function PageHero() {
               transition={{ duration: 0.8, delay: 0.2 }}
               className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter leading-[0.92] mb-10 text-text-primary"
             >
-              Where Visionary Ideas <br />
+              Where Ideas <br />
               <span className="text-accent bg-clip-text">
                 Meet Technology.
               </span>

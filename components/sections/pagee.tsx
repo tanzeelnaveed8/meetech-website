@@ -95,7 +95,7 @@ export default function App() {
               motion-reduce:transition-none
               ${headline.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
           >
-            Where Visionary Ideas <br />
+            Where Ideas <br />
             <span className="text-accent">Meet Technology.</span>
           </h1>
 

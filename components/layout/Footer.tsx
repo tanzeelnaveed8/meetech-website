@@ -138,7 +138,7 @@ const Footer: React.FC = () => {
                 label="GitHub"
               />
               <SocialIconBtn
-                href="#"
+                href="https://www.linkedin.com/company/meetechdevelopment/"
                 icon={<Linkedin size={18} />}
                 label="LinkedIn"
               />

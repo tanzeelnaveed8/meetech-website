@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx prisma:*)",
+      "Bash(npx tsc:*)",
+      "Bash(find:*)",
+      "Bash(git checkout:*)"
+    ]
+  }
+}
