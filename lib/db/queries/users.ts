@@ -149,8 +149,52 @@ export async function deleteUser(userId: string) {
 }
 
 export async function hardDeleteUser(userId: string) {
-  return prisma.user.delete({
-    where: { id: userId },
+  return prisma.$transaction(async (tx) => {
+    // Remove or detach records that can block hard-deletion due required relations.
+    await tx.lead.updateMany({
+      where: { assignedToId: userId },
+      data: { assignedToId: null },
+    })
+
+    await tx.leadNote.deleteMany({
+      where: { authorId: userId },
+    })
+
+    await tx.approvalComment.deleteMany({
+      where: { authorId: userId },
+    })
+
+    await tx.approval.deleteMany({
+      where: {
+        OR: [{ requestedById: userId }, { reviewedById: userId }],
+      },
+    })
+
+    await tx.message.deleteMany({
+      where: { senderId: userId },
+    })
+
+    await tx.changeRequest.deleteMany({
+      where: { clientId: userId },
+    })
+
+    await tx.meetingRequest.deleteMany({
+      where: { clientId: userId },
+    })
+
+    await tx.projectFile.deleteMany({
+      where: { uploadedById: userId },
+    })
+
+    await tx.project.deleteMany({
+      where: {
+        OR: [{ clientId: userId }, { managerId: userId }],
+      },
+    })
+
+    return tx.user.delete({
+      where: { id: userId },
+    })
   })
 }
 

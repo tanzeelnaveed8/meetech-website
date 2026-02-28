@@ -69,8 +69,53 @@ export async function POST(
 
     const formData = await request.formData()
     const file = formData.get('file') as File
+    const sourceCodeUrl = formData.get('sourceCodeUrl') as string | null
+    const fileLabel = formData.get('fileLabel') as string | null
     const description = formData.get('description') as string | null
     const category = formData.get('category') as string | null
+
+    // Allow saving external source code links as project files.
+    if (!file && sourceCodeUrl) {
+      let parsedUrl: URL
+      try {
+        parsedUrl = new URL(sourceCodeUrl)
+      } catch {
+        return NextResponse.json(
+          { error: 'Invalid source code URL' },
+          { status: 400 }
+        )
+      }
+
+      if (!['http:', 'https:'].includes(parsedUrl.protocol)) {
+        return NextResponse.json(
+          { error: 'Source code URL must start with http or https' },
+          { status: 400 }
+        )
+      }
+
+      const linkFile = await prisma.projectFile.create({
+        data: {
+          projectId,
+          fileName: fileLabel?.trim() || 'Source Code Link',
+          fileUrl: parsedUrl.toString(),
+          fileSize: 0,
+          fileType: 'text/url',
+          category: category || 'CODE',
+          description: description || null,
+          uploadedById: session.user.id,
+        },
+        include: {
+          uploadedBy: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
+        },
+      })
+
+      return NextResponse.json({ file: linkFile }, { status: 201 })
+    }
 
     if (!file) {
       return NextResponse.json(
@@ -126,8 +171,7 @@ export async function POST(
 }
 
 export async function DELETE(
-  request: NextRequest,
-  { params }: { params: Promise<{ projectId: string }> }
+  request: NextRequest
 ) {
   const authCheck = await requireRole(['ADMIN', 'EDITOR'])
   if (!authCheck.authorized) {
@@ -157,9 +201,11 @@ export async function DELETE(
       )
     }
 
-    // Delete from blob storage
-    const { deleteFile } = await import('@/lib/storage/blob')
-    await deleteFile(file.fileUrl)
+    // Delete from blob storage only for uploaded files (not external links)
+    if (file.fileType !== 'text/url') {
+      const { deleteFile } = await import('@/lib/storage/blob')
+      await deleteFile(file.fileUrl)
+    }
 
     // Delete from database
     await prisma.projectFile.delete({

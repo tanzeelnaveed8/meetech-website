@@ -1,4 +1,4 @@
-import { FiFile, FiDownload, FiTrash2 } from 'react-icons/fi';
+import { FiFile, FiDownload, FiTrash2, FiExternalLink } from 'react-icons/fi';
 import { format } from 'date-fns';
 
 interface FileItem {
@@ -56,8 +56,11 @@ export default function FileList({
               <p className="text-sm font-medium text-text-primary truncate">
                 {file.fileName}
               </p>
+              {file.fileType === 'text/url' && (
+                <p className="text-xs text-accent mt-0.5">Linkable source code</p>
+              )}
               <div className="flex items-center space-x-2 text-xs text-text-muted mt-0.5">
-                <span>{formatFileSize(file.fileSize)}</span>
+                <span>{file.fileType === 'text/url' ? 'External link' : formatFileSize(file.fileSize)}</span>
                 <span className="text-text-disabled">•</span>
                 <span>{format(new Date(file.createdAt), 'MMM d, yyyy')}</span>
                 {file.uploadedBy && (
@@ -74,9 +77,13 @@ export default function FileList({
             <button
               onClick={() => onDownload(file.id)}
               className="p-2 text-text-muted hover:text-accent hover:bg-accent-muted rounded-md transition-colors duration-200"
-              title="Download file"
+              title={file.fileType === 'text/url' ? 'Open link' : 'Download file'}
             >
-              <FiDownload className="w-4 h-4" />
+              {file.fileType === 'text/url' ? (
+                <FiExternalLink className="w-4 h-4" />
+              ) : (
+                <FiDownload className="w-4 h-4" />
+              )}
             </button>
             {showDelete && onDelete && (
               <button

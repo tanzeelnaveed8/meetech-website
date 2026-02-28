@@ -134,11 +134,12 @@ export default function ClientDetailPage({ params }: { params: Promise<{ clientI
 
     try {
       const response = await fetch(`/api/users/${clientId}`, { method: 'DELETE' });
+      const data = await response.json().catch(() => ({}));
       if (response.ok) {
         toastSuccess('Client deactivated successfully');
         await fetchClient();
       } else {
-        toastError('Failed to deactivate client');
+        toastError(data.error || 'Failed to deactivate client');
       }
     } catch {
       toastError('An error occurred');
@@ -151,11 +152,12 @@ export default function ClientDetailPage({ params }: { params: Promise<{ clientI
 
     try {
       const response = await fetch(`/api/users/${clientId}?permanent=true`, { method: 'DELETE' });
+      const data = await response.json().catch(() => ({}));
       if (response.ok) {
         toastSuccess('Client permanently deleted');
         router.push('/admin/clients');
       } else {
-        toastError('Failed to delete client');
+        toastError(data.error || 'Failed to delete client');
       }
     } catch {
       toastError('An error occurred');

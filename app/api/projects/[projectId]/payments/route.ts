@@ -177,6 +177,14 @@ export async function PATCH(
 
     if (data.dueDate) updateData.dueDate = new Date(data.dueDate)
     if (data.paidDate) updateData.paidDate = new Date(data.paidDate)
+    if (data.status?.toUpperCase() === 'PAID') {
+      if (updateData.isUnlocked === undefined) {
+        updateData.isUnlocked = true
+      }
+      if (!updateData.paidDate) {
+        updateData.paidDate = new Date()
+      }
+    }
 
     const payment = await updatePayment(data.paymentId, updateData)
 
