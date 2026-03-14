@@ -11,7 +11,7 @@ import {
   FiCheckCircle,
   FiPlus,
   FiSearch,
-  FiX, 
+  FiX,
 } from 'react-icons/fi';
 import Button from '@/components/ui/Button';
 import { ArrowLeft, ArrowRight, ChevronRight, Search, MessageSquareQuote } from 'lucide-react';
@@ -63,6 +63,7 @@ interface MessagesClientProps {
   userId: string;
   userRole: string;
 }
+
 
 function formatMessageTime(dateStr: string) {
   const date = new Date(dateStr);
@@ -141,7 +142,7 @@ export default function MessagesClient({
     return conv.project.manager ? [conv.project.manager.name] : ['Manager'];
   }, []);
 
-  
+
   // const getOtherPartyName = useCallback(
   //   (conv: Conversation) => {
   //     return isAdmin ? conv.project.client.name : getManagerName(conv);
@@ -448,11 +449,149 @@ export default function MessagesClient({
 
   // ─── Main Render ───────────────────────────────────────────────
 
+  // const conversationListJSX = (
+  //   <div className="flex flex-col h-full min-h-0">
+  //     <div className="p-4 border-b border-white/10 bg-slate-950/70">
+  //       <div className="flex items-center justify-between">
+  //         <h2 className="text-lg font-semibold text-text-primary flex items-center gap-2">
+  //           <FiMessageSquare className="w-5 h-5" />
+  //           Messages
+  //         </h2>
+  //         {isAdmin && (
+  //           <button
+  //             onClick={openNewConvoModal}
+  //             type="button"
+  //             className="p-2 rounded-lg bg-accent text-text-inverse hover:bg-accent-hover transition-colors duration-150"
+  //             title="New Conversation"
+  //             aria-label="Start a new conversation"
+  //           >
+  //             <FiPlus className="w-4 h-4" />
+  //           </button>
+  //         )}
+  //       </div>
+  //       <p className="text-xs text-text-muted mt-1">
+  //         {isAdmin
+  //           ? 'Client conversations'
+  //           : 'Messages with your manager'}
+  //       </p>
+  //       <div className="mt-3">
+  //         <div className="relative">
+  //           <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-text-disabled" />
+  //           <input
+  //             value={conversationSearch}
+  //             onChange={(e) => setConversationSearch(e.target.value)}
+  //             placeholder="Search conversations..."
+  //             aria-label="Search conversations"
+  //             className="w-full rounded-lg border border-white/10 bg-slate-950/60 py-2 pl-9 pr-3 text-xs text-text-primary placeholder:text-text-disabled focus:outline-none focus:ring-2 focus:ring-accent/30"
+  //           />
+  //         </div>
+  //       </div>
+  //     </div>
+
+  //     <div className="flex-1 overflow-y-auto bg-slate-900/35">
+  //       {errorBanner && (
+  //         <div className="mx-4 mt-4 rounded-xl border border-red-500/25 bg-red-500/10 px-3 py-2 text-xs text-red-200 flex items-start justify-between gap-3">
+  //           <span className="leading-5">{errorBanner}</span>
+  //           <div className="flex items-center gap-2 shrink-0">
+  //             <button
+  //               type="button"
+  //               className="rounded-lg border border-white/10 bg-slate-950/40 px-2 py-1 text-[11px] text-text-primary hover:bg-white/5"
+  //               onClick={() => {
+  //                 setErrorBanner(null);
+  //                 fetchConversations();
+  //                 if (activeConversation) fetchMessages(activeConversation.id, true);
+  //               }}
+  //             >
+  //               Retry
+  //             </button>
+  //             <button
+  //               type="button"
+  //               className="rounded-lg p-1 text-text-muted hover:text-text-primary hover:bg-white/5"
+  //               onClick={() => setErrorBanner(null)}
+  //               aria-label="Dismiss error"
+  //             >
+  //               <FiX className="h-4 w-4" />
+  //             </button>
+  //           </div>
+  //         </div>
+  //       )}
+  //       {isLoadingConvos ? (
+  //         <div className="p-4 space-y-3">
+  //           {Array.from({ length: 6 }).map((_, i) => (
+  //             <div
+  //               key={i}
+  //               className="animate-pulse rounded-xl border border-white/10 bg-slate-950/30 p-3"
+  //             >
+  //               <div className="flex items-center gap-3">
+  //                 <div className="h-10 w-10 rounded-full bg-white/10" />
+  //                 <div className="flex-1">
+  //                   <div className="h-3 w-32 rounded bg-white/10" />
+  //                   <div className="mt-2 h-2 w-44 rounded bg-white/10" />
+  //                 </div>
+  //                 <div className="h-2 w-10 rounded bg-white/10" />
+  //               </div>
+  //             </div>
+  //           ))}
+  //         </div>
+  //       ) : conversations.length === 0 ? (
+  //         <div className="text-center py-12 px-4">
+  //           <FiMessageSquare className="w-12 h-12 text-text-disabled mx-auto mb-3" />
+  //           <p className="text-sm text-text-muted">No conversations yet</p>
+  //           <p className="text-xs text-text-disabled mt-1">
+  //             {isAdmin
+  //               ? 'Conversations will appear when clients message you'
+  //               : 'Go to a project to start a conversation'}
+  //           </p>
+  //         </div>
+  //       ) : filteredConversations.length === 0 ? (
+  //         <div className="text-center py-12 px-4">
+  //           <FiSearch className="w-10 h-10 text-text-disabled mx-auto mb-3" />
+  //           <p className="text-sm text-text-muted">No conversation matches your search</p>
+  //         </div>
+  //       ) : (
+  //         <div className="divide-y divide-border-default">
+  //           {filteredConversations.map((conv) => (
+  //             <button
+  //               key={conv.id}
+  //               onClick={() => openConversation(conv)}
+  //               type="button"
+  //               aria-label={`Open conversation with ${getOtherPartyName(conv)}`}
+  //               className={`w-full text-left p-4 hover:bg-white/5 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/30 transition-colors duration-150 ${activeConversation?.id === conv.id
+  //                 ? 'bg-accent/5 border-l-4 border-l-accent'
+  //                 : ''
+  //                 }`}
+  //             >
+  //               <div className="flex gap-1 text-white">
+  //                 {conv.project.manager ? (
+  //                   <div
+  //                     className="w-7 h-7 rounded-full bg-accent flex items-center justify-center text-text-inverse text-[10px] font-semibold"
+  //                     title={conv.project.manager.name || 'Admin'}
+  //                   >
+  //                     {(conv.project.manager.name?.charAt(0).toUpperCase() || 'A')}
+  //                   </div>
+  //                 ) : (
+  //                   <div
+  //                     className="w-7 h-7 rounded-full bg-accent flex items-center justify-center text-white text-[10px] font-semibold"
+  //                     title="Admin"
+  //                   >
+  //                     A
+  //                   </div>
+  //                 )}
+  //               </div>
+  //             </button>
+  //           ))}
+  //         </div>
+  //       )}
+  //     </div>
+  //   </div>
+  // );
+
   const conversationListJSX = (
-    <div className="flex flex-col h-full min-h-0">
-      <div className="p-4 border-b border-white/10 bg-slate-950/70">
+    <div className="flex flex-col h-full min-h-0 bg-surface">
+      {/* Header */}
+      <div className="p-4 border-b border-default">
         <div className="flex items-center justify-between">
-          <h2 className="text-lg font-semibold text-text-primary flex items-center gap-2">
+          <h2 className="text-lg font-semibold text-primary flex items-center gap-2">
             <FiMessageSquare className="w-5 h-5" />
             Messages
           </h2>
@@ -460,7 +599,7 @@ export default function MessagesClient({
             <button
               onClick={openNewConvoModal}
               type="button"
-              className="p-2 rounded-lg bg-accent text-text-inverse hover:bg-accent-hover transition-colors duration-150"
+              className="p-2 rounded-lg bg-accent text-inverse hover:bg-accent-hover transition-colors duration-150"
               title="New Conversation"
               aria-label="Start a new conversation"
             >
@@ -468,33 +607,32 @@ export default function MessagesClient({
             </button>
           )}
         </div>
-        <p className="text-xs text-text-muted mt-1">
-          {isAdmin
-            ? 'Client conversations'
-            : 'Messages with your manager'}
+        <p className="text-xs text-muted mt-1">
+          {isAdmin ? 'Client conversations' : 'Messages with your manager'}
         </p>
         <div className="mt-3">
           <div className="relative">
-            <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-text-disabled" />
+            <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-disabled" />
             <input
               value={conversationSearch}
               onChange={(e) => setConversationSearch(e.target.value)}
               placeholder="Search conversations..."
               aria-label="Search conversations"
-              className="w-full rounded-lg border border-white/10 bg-slate-950/60 py-2 pl-9 pr-3 text-xs text-text-primary placeholder:text-text-disabled focus:outline-none focus:ring-2 focus:ring-accent/30"
+              className="w-full rounded-lg border border-default bg-page py-2 pl-9 pr-3 text-xs text-primary placeholder:text-disabled focus:outline-none focus:ring-2 focus:ring-accent/30"
             />
           </div>
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto bg-slate-900/35">
+      {/* Conversation list */}
+      <div className="flex-1 overflow-y-auto chat-scroll">
         {errorBanner && (
           <div className="mx-4 mt-4 rounded-xl border border-red-500/25 bg-red-500/10 px-3 py-2 text-xs text-red-200 flex items-start justify-between gap-3">
             <span className="leading-5">{errorBanner}</span>
             <div className="flex items-center gap-2 shrink-0">
               <button
                 type="button"
-                className="rounded-lg border border-white/10 bg-slate-950/40 px-2 py-1 text-[11px] text-text-primary hover:bg-white/5"
+                className="rounded-lg border border-default bg-surface px-2 py-1 text-[11px] text-primary hover:bg-subtle"
                 onClick={() => {
                   setErrorBanner(null);
                   fetchConversations();
@@ -505,7 +643,7 @@ export default function MessagesClient({
               </button>
               <button
                 type="button"
-                className="rounded-lg p-1 text-text-muted hover:text-text-primary hover:bg-white/5"
+                className="rounded-lg p-1 text-muted hover:text-primary hover:bg-subtle"
                 onClick={() => setErrorBanner(null)}
                 aria-label="Dismiss error"
               >
@@ -517,26 +655,23 @@ export default function MessagesClient({
         {isLoadingConvos ? (
           <div className="p-4 space-y-3">
             {Array.from({ length: 6 }).map((_, i) => (
-              <div
-                key={i}
-                className="animate-pulse rounded-xl border border-white/10 bg-slate-950/30 p-3"
-              >
+              <div key={i} className="animate-pulse rounded-xl border border-default bg-card p-3">
                 <div className="flex items-center gap-3">
-                  <div className="h-10 w-10 rounded-full bg-white/10" />
+                  <div className="h-10 w-10 rounded-full bg-subtle" />
                   <div className="flex-1">
-                    <div className="h-3 w-32 rounded bg-white/10" />
-                    <div className="mt-2 h-2 w-44 rounded bg-white/10" />
+                    <div className="h-3 w-32 rounded bg-subtle" />
+                    <div className="mt-2 h-2 w-44 rounded bg-subtle" />
                   </div>
-                  <div className="h-2 w-10 rounded bg-white/10" />
+                  <div className="h-2 w-10 rounded bg-subtle" />
                 </div>
               </div>
             ))}
           </div>
         ) : conversations.length === 0 ? (
           <div className="text-center py-12 px-4">
-            <FiMessageSquare className="w-12 h-12 text-text-disabled mx-auto mb-3" />
-            <p className="text-sm text-text-muted">No conversations yet</p>
-            <p className="text-xs text-text-disabled mt-1">
+            <FiMessageSquare className="w-12 h-12 text-disabled mx-auto mb-3" />
+            <p className="text-sm text-muted">No conversations yet</p>
+            <p className="text-xs text-disabled mt-1">
               {isAdmin
                 ? 'Conversations will appear when clients message you'
                 : 'Go to a project to start a conversation'}
@@ -544,38 +679,52 @@ export default function MessagesClient({
           </div>
         ) : filteredConversations.length === 0 ? (
           <div className="text-center py-12 px-4">
-            <FiSearch className="w-10 h-10 text-text-disabled mx-auto mb-3" />
-            <p className="text-sm text-text-muted">No conversation matches your search</p>
+            <FiSearch className="w-10 h-10 text-disabled mx-auto mb-3" />
+            <p className="text-sm text-muted">No conversation matches your search</p>
           </div>
         ) : (
-          <div className="divide-y divide-border-default">
+          <div className="divide-y divide-default">
             {filteredConversations.map((conv) => (
               <button
                 key={conv.id}
                 onClick={() => openConversation(conv)}
                 type="button"
                 aria-label={`Open conversation with ${getOtherPartyName(conv)}`}
-                className={`w-full text-left p-4 hover:bg-white/5 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/30 transition-colors duration-150 ${activeConversation?.id === conv.id
-                  ? 'bg-accent/5 border-l-4 border-l-accent'
-                  : ''
+                className={`w-full text-left p-4 hover:bg-subtle focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/30 transition-colors duration-150 ${activeConversation?.id === conv.id ? 'bg-accent/5 border-l-4 border-l-accent' : ''
                   }`}
               >
-                <div className="flex gap-1 text-white">
-                  {conv.project.manager ? (
-                    <div
-                      className="w-7 h-7 rounded-full bg-accent flex items-center justify-center text-text-inverse text-[10px] font-semibold"
-                      title={conv.project.manager.name || 'Admin'}
-                    >
-                      {(conv.project.manager.name?.charAt(0).toUpperCase() || 'A')}
+                <div className="flex items-start gap-3">
+                  <div className="relative shrink-0">
+                    <div className="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center text-accent font-semibold text-sm">
+                      {getOtherPartyName(conv).charAt(0).toUpperCase()}
                     </div>
-                  ) : (
-                    <div
-                      className="w-7 h-7 rounded-full bg-accent flex items-center justify-center text-white text-[10px] font-semibold"
-                      title="Admin"
-                    >
-                      A
+                    {conv.unreadCount > 0 && (
+                      <span className="absolute -top-1 -right-1 flex items-center justify-center min-w-[18px] h-[18px] px-1 text-[10px] font-bold rounded-full bg-red-500 text-white">
+                        {conv.unreadCount}
+                      </span>
+                    )}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center justify-between">
+                      <h4 className="text-sm font-semibold text-primary truncate">
+                        {getOtherPartyName(conv)}
+                      </h4>
+                      {conv.lastMessage && (
+                        <span className="text-[10px] text-muted whitespace-nowrap ml-2">
+                          {formatConversationTime(conv.lastMessage.createdAt)}
+                        </span>
+                      )}
                     </div>
-                  )}
+                    <p className="text-xs text-muted truncate mt-0.5">
+                      {conv.project.name}
+                    </p>
+                    {conv.lastMessage && (
+                      <p className="text-xs text-body truncate mt-1">
+                        {conv.lastMessage.senderId === userId ? 'You: ' : ''}
+                        {conv.lastMessage.content}
+                      </p>
+                    )}
+                  </div>
                 </div>
               </button>
             ))}
@@ -617,7 +766,7 @@ export default function MessagesClient({
           <div className="w-9 h-9 rounded-full bg-accent flex items-center justify-center text-text-inverse text-sm font-semibold shrink-0">
             {/* {getOtherPartyName(activeConversation).charAt(0).toUpperCase()} */}
             <div className="flex gap-1">
-                {activeConversation.project.manager?.name.charAt(0).toUpperCase()}
+              {activeConversation.project.manager?.name.charAt(0).toUpperCase()}
 
               {/* {activeConversation.project.managers?.map((m) => (
                 <div
@@ -683,7 +832,7 @@ export default function MessagesClient({
         <div
           ref={messagesContainerRef}
           onScroll={updateNearBottom}
-          className="chat-scroll flex-1 min-h-0 h-full overflow-y-auto overscroll-contain p-4 space-y-3 [scrollbar-gutter:stable] touch-pan-y"
+          className="chat-scroll overflow-y-auto flex-1 min-h-0 h-full p-4 space-y-3"
           role="log"
           aria-live="polite"
           aria-relevant="additions text"
@@ -802,7 +951,7 @@ export default function MessagesClient({
 
 
         {/* Message Input */}
-        <div className="shrink-0 border-t border-white/10 bg-slate-950/80 p-3">
+        <div className="shrink-0 border-t border-white/10 bg-slate-950 p-3">
           <form onSubmit={sendMessage} className="flex items-end gap-2">
             <textarea
               ref={textareaRef}
@@ -840,7 +989,7 @@ export default function MessagesClient({
         <div className="sticky top-0 z-10 flex gap-3 p-4 border-b border-white/10 bg-slate-950 shrink-0
         ">
           <span
-              className="bg-accent/30 hover:bg-accent/40 transition-all duration-200 rounded-full text-white  w-10 h-10 flex justify-center items-center"
+            className="bg-accent/30 hover:bg-accent/40 transition-all duration-200 rounded-full text-white  w-10 h-10 flex justify-center items-center"
             onClick={handleBack}
           ><ArrowLeft size={14} /></span>
           {isAdmin && (
@@ -856,8 +1005,8 @@ export default function MessagesClient({
           <div className="w-9 h-9 rounded-full bg-accent flex items-center justify-center text-text-inverse text-sm font-semibold shrink-0">
             {/* {getOtherPartyName(activeConversation).charAt(0).toUpperCase()} */}
             <div className="flex gap-1">
-                {activeConversation.project.manager?.name.charAt(0).toUpperCase()}
-{/*               
+              {activeConversation.project.manager?.name.charAt(0).toUpperCase()}
+              {/*               
               // .map((m) => (
               //   <div
               //     key={m.id}
@@ -923,7 +1072,7 @@ export default function MessagesClient({
         <div
           ref={messagesContainerRef}
           onScroll={updateNearBottom}
-          className="chat-scroll flex-1 min-h-0 overflow-y-auto  p-4 space-y-3 pb-32"
+          className="chat-scroll flex-1 min-h-0 overflow-y-auto  p-4 space-y-3 pb-32  "
           role="log"
           aria-live="polite"
           aria-relevant="additions text"
@@ -1042,7 +1191,7 @@ export default function MessagesClient({
 
 
         {/* Message Input */}
-        <div className="shrink-0 fixed bottom-0 w-full border-t border-white/10 bg-slate-950/80 p-3">
+        <div className="shrink-0 fixed bottom-0 w-full border-t border-white/10 bg-slate-950 p-3">
           <form onSubmit={sendMessage} className="flex items-end gap-2">
             <textarea
               ref={textareaRef}
@@ -1101,7 +1250,7 @@ export default function MessagesClient({
             </p>
           </div>
         ) : (
-          <div className="flex h-full w-full overflow-hidden">
+          <div className="flex h-[80vh] chat-scroll md:h-full w-full md:overflow-hidden ">
             {/* Project tabs — if multiple conversations */}
 
             {/* Desktop */}
@@ -1191,19 +1340,19 @@ export default function MessagesClient({
               {!showMobileView && (
                 <div className="w-full h-full">
                   {conversations.length > 1 && (
-                        <div className=" w-full md:w-80 flex flex-col h-[80vh] border-r border-border-default bg-bg-subtle">
+                    <div className=" w-full md:w-80 flex flex-col h-[80vh] border-r border-border-default bg-bg-subtle">
                       {/* Header Section */}
-                          <div className="px-5 py-6 flex flex-col gap-1">
-                            <div className="flex items-center gap-2 text-accent">
-                              <MessageSquareQuote size={14} strokeWidth={2.5} />
-                              <h2 className="text-[10px] font-bold uppercase tracking-[0.15em]">
-                                Project Workspace
-                              </h2>
-                            </div>
-                            <p className="text-base text-text-muted leading-relaxed">
-                              Sync with your <span className="text-text-default font-medium">Managers</span> on active tasks.
-                            </p>
-                          </div>
+                      <div className="px-5 py-6 flex flex-col gap-1">
+                        <div className="flex items-center gap-2 text-accent">
+                          <MessageSquareQuote size={14} strokeWidth={2.5} />
+                          <h2 className="text-[10px] font-bold uppercase tracking-[0.15em]">
+                            Project Workspace
+                          </h2>
+                        </div>
+                        <p className="text-base text-text-muted leading-relaxed">
+                          Sync with your <span className="text-text-default font-medium">Managers</span> on active tasks.
+                        </p>
+                      </div>
 
                       {/* Scrollable List */}
                       <div className="flex-1 overflow-y-auto px-2 space-y-1">

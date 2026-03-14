@@ -468,7 +468,7 @@ export default function App({ children }: { children: React.ReactNode; user?: { 
         {/* 3. MAIN WORKSPACE */}
         <main className="flex-1 flex flex-col overflow-hidden relative pt-14 lg:pt-0 z-10">
           {/* Content */}
-          <div className="flex-1 p-4 sm:p-6 md:pb-40 lg:p-8 pb-24 lg:pb-8 overflow-y-auto mb-14 md:mb-0">
+          <div className="flex-1 p-2 md:p-6 md:pb-40 lg:p-8 pb-24 lg:pb-8 overflow-y-auto mb-14 md:mb-0">
             {children}
           </div>
 
