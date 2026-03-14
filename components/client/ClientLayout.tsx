@@ -11,7 +11,9 @@ import {
   FilePlus,
   CheckCircle2,
   ChevronRight,
-  ChevronDown, FolderKanban,
+  ChevronDown,
+  FolderKanban,
+  CreditCard,
   LogOut
 } from 'lucide-react';
 import { useSession, signOut } from 'next-auth/react';
@@ -329,6 +331,12 @@ export default function App({ children }: { children: React.ReactNode; user?: { 
               onClick={() => router.push('/client/projects')} />
 
             <GlobalNavItem
+              icon={CreditCard}
+              label="Payments"
+              active={isActive('/client/payments')}
+              onClick={() => router.push('/client/payments')} />
+
+            <GlobalNavItem
               icon={UserCircle}
               label="My Profile"
               active={isActive('/client/profile')}
@@ -507,7 +515,7 @@ export default function App({ children }: { children: React.ReactNode; user?: { 
       </div>
 
       {/* Mobile bottom navigation */}
-      <nav className="lg:hidden fixed bottom-0 inset-x-0 z-40 h-16 bg-slate-950/80 backdrop-blur-2xl border-t border-white/10 grid grid-cols-5 px-1 shadow-[0_-10px_30px_rgba(2,6,23,0.65)]">
+      <nav className="lg:hidden fixed bottom-0 inset-x-0 z-40 h-16 bg-slate-950/80 backdrop-blur-2xl border-t border-white/10 grid grid-cols-6 px-1 shadow-[0_-10px_30px_rgba(2,6,23,0.65)]">
         <button
           type="button"
           onClick={() => router.push('/client/dashboard')}
@@ -544,14 +552,21 @@ export default function App({ children }: { children: React.ReactNode; user?: { 
 
         <button
           type="button"
+          onClick={() => router.push('/client/payments')}
+          className={`flex flex-col items-center justify-center gap-1 rounded-xl text-[10px] transition-all`}
+        >
+          <CreditCard size={18} />
+          Payments
+        </button>
+
+        <button
+          type="button"
           onClick={() => router.push('/client/profile')}
           className={`flex flex-col items-center justify-center gap-1 rounded-xl text-[10px] transition-all`}
         >
           <UserCircle size={18} />
           Profile
         </button>
-
-        
       </nav>
 
       {/* Dashboard Popups */}
