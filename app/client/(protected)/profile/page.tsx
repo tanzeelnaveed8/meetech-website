@@ -6,6 +6,7 @@ import Card from '@/components/ui/Card';
 import Button from '@/components/ui/Button';
 import Input from '@/components/ui/Input';
 import { useToast } from '@/components/ui/Toast';
+import Spinner from "@/components/ui/Spinner"
 
 type InfoTileProps = {
   label: string;
@@ -90,7 +91,8 @@ export default function ClientProfilePage() {
 
   const handleChangePassword = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (isLoading) return;
+    if (isLoading) 
+      return <Spinner title="updating your password" />;
     setFormError('');
 
     if (newPassword !== confirmPassword) {

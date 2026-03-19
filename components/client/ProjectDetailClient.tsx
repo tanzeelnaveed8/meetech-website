@@ -11,6 +11,7 @@ import ChangeRequestForm from '@/components/client/ChangeRequestForm';
 import Card from '@/components/ui/Card';
 import Button from '@/components/ui/Button';
 import { useToast } from '@/components/ui/Toast';
+import Spinner from "@/components/ui/Spinner"
 
 interface Milestone {
   id: string;
@@ -187,12 +188,7 @@ export default function ProjectDetailClient({ projectId }: ProjectDetailClientPr
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center py-12">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-accent mx-auto mb-4" />
-          <p className="text-text-muted">Loading project...</p>
-        </div>
-      </div>
+      <Spinner title="projects..." />
     );
   }
 

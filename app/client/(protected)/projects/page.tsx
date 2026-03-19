@@ -1,10 +1,11 @@
-
 import { auth } from '@/lib/auth/auth';
 import { getProjectsByClient } from '@/lib/db/queries/projects';
 import ProjectCard from '@/components/client/ProjectCard';
 import { FiFolder, FiArrowRight, FiFilter, FiPlus } from 'react-icons/fi';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
+import Spinner from "@/components/ui/Spinner"
+
 
 interface Project {
   id: string;
@@ -30,6 +31,8 @@ interface ProjectCardProps {
 
 export default async function ProjectsPage() {
   const session = await auth();
+
+
 
   if (!session?.user?.id) {
     redirect('/client/login');

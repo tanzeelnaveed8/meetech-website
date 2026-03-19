@@ -123,7 +123,7 @@ function SplashScreen({ onDone }: { onDone: () => void }) {
         />
       </div> */}
       <div className="mb-8">
-        <Image src="/icon.png" alt="Meetech" width={120} height={32} className="h-8 w-auto" />
+        <Image src="/icon.png" alt="Meetech" width={120} height={120} className="h-16 w-auto" />
       </div>
       {/* Text block */}
       <div

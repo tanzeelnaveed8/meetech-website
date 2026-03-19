@@ -456,6 +456,7 @@ import {
 import { useState, useEffect, useMemo } from "react";
 import { useToast } from "@/components/ui/Toast";
 import Link from "next/link";
+import Spinner from '@/components/ui/Spinner';
 
 /* ----------------------------- CONSTANTS ----------------------------- */
 
@@ -522,6 +523,8 @@ export default function BookMeetingPage() {
   const [formError, setFormError] = useState("");
   const [requests, setRequests] = useState<MeetingRequestRow[]>([]);
   const [loadingRequests, setLoadingRequests] = useState(true);
+ 
+
 
   const tomorrow = useMemo(() => {
     const t = new Date();
@@ -658,28 +661,33 @@ export default function BookMeetingPage() {
   return (
     <div className="max-w-7xl mx-auto p-4 md:p-6 font-sans space-y-6">
       {/* Breadcrumb – minimal */}
-      <nav className="flex text-sm text-text-muted mb-10" aria-label="Breadcrumb">
-        <ol className="inline-flex items-center space-x-2">
-          <li>
-            <Link href="/" className="hover:text-accent transition-colors">
+      <nav className="flex text-text-muted p-2 rounded-lg border border-accent/15 bg-accent/10 w-fit mb-16" aria-label="Breadcrumb">
+        <ol className="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
+          <li className="inline-flex items-center">
+            <a href="/" className="inline-flex items-center text-sm font-medium text-body hover:text-fg-brand">
+              <svg className="w-4 h-4 me-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m4 12 8-8 8 8M6 10.5V19a1 1 0 0 0 1 1h3v-3a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3h3a1 1 0 0 0 1-1v-8.5" /></svg>
               Home
-            </Link>
+            </a>
           </li>
-          <li>/</li>
           <li>
-            <Link href="/client" className="hover:text-accent transition-colors">
-              Client
-            </Link>
+            <div className="flex items-center space-x-1.5">
+              <svg className="w-3.5 h-3.5 rtl:rotate-180 text-body" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 5 7 7-7 7" /></svg>
+              <a href="#" className="inline-flex items-center text-sm font-medium text-body hover:text-fg-brand">Client</a>
+            </div>
           </li>
-          <li>/</li>
-          <li className="text-text-primary font-medium">Book a meeting</li>
+          <li aria-current="page">
+            <div className="flex items-center space-x-1.5">
+              <svg className="w-3.5 h-3.5 rtl:rotate-180 text-body" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 5 7 7-7 7" /></svg>
+              <span className="inline-flex items-center text-sm font-medium text-body-subtle capitalize">Book your meeting</span>
+            </div>
+          </li>
         </ol>
       </nav>
 
       {/* Header */}
       <header className="flex my-6 flex-col md:flex-row md:items-end justify-between gap-2">
         <div>
-          <h1 className="text-2xl md:text-5xl font-semibold text-text-primary tracking-tight capitalize">
+          <h1 className="text-3xl lg:text-4xl xl:text-5xl  font-semibold text-text-primary tracking-tight capitalize">
             Book a meeting
           </h1>
           <p className="text-text-muted text-sm mt-1">

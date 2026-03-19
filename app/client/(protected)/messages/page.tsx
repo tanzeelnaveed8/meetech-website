@@ -39,7 +39,7 @@ export default async function ClientMessagesPage() {
           </nav>
 
         </div>
-        <h1 className="text-4xl font-semibold text-text-primary mb-1">Messages</h1>
+        <h1 className="text-3xl lg:text-4xl xl:text-5xl  font-semibold text-text-primary mb-1">Messages</h1>
         <p className="text-sm text-text-muted">Chat directly with your manager</p>
       </div>
 

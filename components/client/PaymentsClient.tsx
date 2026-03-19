@@ -5,6 +5,7 @@ import { format } from 'date-fns';
 import { FiCreditCard, FiExternalLink, FiCheckCircle, FiClock, FiAlertTriangle, FiDollarSign, FiTrendingUp } from 'react-icons/fi';
 import StatusBadge from '@/components/ui/StatusBadge';
 import { useToast } from '@/components/ui/Toast';
+import Spinner from '../ui/Spinner';
 
 interface Payment {
   id: string;
@@ -119,14 +120,7 @@ export default function PaymentsClient() {
   const overdueCount = allPayments.filter(p => p.status === 'OVERDUE').length;
 
   if (isLoading) {
-    return (
-      <div className="flex items-center justify-center py-20">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-accent mx-auto mb-4" />
-          <p className="text-text-muted">Loading payments...</p>
-        </div>
-      </div>
-    );
+    return <Spinner title="Your Payments" />
   }
 
   return (
@@ -163,7 +157,7 @@ export default function PaymentsClient() {
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-8 mt-10">
           <div className="flex-1">
 
-            <h1 className="text-3xl md:text-5xl font-bold text-text-inverse tracking-tight">
+            <h1 className="text-3xl lg:text-4xl xl:text-5xl  font-bold text-text-inverse tracking-tight">
               Payments
             </h1>
             <p className="text-text-inverse/80 mt-3 text-sm sm:text-base max-w-md leading-relaxed">
